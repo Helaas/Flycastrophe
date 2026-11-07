@@ -55,13 +55,14 @@ done), **skipped** (will not be taken, with the reason).
 | 08 | 28-byte vertex, Naomi 2 normals in their own GL buffer | `3e3b549579` ta_ctx.h, ta_vtx.cpp, elan.cpp, sorter.cpp | none | adapted (Crazy Taxi +1.6%, SA2 +0.5%; VF4 lighting checked) |
 | 09 | TA parse thread (GL: textures fetched on RetroArch's thread) | `3e3b549579` Renderer_if.cpp, ta_ctx.cpp, ta_vtx.cpp | `reicast_fcr_parse_thread` (on) | ported (Crazy Taxi +10.1%, SA2 -2.6%) |
 | 10 | Unchanged textures not re-uploaded | `3e3b549579` TexCache, `ff68543516` (TexCache part) | none | ported; neutral on the bench (Crazy Taxi -0.2%, SA2 -1.4%, within noise), for games that rewrite textures unchanged |
-| 11 | Frameskip on lag, audio fill | `f212a71804`, `1b8db315e8` | `reicast_auto_skip_frame` | pending |
+| 11 | Frameskip on lag, audio fill | `f212a71804`, `1b8db315e8` | `reicast_auto_skip_frame` (Maximum) | adapted: skip on lag (`f212a71804`), lag credited for running ahead (RetroArch paces the SH4 in bursts); audio veto `1b8db315e8` skipped (RetroArch's buffer reads 20-100% full on Leaf while underrunning, so it vetoed every skip). Full clock: no skips. At 1.1 GHz: Crazy Taxi underruns 32.7% to 1.2% for 49.5 to 47.0 fps shown |
 | 12 | Sorting heuristics, Daytona exception, fast GD-ROM load default | `3e3b549579` ta_util, `564410027b`, `a7ed1b550b` | default change | ported; Flycastrophe also sorts the European Daytona disc (`MK-5103750`) per triangle, decals checked in its attract race; neutral on the bench |
 | 13 | MMU windows, versioned block cache (Windows CE) | `3e3b549579` mmuwindows, `a7ed1b550b` | none | ported (dynarec unit, row 04); Sega Rally 2 attract checked |
 | 14 | Code cache on disk | `9909d48688`, `f42955105f` | none | adapted: `<content>.blocks` in RetroArch's save directory (`Saves/Flycastrophe/` under Leaf), written on a normal quit; no warm-up within 2 s of the last (rewind, run-ahead); Crazy Taxi 5890 blocks in 313 ms, SA2 7741 in 433 ms |
 
-After the review point: `52cfec5` (Threaded Audio on by default) ported with row 03; not yet
-reviewed: `9ffccd7c7f` (frame skip always at its most), `b5854cb951` (Options pages), `039413c` (1.2.4).
+After the review point: `52cfec5` (Threaded Audio on by default) ported with row 03;
+`9ffccd7c7f` (frame skip always at its most) taken as row 11's default, with the option kept; not yet
+reviewed: `b5854cb951` (Options pages), `039413c` (1.2.4).
 
 Rows 04, 05, 06, 07 and 13 are interleaved in Deadcast's `rec_arm64.cpp` and depend on each other,
 so they were ported as one unit (Deadcast's files as Deadcast has them, then Flycastrophe's option

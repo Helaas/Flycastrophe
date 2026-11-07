@@ -720,7 +720,11 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       CORE_OPTION_NAME "_auto_skip_frame",
       "Auto Skip Frame",
       NULL,
+#ifdef FLYCASTROPHE
+      "Skip rendering frames while emulation is more than 8 ms behind real time: at most one (Normal) or two (Maximum) in a row. Renders to texture are never skipped.",
+#else
       "Automatically skip frames when the emulator is running slow. Note: This setting only applies when 'Threaded Rendering' is enabled.",
+#endif
       NULL,
       "performance",
       {
@@ -729,7 +733,9 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "more", "Maximum" },
          { NULL, NULL },
       },
-#ifdef LOW_END
+#ifdef FLYCASTROPHE
+      "more",
+#elif defined(LOW_END)
       "some",
 #else
       "disabled",

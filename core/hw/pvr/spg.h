@@ -2,6 +2,8 @@
 #include "ta_ctx.h"
 
 extern bool SH4FastEnough;
+// Deadcast: how far emulation is behind real time (ms): what the auto frame skip goes by (ta_ctx.cpp)
+extern float emulationLagMs;
 
 bool spg_Init();
 void spg_Term();
