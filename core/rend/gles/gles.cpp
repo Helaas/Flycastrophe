@@ -962,6 +962,11 @@ void gl_DebugOutput(GLenum source,
 
 bool OpenGLRenderer::Init()
 {
+#ifdef FLYCASTROPHE
+	// Deadcast: the TA data parsed on a thread of its own (Renderer_if.cpp), the textures fetched after on
+	// this one (Process): their uploads are GL calls. Not for Naomi 2, whose parsing differs.
+	parseOffThread = config::ThreadedRendering && config::ParseThread && !settings.platform.isNaomi2();
+#endif
 	glcache.EnableCache();
 
 	gl_create_resources();
@@ -1085,17 +1090,6 @@ void OpenGLRenderer::Process(TA_context* ctx)
 		ta_fetch_textures(ctx);
 	else
 		ta_parse(ctx, gl.prim_restart_fixed_supported || gl.prim_restart_supported);
-}
-
-// Deadcast: the TA data is parsed on a thread of its own (Renderer_if.cpp), the textures fetched after on
-// this one (Process): their uploads are GL calls. Not for Naomi 2, whose parsing differs.
-bool OpenGLRenderer::parsesOffThread()
-{
-#ifdef FLYCASTROPHE
-	return config::ThreadedRendering && !settings.platform.isNaomi2();
-#else
-	return false;
-#endif
 }
 
 void OpenGLRenderer::Parse(TA_context* ctx)

@@ -177,6 +177,20 @@ struct retro_core_option_v2_definition option_defs_us[] = {
    },
 #ifdef FLYCASTROPHE
    {
+      CORE_OPTION_NAME "_fcr_parse_thread",
+      "Parse Thread",
+      NULL,
+      "Prepares each frame's polygons on a thread of its own and lets the emulation carry on while the frame is drawn. Faster in games limited by drawing (Crazy Taxi: 10%), about 3% slower in games limited by the main CPU (SA2). Needs Threaded Rendering. Takes effect when the game starts.",
+      NULL,
+      "video",
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       CORE_OPTION_NAME "_fcr_threaded_audio",
       "Threaded Audio",
       NULL,

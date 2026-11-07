@@ -498,7 +498,7 @@ struct OpenGLRenderer : Renderer
 
 	void Process(TA_context* ctx) override;
 	// Deadcast's TA parse thread (Renderer_if.cpp): Flycastrophe only
-	bool parsesOffThread() override;
+	bool parsesOffThread() override { return parseOffThread; }
 	void Parse(TA_context* ctx) override;
 
 	bool Render() override;
@@ -562,6 +562,9 @@ protected:
 	int width = 640;
 	int height = 480;
 	void initVideoRoutingFrameBuffer();
+	// Deadcast's TA parse thread for this renderer's lifetime (Init), so it cannot change between a
+	// frame being queued and drawn
+	bool parseOffThread = false;
 };
 
 extern const char* ShaderCompatSource;
