@@ -64,7 +64,16 @@ std::string getVmuPath(const std::string& port, bool save)
 		return vmuDir + std::string(content_name) + "." + port + ".bin";
 	}
 	else {
+#ifdef FLYCASTROPHE
+		// Shared VMUs of its own, so a save made with Flycastrophe's options
+		// never lands in a VMU file another flycast core is using.
+		std::string vmuDir = std::string(game_dir_no_slash) + std::string(PATH_DEFAULT_SLASH()) + "flycastrophe";
+		if (save)
+			path_mkdir(vmuDir.c_str());
+		return vmuDir + std::string(PATH_DEFAULT_SLASH()) + "vmu_save_" + port + ".bin";
+#else
 		return std::string(game_dir_no_slash) + std::string(PATH_DEFAULT_SLASH()) + "vmu_save_" + port + ".bin";
+#endif
 	}
 }
 

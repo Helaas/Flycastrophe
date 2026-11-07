@@ -15,7 +15,11 @@ target_sources(${PROJECT_NAME} PRIVATE
 
 if(USE_OPENGL)
     target_compile_definitions(${PROJECT_NAME} PRIVATE USE_OPENGL)
-    add_subdirectory(gl4)
+    # Flycastrophe drops the per-pixel renderer: Deadcast's 28-byte vertex has no
+    # second volume for it to draw.
+    if(NOT FLYCASTROPHE)
+        add_subdirectory(gl4)
+    endif()
     add_subdirectory(gles)
 
     if (NOT LIBRETRO)
