@@ -1,0 +1,89 @@
+# Flycastrophe's own CI. Upstream's workflows stay in the tree (so merges from
+# flyinghead/flycast stay clean) but are disabled on this fork.
+#
+#   mlp1   the Flycastrophe libretro core, cross-built for the Miniloong Pocket 1
+#          in the same toolchain image Flycastrophe-pak releases with
+#   tests  upstream's unit tests on x86-64 Linux, which cover the core code
+#          Deadcast's ports change
+name: Flycastrophe
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  TOOLCHAIN_IMAGE: ghcr.io/utility-muffin-research-kitchen/mlp1-toolchain@sha256:66aac16fb8b07e663c9b4d66970f272df195a6eba98dfad8286eabbaa617faf9
+
+jobs:
+  mlp1:
+    name: MLP1 libretro core
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # Only what a GLES libretro build without Vulkan compiles.
+      - name: Submodules
+        run: |
+          git submodule update --init --depth 1 core/deps/asio core/deps/libchdr core/deps/rcheevos core/deps/tinygettext
+          git -C core/deps/tinygettext submodule update --init --recursive --depth 1
+
+      - name: Build
+        run: |
+          mkdir -p out
+          docker run --rm -v "$PWD":/src -v "$PWD/out":/out -w /src "$TOOLCHAIN_IMAGE" bash -euc '
+            git config --global --add safe.directory "*"
+            . /opt/mlp1-toolchain/umrk/mlp1-build-flags.env
+            TC=/opt/mlp1-toolchain/bin/$CROSS_TRIPLE
+            CC=$TC-gcc CXX=$TC-g++ \
+            CFLAGS="$UMRK_MLP1_PROFILE_CFLAGS" CXXFLAGS="$UMRK_MLP1_PROFILE_CXXFLAGS" LDFLAGS="$UMRK_MLP1_PROFILE_LDFLAGS" \
+              cmake -S . -B /tmp/build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE \
+                -DLIBRETRO=ON -DFLYCASTROPHE=ON -DUSE_GLES=ON -DUSE_VULKAN=OFF -DUSE_OPENMP=OFF -DUSE_HOST_LIBZIP=OFF \
+                -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
+                -DCMAKE_SYSTEM_NAME=Linux -DCMAKE_SYSTEM_PROCESSOR=aarch64 \
+                -DCMAKE_SYSROOT=$SYSROOT -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER
+            ninja -C /tmp/build flycast_libretro
+            cp /tmp/build/flycastrophe_libretro.so /out/
+            $TC-strip --strip-unneeded /out/flycastrophe_libretro.so
+            needed=$($TC-readelf -d /out/flycastrophe_libretro.so | sed -n "s/.*(NEEDED).*\[\(.*\)\]/\1/p" | sort | tr "\n" " ")
+            echo "NEEDED: $needed"
+            [ "$needed" = "ld-linux-aarch64.so.1 libc.so.6 libgcc_s.so.1 libm.so.6 libstdc++.so.6 " ] ||
+              { echo "unexpected NEEDED list" >&2; exit 1; }
+            $TC-strings /out/flycastrophe_libretro.so | grep -qx Flycastrophe ||
+              { echo "library_name is not Flycastrophe" >&2; exit 1; }
+          '
+          sha256sum out/flycastrophe_libretro.so
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: flycastrophe_libretro-mlp1
+          path: out/flycastrophe_libretro.so
+
+  tests:
+    name: Unit tests (x86-64 Linux)
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install ccache libao-dev libasound2-dev libevdev-dev libgl1-mesa-dev liblua5.3-dev libminiupnpc-dev libpulse-dev libsdl2-dev libudev-dev libzip-dev libcurl4-openssl-dev libcdio-dev locales ninja-build
+          sudo sed -i 's/# fr_FR.UTF-8 UTF-8/fr_FR.UTF-8 UTF-8/g' /etc/locale.gen
+          sudo locale-gen
+
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Build and run
+        run: |
+          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DENABLE_CTEST=ON -DUSE_HOST_SDL=ON
+          cmake --build build
+          ./build/flycast

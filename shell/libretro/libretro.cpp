@@ -2558,7 +2558,11 @@ const char* retro_get_system_directory()
 
 void retro_get_system_info(struct retro_system_info *info)
 {
+#ifdef FLYCASTROPHE
+   info->library_name = "Flycastrophe";
+#else
    info->library_name = "Flycast";
+#endif
 #ifndef GIT_VERSION
 #define GIT_VERSION "undefined"
 #endif

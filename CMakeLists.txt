@@ -93,6 +93,7 @@ set(MOLTENVK_DYLIB "" CACHE FILEPATH "Path to macOS MoltenVK dylib for macOS Vul
 option(USE_DX9 "Build with Direct3D 9 support" ON)
 option(USE_DX11 "Build with Direct3D 11 support" ON)
 option(LIBRETRO "Build libretro core" OFF)
+option(FLYCASTROPHE "Build the Flycastrophe libretro core (see FLYCASTROPHE.md)" OFF)
 option(USE_OPENGL "Use OpenGL API" ON)
 option(USE_VIDEOCORE "RPI: use the legacy Broadcom GLES libraries" OFF)
 option(USE_ALSA "Build with ALSA support" ON)
@@ -215,6 +216,12 @@ elseif(LIBRETRO)
 	  XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
 	  XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY ""
     )
+	if(FLYCASTROPHE)
+		# Its own file name, so it installs beside the stock flycast core. GLES
+		# only: no per-pixel (GL4) renderer, see core/rend/CMakeLists.txt.
+		set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "flycastrophe_libretro")
+		target_compile_definitions(${PROJECT_NAME} PRIVATE FLYCASTROPHE)
+	endif()
 	set(CMAKE_SHARED_LIBRARY_PREFIX "")
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 	target_compile_definitions(${PROJECT_NAME} PRIVATE LIBRETRO)
@@ -223,7 +230,8 @@ elseif(LIBRETRO)
 		target_link_libraries(${PROJECT_NAME} PRIVATE ${FOUNDATION})
 	endif()
 	if(ANDROID OR USE_GLES)
-		target_compile_definitions(${PROJECT_NAME} PRIVATE GLES GLES3 HAVE_OPENGLES HAVE_OPENGLES3 HAVE_OIT)
+		target_compile_definitions(${PROJECT_NAME} PRIVATE GLES GLES3 HAVE_OPENGLES HAVE_OPENGLES3
+			$<$<NOT:$<BOOL:${FLYCASTROPHE}>>:HAVE_OIT>)
 		if(ANDROID)
 			target_link_libraries(${PROJECT_NAME} PRIVATE android)
 		endif()
