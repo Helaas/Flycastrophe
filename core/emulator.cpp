@@ -764,6 +764,8 @@ void Emulator::unloadGame()
 				&& !settings.naomi.multiboard && !config::GGPOEnable && !naomiNetworkSupported())
 			gui_saveState(false);
 #endif
+		// Flycastrophe: the AICA thread stopped before the reset; the next game starts it again
+		aica::stopThreadedAudio();
 		try {
 			dc_reset(true);
 		} catch (const FlycastException& e) {

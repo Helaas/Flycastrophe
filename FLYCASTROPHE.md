@@ -47,7 +47,7 @@ done), **skipped** (will not be taken, with the reason).
 | 01 | Perf counters (core only) | `3e3b549579` profiler, `110019952a`, `12fe9e85fe`, `117a12188d`, `055a8c6701`, `6c0c3f68a6` | env `FLYCASTROPHE_PERF=1` | pending |
 | 02 | Texture DMA unprotect | `9cda9c4082` | none | ported |
 | 02b | CHD read-ahead | `3e3b549579` chd.cpp | none | pending: neutral on still scenes, possibly slower on a moving replay (a non-sequential read waits for the prefetch in flight); retest with a streaming-heavy measurement |
-| 03 | AICA thread (netplay journal stripped) | `3e3b549579`, `3299519ff9`, AICA half of `d1be34d557`, `52cfec5` | `reicast_fcr_threaded_audio` (on) | ported |
+| 03 | AICA thread (netplay journal stripped) | `3e3b549579`, `3299519ff9`, AICA half of `d1be34d557`, `52cfec5` | `reicast_fcr_threaded_audio` (on) | ported; Flycastrophe stops the thread as a game unloads (RetroArch unloads the core without `term()`) |
 | 04 | 4 GB memory window + fault rewrite | `3e3b549579` addrspace, posix_vmem, virtmem, sh4_mmr | none | ported with 05, 06, 07, 13 as one dynarec unit (SA2 +23.2%, Crazy Taxi +2.0%) |
 | 05 | Pinned-register dynarec, thunks, inline IRQ, SQ to TA direct | `3e3b549579`, `d1be34d557`, `f42955105f` | none (Deadcast has no switch) | ported (dynarec unit, row 04) |
 | 06 | NEON fipr/ftrv | `3e3b549579` rec_arm64 | `reicast_fcr_fast_fipr` (on) | ported (dynarec unit, row 04); with row 07 worth ~3% on SA2 |
