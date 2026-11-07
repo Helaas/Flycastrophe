@@ -441,7 +441,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 #endif
          { NULL, NULL },
       },
-#if defined(LOW_END)
+#if defined(LOW_END) || defined(FLYCASTROPHE)
       "per-strip (fast, least accurate)",
 #else
       "per-triangle (normal)",
@@ -794,7 +794,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "enabled",  NULL },
          { NULL, NULL },
       },
-#ifdef LOW_END
+#if defined(LOW_END) || defined(FLYCASTROPHE)
       "enabled",
 #else
       "disabled",
