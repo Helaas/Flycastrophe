@@ -111,6 +111,7 @@ template void writeRtcReg<>(u32 addr, u32 data);
 template<typename T>
 T readAicaReg(u32 addr)
 {
+	sync();
 	addr &= 0x7FFF;
 	if (sizeof(T) == 1)
 	{
@@ -146,6 +147,10 @@ template<typename T>
 void writeAicaReg(u32 addr, T data)
 {
 	addr &= 0x7FFF;
+	// Deadcast: the SH4 acknowledging the AICA's interrupt: no sync (acknowledgeSh4Irq)
+	if (sizeof(T) != 1 && addr == MCIRE_addr && acknowledgeSh4Irq((u32)data))
+		return;
+	sync();
 
 	if (sizeof(T) == 1)
 	{
@@ -513,6 +518,7 @@ void sbTerm()
 
 void serialize(Serializer& ser)
 {
+	sync();
 	ser << arm::aica_interr;
 	ser << arm::aica_reg_L;
 	ser << arm::e68k_out;
@@ -548,6 +554,7 @@ void serialize(Serializer& ser)
 
 void deserialize(Deserializer& deser)
 {
+	sync();
 	deser >> arm::aica_interr;
 	deser >> arm::aica_reg_L;
 	deser >> arm::e68k_out;

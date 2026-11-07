@@ -46,6 +46,8 @@ Option<int, false> UITheme("UITheme", 0);
 // Sound
 
 Option<bool> DSPEnabled("aica.DSPEnabled", false);
+// Deadcast's Threaded Audio (aica.cpp). Off here: only the Flycastrophe libretro core turns it on.
+Option<bool> ThreadedAudio("aica.ThreadedAudio", false);
 #if HOST_CPU == CPU_ARM
 Option<int> AudioBufferSize("aica.BufferSize", 5644);	// 128 ms
 #else

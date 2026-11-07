@@ -21,6 +21,7 @@
 #include "stdclass.h"
 #include "cfg/option.h"
 #include "hw/aica/aica_if.h"
+#include "hw/aica/aica.h"
 #include "imgread/common.h"
 #include "hw/naomi/naomi_cart.h"
 #include "reios/reios.h"
@@ -680,6 +681,8 @@ void Emulator::loadGame(const char *path, LoadProgress *progress)
 		}
 		// reload settings so that all settings can be overridden
 		loadGameSpecificSettings();
+		// Deadcast: the AICA thread as they say
+		aica::applyThreadedAudio();
 		NetworkHandshake::init();
 		settings.input.fastForwardMode = false;
 		EventManager::event(Event::Start);
@@ -841,6 +844,7 @@ void Emulator::stop()
 		// normally only useful on android due to multithreading
 		stopRequested = true;
 #else
+		aica::sync();	// Flycastrophe: the AICA thread's samples, as on the threaded path
 		TermAudio();
 		nvmem::saveFiles();
 		EventManager::event(Event::Pause);
@@ -1020,10 +1024,13 @@ void Emulator::start()
 						if (!ggpo::nextFrame())
 							break;
 					}
+					// Deadcast: the AICA thread hands its samples to the audio output: done with them first
+					aica::sync();
 					TermAudio();
 				} catch (...) {
 					setNetworkState(false);
 					getSh4Executor()->Stop();
+					aica::sync();
 					TermAudio();
 					throw;
 				}
@@ -1073,6 +1080,7 @@ bool Emulator::render()
 		if (stopRequested)
 		{
 			stopRequested = false;
+			aica::sync();	// Flycastrophe: the AICA thread's samples, as on the threaded path
 			TermAudio();
 			nvmem::saveFiles();
 			EventManager::event(Event::Pause);

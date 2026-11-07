@@ -175,6 +175,22 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "enabled",
 #endif
    },
+#ifdef FLYCASTROPHE
+   {
+      CORE_OPTION_NAME "_fcr_threaded_audio",
+      "Threaded Audio",
+      NULL,
+      "Runs the Dreamcast's sound chip on a thread of its own, so it doesn't take time from the main CPU's emulation. Faster on multi-core handhelds. Turn it off if a game's sound or timing goes wrong. Takes effect when the game starts.",
+      NULL,
+      "system",
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+#endif
    {
       CORE_OPTION_NAME "_allow_service_buttons",
       "Allow Arcade Service Buttons",
