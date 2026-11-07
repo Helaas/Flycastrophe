@@ -1,4 +1,5 @@
 #include "common.h"
+#include <mutex>
 #include "hw/gdrom/gdromv3.h"
 #include "cfg/option.h"
 #include "stdclass.h"
@@ -206,8 +207,13 @@ static u32 createTrackInfoFirstLast(const Track& track, u32 tracknum)
 	return createTrackInfo(track, tracknum << 16);
 }
 
+// Deadcast: the GD-ROM's reads come from the SH4 thread, CD audio's from the AICA thread (aica.cpp),
+// and the images' readers (CHD...) are not safe to share
+static std::mutex readMutex;
+
 u32 libGDR_ReadSector(u8 *buff, u32 startSector, u32 sectorCount, u32 sectorSize, bool stopOnMiss)
 {
+	std::lock_guard<std::mutex> lock(readMutex);
 	if (disc != nullptr)
 		return disc->ReadSectors(startSector, sectorCount, buff, sectorSize, stopOnMiss);
 	if (stopOnMiss)
