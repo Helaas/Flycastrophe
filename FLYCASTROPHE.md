@@ -58,7 +58,7 @@ done), **skipped** (will not be taken, with the reason).
 | 11 | Frameskip on lag, audio fill | `f212a71804`, `1b8db315e8` | `reicast_auto_skip_frame` | pending |
 | 12 | Sorting heuristics, Daytona exception, fast GD-ROM load default | `3e3b549579` ta_util, `564410027b`, `a7ed1b550b` | default change | ported; Flycastrophe also sorts the European Daytona disc (`MK-5103750`) per triangle, decals checked in its attract race; neutral on the bench |
 | 13 | MMU windows, versioned block cache (Windows CE) | `3e3b549579` mmuwindows, `a7ed1b550b` | none | ported (dynarec unit, row 04); Sega Rally 2 attract checked |
-| 14 | Code cache on disk | `9909d48688`, `f42955105f` | env | pending |
+| 14 | Code cache on disk | `9909d48688`, `f42955105f` | none | adapted: `<content>.blocks` in RetroArch's save directory (`Saves/Flycastrophe/` under Leaf), written on a normal quit; no warm-up within 2 s of the last (rewind, run-ahead); Crazy Taxi 5890 blocks in 313 ms, SA2 7741 in 433 ms |
 
 After the review point: `52cfec5` (Threaded Audio on by default) ported with row 03; not yet
 reviewed: `9ffccd7c7f` (frame skip always at its most), `b5854cb951` (Options pages), `039413c` (1.2.4).

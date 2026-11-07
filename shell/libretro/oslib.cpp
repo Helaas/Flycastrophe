@@ -140,7 +140,12 @@ std::string findNaomiBios(const std::string& name)
 
 std::string getSavestatePath(int index, bool writable)
 {
-	// Not used
+#ifdef FLYCASTROPHE
+	// Only the code cache (core/deadcast/codecache.cpp) asks: it keeps <content>.blocks beside this,
+	// in RetroArch's save directory. RetroArch itself keeps the save states.
+	if (index == 0 && content_name[0] != '\0' && !settings.content.path.empty())
+		return std::string(vmu_dir_no_slash) + PATH_DEFAULT_SLASH() + content_name + ".state";
+#endif
 	return "";
 }
 
