@@ -51,6 +51,7 @@
 #include "hw/sh4/sh4_interpreter.h"
 #include "hw/sh4/dyna/ngen.h"
 #include "oslib/i18n.h"
+#include "deadcast/codecache.h"
 
 settings_t settings;
 constexpr char const *BIOS_TITLE = "Dreamcast BIOS";
@@ -772,6 +773,9 @@ void Emulator::unloadGame()
 				&& !settings.naomi.multiboard && !config::GGPOEnable && !naomiNetworkSupported())
 			gui_saveState(false);
 #endif
+		// Deadcast: the blocks it ran, for the next state load (deadcast/codecache.h)
+		if (state == Loaded)
+			deadcast::codecache::save();
 		// Flycastrophe: the AICA thread stopped before the reset; the next game starts it again
 		aica::stopThreadedAudio();
 		try {
@@ -939,6 +943,8 @@ void Emulator::loadstate(Deserializer& deser)
 
 	mmu_set_state();
 	getSh4Executor()->ResetCache();
+	// Deadcast: the blocks this game ran before, compiled now rather than in its first seconds
+	deadcast::codecache::warm();
 	EventManager::event(Event::LoadState);
 }
 
