@@ -199,7 +199,8 @@ static void loadSpecialSettings()
 		}
 		// Deadcast: Daytona USA (US): the decals on the cars lie on their bodies; sorted strip by strip, a body
 		// piece whose farthest point is nearer is drawn over them. Sorted by triangle they show.
-		if (prod_id == "MK-51037")
+		// Flycastrophe: the European disc too.
+		if (prod_id == "MK-51037" || prod_id == "MK-5103750")
 		{
 			INFO_LOG(BOOT, "Enabling per-triangle translucent sorting for game %s", prod_id.c_str());
 			config::PerStripSorting.override(false);
