@@ -7,7 +7,9 @@
 #include "network/ggpo.h"
 #include "hw/pvr/Renderer_if.h"
 #include "stdclass.h"
+#include <algorithm>
 #include <array>
+#include <chrono>
 
 #ifdef TEST_AUTOMATION
 #include "input/gamepad_device.h"
@@ -36,6 +38,7 @@ static std::array<u64, 4> cpu_cycles;
 static u32 cpu_time_idx;
 bool SH4FastEnough;
 u32 fskip;
+float emulationLagMs;
 
 static u32 lightgun_line = 0xffff;
 static u32 lightgun_hpos;
@@ -178,6 +181,27 @@ static int spg_line_sched(int tag, int cycles, int jitter, void *arg)
 			}
 			cpu_cycles[cpu_time_idx] = sh4_sched_now64();
 			real_times[cpu_time_idx] = now;
+
+			// Deadcast: the lag is real time since the last vblank minus emulated time, summed and capped at
+			// 50 ms (a load or pause is not lag to make up). Flycastrophe: down to -50 ms too, since RetroArch
+			// paces the SH4 in bursts (a frame ahead, then a wait for it); floored at 0, the waits alone
+			// added up to lag and skipped half the frames of a game at full speed.
+			{
+				static std::chrono::steady_clock::time_point lastReal;
+				static u64 lastCycles;
+				const auto real = std::chrono::steady_clock::now();
+				const u64 cycles = sh4_sched_now64();
+				if (lastCycles != 0 && cycles > lastCycles)
+				{
+					const float realMs = std::chrono::duration<float, std::milli>(real - lastReal).count();
+					const float sh4Ms = (float)(cycles - lastCycles) / (SH4_MAIN_CLOCK / 1000);
+					emulationLagMs = std::clamp(emulationLagMs + realMs - sh4Ms, -50.f, 50.f);
+				}
+				else
+					emulationLagMs = 0.f;
+				lastReal = real;
+				lastCycles = cycles;
+			}
 
 #ifdef TEST_AUTOMATION
 			replay_input();

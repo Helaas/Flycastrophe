@@ -51,19 +51,32 @@ bool QueueRender(TA_context* ctx)
 	verify(ctx != 0);
 	
 	bool skipFrame = !rend_is_enabled();
+	// Deadcast: auto frame skip: frames are not rendered while emulation is behind real time, up to
+	// AutoSkipFrame in a row, so the SH4 can catch up (renders to texture are never skipped)
+	static int lagSkips;
 	if (!skipFrame)
 	{
 		RenderCount++;
 		if (RenderCount % (config::SkipFrame + 1) != 0)
 			skipFrame = true;
-		else if (config::ThreadedRendering && rqueue != nullptr
-				&& (config::AutoSkipFrame == 0 || (config::AutoSkipFrame == 1 && SH4FastEnough)))
+		// Flycastrophe: without Deadcast's audio veto (1b8db315e8): RetroArch's audio buffer reads 20-100%
+		// full on Leaf while the core underruns, so it held back every skip
+		else if (!ctx->rend.isRTT && emulationLagMs > 8.f
+				&& lagSkips < config::AutoSkipFrame)
+		{
+			skipFrame = true;
+			lagSkips++;
+		}
+		else if (config::ThreadedRendering && rqueue != nullptr)
 			// The previous render hasn't completed yet so we wait.
-			// If autoskipframe is enabled (normal level), we only do so if the CPU is running
-			// fast enough over the last frames
+			// Deadcast: whatever the frame skip: a frame is dropped only by the lag above. Dropped here, as
+			// upstream's Maximum did whenever the renderer was still busy, NBA 2K2 lost 13 frames a second
+			// with the SH4 62% busy.
 			frame_finished.Wait();
 	}
 
+	if (!skipFrame && !rqueue && !ctx->rend.isRTT)
+		lagSkips = 0;
 	if (skipFrame || rqueue)
 	{
 		tactx_Recycle(ctx);
