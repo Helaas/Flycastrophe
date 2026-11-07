@@ -19,6 +19,7 @@
 #include "ta_ctx.h"
 #include "pvr_mem.h"
 #include <algorithm>
+#include <cmath>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -194,6 +195,133 @@ static bool operator<(const PolyParam& left, const PolyParam& right)
 	return left.zvZ < right.zvZ;
 }
 
+// Deadcast: the PowerVR sorts translucent polygons per pixel. Sorting strips by their farthest point
+// misplaces a large receding plane (NHL 2K2's ice), drawing it over what lies beneath it. So the
+// largest translucent plane receding from the camera goes after the strips wholly behind it on the
+// screen and before the others; strips on the plane keep their order with it.
+namespace
+{
+struct ScreenPlane
+{
+	double a = 0, b = 0, c = 0;	// 1/w = a x + b y + c
+
+	double z(double x, double y) const {
+		return a * x + b * y + c;
+	}
+	// from the three vertices of v spanning the largest triangle on the screen
+	bool fit(const Vertex *v, u32 count)
+	{
+		double best = 0;
+		const Vertex *p0 = &v[0], *p1 = nullptr, *p2 = nullptr;
+		for (u32 i = 1; i < count; i++)
+			for (u32 j = i + 1; j < count; j++)
+			{
+				double area = std::abs(((double)v[i].x - p0->x) * ((double)v[j].y - p0->y) - ((double)v[j].x - p0->x) * ((double)v[i].y - p0->y));
+				if (area > best)
+				{
+					best = area;
+					p1 = &v[i];
+					p2 = &v[j];
+				}
+			}
+		if (best < 1.0)
+			return false;
+		// solve [x y 1] [a b c]' = z for the three points
+		const double x0 = p0->x, y0 = p0->y, z0 = p0->z;
+		const double x1 = p1->x - x0, y1 = p1->y - y0, z1 = p1->z - z0;
+		const double x2 = p2->x - x0, y2 = p2->y - y0, z2 = p2->z - z0;
+		const double det = x1 * y2 - x2 * y1;
+		if (std::abs(det) < 1e-9)
+			return false;
+		a = (z1 * y2 - z2 * y1) / det;
+		b = (x1 * z2 - x2 * z1) / det;
+		c = z0 - a * x0 - b * y0;
+		return true;
+	}
+	// where the vertex is, relative to the plane: -1 behind (farther), 0 on it, 1 in front
+	int side(const Vertex& v) const
+	{
+		const double pz = z(v.x, v.y);
+		const double tolerance = 1e-3 * std::max(std::abs(pz), std::abs((double)v.z)) + 1e-7;
+		if (v.z < pz - tolerance)
+			return -1;
+		if (v.z > pz + tolerance)
+			return 1;
+		return 0;
+	}
+};
+
+double screenArea(const Vertex *v, u32 count)
+{
+	float x0 = 1e30f, x1 = -1e30f, y0 = 1e30f, y1 = -1e30f;
+	for (u32 i = 0; i < count; i++)
+	{
+		x0 = std::min(x0, v[i].x);
+		x1 = std::max(x1, v[i].x);
+		y0 = std::min(y0, v[i].y);
+		y1 = std::max(y1, v[i].y);
+	}
+	const double w = std::min(x1, 640.f) - std::max(x0, 0.f);
+	const double h = std::min(y1, 480.f) - std::max(y0, 0.f);
+	return w > 0 && h > 0 ? w * h : 0;
+}
+}
+
+static void placeLargestPlane(PolyParam *first, PolyParam *end, rend_context& ctx)
+{
+	// the largest strip on the screen that is a plane going away from the camera (1/w a quarter more
+	// at its nearest than at its farthest), as large as a quarter of the screen
+	ScreenPlane plane;
+	double largest = 640 * 480 / 4;
+	bool found = false;
+	for (PolyParam *pp = first; pp != end; pp++)
+	{
+		if (pp->count < 3 || pp->isNaomi2())
+			continue;
+		const Vertex *v = &ctx.verts[pp->first];
+		const double area = screenArea(v, pp->count);
+		if (area <= largest)
+			continue;
+		float nearest = v[0].z, farthest = v[0].z;
+		for (u32 i = 1; i < pp->count; i++)
+		{
+			nearest = std::max(nearest, v[i].z);
+			farthest = std::min(farthest, v[i].z);
+		}
+		if (!(farthest > 0 && nearest > farthest * 1.25f))
+			continue;
+		ScreenPlane candidate;
+		if (!candidate.fit(v, pp->count))
+			continue;
+		bool flat = true;
+		for (u32 i = 0; i < pp->count && flat; i++)
+			flat = candidate.side(v[i]) == 0;
+		if (!flat)
+			continue;
+		plane = candidate;
+		largest = area;
+		found = true;
+	}
+	if (!found)
+		return;
+	// behind it: every vertex behind; on it: every vertex on it; the rest is in front
+	auto where = [&](const PolyParam& pp) {
+		if (pp.count == 0 || pp.isNaomi2())
+			return 1;
+		const Vertex *v = &ctx.verts[pp.first];
+		int lowest = 1, highest = -1;
+		for (u32 i = 0; i < pp.count; i++)
+		{
+			const int s = plane.side(v[i]);
+			lowest = std::min(lowest, s);
+			highest = std::max(highest, s);
+		}
+		return highest < 0 ? -1 : highest == 0 && lowest == 0 ? 0 : 1;
+	};
+	PolyParam *middle = std::stable_partition(first, end, [&](const PolyParam& pp) { return where(pp) < 0; });
+	std::stable_partition(middle, end, [&](const PolyParam& pp) { return where(pp) == 0; });
+}
+
 void sortPolyParams(std::vector<PolyParam>& polys, int first, int end, rend_context& ctx)
 {
 	if (end - first <= 1)
@@ -255,6 +383,7 @@ void sortPolyParams(std::vector<PolyParam>& polys, int first, int end, rend_cont
 	}
 
 	std::stable_sort(&polys[first], pp_end);
+	placeLargestPlane(&polys[first], pp_end, ctx);
 }
 
 void getRegionTileAddrAndSize(u32& address, u32& size)

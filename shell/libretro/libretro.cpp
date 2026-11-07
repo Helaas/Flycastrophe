@@ -930,7 +930,9 @@ static void update_variables(bool first_startup)
 		default:
 			break;
 		}
-		config::PerStripSorting = var.value != nullptr && !strcmp(var.value, "per-strip (fast, least accurate)");
+		// a game-specific override (Daytona USA) holds
+		if (!config::PerStripSorting.isReadOnly())
+			config::PerStripSorting = var.value != nullptr && !strcmp(var.value, "per-strip (fast, least accurate)");
 	}
 
 	if (!first_startup && previous_renderer != config::RendererType) {
