@@ -444,6 +444,18 @@ BaseTextureCacheData::BaseTextureCacheData(TSP tsp, TCW tcw, int area)
 	}
 }
 
+// Deadcast: all the texture's data in VRAM (its VQ codebook and every mipmap level), its format, and its
+// palette unless the GPU applies it
+u64 BaseTextureCacheData::dataHash()
+{
+	const u32 end = mmStartAddress + size;
+	u64 hash = end > startAddress && end <= VRAM_SIZE ? XXH3_64bits(&vram[startAddress], end - startAddress) : 0;
+	hash ^= ((u64)tcw.full << 32) ^ tsp.full;
+	if (IsPaletted() && !gpuPalette)
+		hash ^= (u64)palette_hash * 0x9E3779B97F4A7C15ull;
+	return hash;
+}
+
 void BaseTextureCacheData::ComputeHash()
 {
 	// Include everything but texaddr, reserved and stride. Palette textures don't have ScanOrder
@@ -553,6 +565,16 @@ bool BaseTextureCacheData::Update()
 			unprotectVRam();
 			return false;
 		}
+	}
+	// Deadcast: written to, but with the same data as at its last upload: the GPU texture is still valid
+	const u64 newDataHash = dataHash();
+	if (Updates > 1 && newDataHash == uploadedHash && !custom_texture.enabled())
+	{
+		tex_type = uploadedType;
+		gpuPalette = uploadedGpuPalette;
+		protectVRam();
+		size = originalSize;
+		return true;
 	}
 	if (custom_texture.enabled())
 	{
@@ -731,6 +753,9 @@ bool BaseTextureCacheData::Update()
 	protectVRam();
 
 	UploadToGPU(upscaled_w, upscaled_h, (const u8 *)temp_tex_buffer, IsMipmapped(), mipmapped);
+	uploadedHash = newDataHash;
+	uploadedType = tex_type;
+	uploadedGpuPalette = gpuPalette;
 	if (config::DumpTextures)
 	{
 		ComputeHash();
