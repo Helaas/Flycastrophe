@@ -1,10 +1,7 @@
-# Flycastrophe's own CI. Upstream's workflows stay in the tree (so merges from
+# Flycastrophe's own CI: the libretro core cross-built for the Miniloong Pocket 1
+# in the same toolchain image Flycastrophe-pak releases with. The MLP1 is the
+# only target. Upstream's workflows stay in the tree (so merges from
 # flyinghead/flycast stay clean) but are disabled on this fork.
-#
-#   mlp1   the Flycastrophe libretro core, cross-built for the Miniloong Pocket 1
-#          in the same toolchain image Flycastrophe-pak releases with
-#   tests  upstream's unit tests on x86-64 Linux, which cover the core code
-#          Deadcast's ports change
 name: Flycastrophe
 
 on:
@@ -66,24 +63,3 @@ jobs:
           name: flycastrophe_libretro-mlp1
           path: out/flycastrophe_libretro.so
 
-  tests:
-    name: Unit tests (x86-64 Linux)
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install ccache libao-dev libasound2-dev libevdev-dev libgl1-mesa-dev liblua5.3-dev libminiupnpc-dev libpulse-dev libsdl2-dev libudev-dev libzip-dev libcurl4-openssl-dev libcdio-dev locales ninja-build
-          sudo sed -i 's/# fr_FR.UTF-8 UTF-8/fr_FR.UTF-8 UTF-8/g' /etc/locale.gen
-          sudo locale-gen
-
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-          submodules: recursive
-
-      - name: Build and run
-        run: |
-          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DENABLE_CTEST=ON -DUSE_HOST_SDL=ON
-          cmake --build build
-          ./build/flycast
