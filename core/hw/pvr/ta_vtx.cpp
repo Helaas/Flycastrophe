@@ -1226,7 +1226,7 @@ static void ta_parse_vdrc(TA_context* ctx, bool primRestart)
 	ta_parse_reset();
 
 	PolyParam *bgpp = &vd_rc.global_param_op.front();
-	if (bgpp->pcw.Texture)
+	if (bgpp->pcw.Texture && BaseTAParser::fetchTextures)
 		bgpp->texture = renderer->GetTexture(bgpp->tsp, bgpp->tcw);
 
 	TA_context *childCtx = ctx;
@@ -1322,12 +1322,48 @@ static void ta_parse_naomi2(TA_context* ctx, bool primRestart)
 	}
 }
 
-void ta_parse(TA_context *ctx, bool primRestart)
+void ta_parse(TA_context *ctx, bool primRestart, bool fetchTextures)
 {
 	if (settings.platform.isNaomi2())
 		ta_parse_naomi2(ctx, primRestart);
 	else
-		ta_parse_vdrc(ctx, primRestart);
+	{
+		BaseTAParser::fetchTextures = fetchTextures;
+		try {
+			ta_parse_vdrc(ctx, primRestart);
+		} catch (...) {
+			BaseTAParser::fetchTextures = true;
+			throw;
+		}
+		BaseTAParser::fetchTextures = true;
+	}
+}
+
+// Deadcast: the textures of a context parsed without them (ta_parse), on the thread the renderer uses.
+// Strips of the same polygon share theirs: a texture is looked up once for a run of them.
+void ta_fetch_textures(TA_context *ctx)
+{
+	for (auto *params : { &ctx->rend.global_param_op, &ctx->rend.global_param_pt, &ctx->rend.global_param_tr })
+	{
+		const PolyParam *last = nullptr;
+		for (PolyParam& pp : *params)
+		{
+			if (!pp.pcw.Texture)
+				continue;
+			if (last != nullptr && last->tsp.full == pp.tsp.full && last->tcw.full == pp.tcw.full)
+				pp.texture = last->texture;
+			else
+				pp.texture = renderer->GetTexture(pp.tsp, pp.tcw);
+			if (pp.tsp1.full != (u32)-1)
+			{
+				if (last != nullptr && last->tsp1.full == pp.tsp1.full && last->tcw1.full == pp.tcw1.full)
+					pp.texture1 = last->texture1;
+				else
+					pp.texture1 = renderer->GetTexture(pp.tsp1, pp.tcw1, 1);
+			}
+			last = &pp;
+		}
+	}
 }
 
 //

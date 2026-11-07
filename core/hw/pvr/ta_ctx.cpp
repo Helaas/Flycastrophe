@@ -89,6 +89,20 @@ TA_context* DequeueRender()
 	return rqueue;
 }
 
+// Deadcast: frees the queue slot while ctx is still being drawn (Renderer_if.cpp), so the next frame
+// can be queued; RecycleRender() once drawn
+void ReleaseRender(TA_context* ctx)
+{
+	verify(rqueue == ctx);
+	rqueue = nullptr;
+	frame_finished.Set();
+}
+
+void RecycleRender(TA_context* ctx)
+{
+	tactx_Recycle(ctx);
+}
+
 void FinishRender(TA_context* ctx)
 {
 	if (ctx != nullptr)

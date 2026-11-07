@@ -962,6 +962,11 @@ void gl_DebugOutput(GLenum source,
 
 bool OpenGLRenderer::Init()
 {
+#ifdef FLYCASTROPHE
+	// Deadcast: the TA data parsed on a thread of its own (Renderer_if.cpp), the textures fetched after on
+	// this one (Process): their uploads are GL calls. Not for Naomi 2, whose parsing differs.
+	parseOffThread = config::ThreadedRendering && config::ParseThread && !settings.platform.isNaomi2();
+#endif
 	glcache.EnableCache();
 
 	gl_create_resources();
@@ -1080,7 +1085,16 @@ void OpenGLRenderer::Process(TA_context* ctx)
 	}
 	if (!ctx->rend.isRTT && ctx->rend.swapInterval > 0)
 		GraphicsContext::Instance()->setSwapInterval(ctx->rend.swapInterval);
-	ta_parse(ctx, gl.prim_restart_fixed_supported || gl.prim_restart_supported);
+	if (ctx->parsed)
+		// Deadcast: parsed on the parse thread already; the textures need this thread's GL context
+		ta_fetch_textures(ctx);
+	else
+		ta_parse(ctx, gl.prim_restart_fixed_supported || gl.prim_restart_supported);
+}
+
+void OpenGLRenderer::Parse(TA_context* ctx)
+{
+	ta_parse(ctx, gl.prim_restart_fixed_supported || gl.prim_restart_supported, false);
 }
 
 static void upload_vertex_indices()

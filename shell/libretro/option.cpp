@@ -95,6 +95,12 @@ Option<bool> IntegerScale("");
 Option<bool> LinearInterpolation("", true);
 Option<bool> VSync("", true);
 Option<bool> ThreadedRendering(CORE_OPTION_NAME "_threaded_rendering", true);
+#ifdef FLYCASTROPHE
+// Deadcast's TA parse thread (Renderer_if.cpp), on by default
+Option<bool> ParseThread(CORE_OPTION_NAME "_fcr_parse_thread", true);
+#else
+Option<bool> ParseThread("", false);
+#endif
 Option<bool> VblankPacing(CORE_OPTION_NAME "_vblank_pacing");
 Option<int> AnisotropicFiltering(CORE_OPTION_NAME "_anisotropic_filtering");
 Option<int> TextureFiltering(CORE_OPTION_NAME "_texture_filtering");
