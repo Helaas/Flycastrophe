@@ -3,11 +3,6 @@
 #include "oslib/storage.h"
 #include "oslib/i18n.h"
 #include "chd.h"
-#include "oslib/oslib.h"
-
-#include <condition_variable>
-#include <mutex>
-#include <thread>
 
 struct CHDDisc : Disc
 {
@@ -25,78 +20,9 @@ struct CHDDisc : Disc
 
 	void tryOpen(const char* file);
 
-	// Deadcast: reads are mostly sequential, so the next hunk is decompressed ahead on a thread of its own,
-	// into prefetch_mem. chd_read is not thread-safe: reading another hunk waits for the prefetch.
-	static constexpr u32 NoHunk = ~0u;
-	u8 *prefetch_mem = nullptr;
-	u32 totalHunks = 0;
-	std::mutex mutex;
-	std::condition_variable wake;		// for the prefetcher: a hunk wanted, or stopping
-	std::condition_variable done;		// for the reader: the prefetcher is done
-	std::thread prefetcher;
-	u32 wanted = NoHunk;		// the hunk to decompress ahead
-	u32 prefetching = NoHunk;	// the hunk being decompressed ahead
-	u32 prefetched = NoHunk;	// the hunk in prefetch_mem
-	bool stopping = false;
-
-	// hunk_mem holds hunk after this, else false
-	bool readHunk(u32 hunk)
-	{
-		std::unique_lock<std::mutex> lock(mutex);
-		done.wait(lock, [this] { return prefetching == NoHunk; });
-		if (prefetched == hunk)
-		{
-			std::swap(hunk_mem, prefetch_mem);
-			prefetched = NoHunk;
-		}
-		else if (chd_read(chd, hunk, hunk_mem) != CHDERR_NONE)
-			return false;
-		if (hunk + 1 < totalHunks)
-		{
-			wanted = hunk + 1;
-			wake.notify_one();
-		}
-		return true;
-	}
-
-	void prefetchLoop()
-	{
-		ThreadName _("deadcast-chd");
-		std::unique_lock<std::mutex> lock(mutex);
-		while (true)
-		{
-			wake.wait(lock, [this] { return wanted != NoHunk || stopping; });
-			if (stopping)
-				break;
-			const u32 hunk = wanted;
-			wanted = NoHunk;
-			if (hunk == prefetched)
-				continue;
-			prefetching = hunk;
-			prefetched = NoHunk;
-			lock.unlock();
-			const bool ok = chd_read(chd, hunk, prefetch_mem) == CHDERR_NONE;
-			lock.lock();
-			prefetching = NoHunk;
-			if (ok)
-				prefetched = hunk;
-			done.notify_all();
-		}
-	}
-
 	~CHDDisc() override
 	{
-		if (prefetcher.joinable())
-		{
-			{
-				std::lock_guard<std::mutex> lock(mutex);
-				stopping = true;
-			}
-			wake.notify_one();
-			prefetcher.join();
-		}
 		delete[] hunk_mem;
-		delete[] prefetch_mem;
 
 		if (chd)
 			chd_close(chd);
@@ -124,7 +50,7 @@ struct CHDTrack : TrackFile
 		u32 hunk=(fad_offs)/disc->sph;
 		if (disc->old_hunk!=hunk)
 		{
-			if (!disc->readHunk(hunk))
+			if (chd_read(disc->chd,hunk,disc->hunk_mem) != CHDERR_NONE)
 				return false;
 			disc->old_hunk = hunk;
 		}
@@ -201,9 +127,6 @@ void CHDDisc::tryOpen(const char* file)
 
 	hunkbytes = head->hunkbytes;
 	hunk_mem = new u8[hunkbytes];
-	prefetch_mem = new u8[hunkbytes];
-	totalHunks = head->totalhunks;
-	prefetcher = std::thread([this] { prefetchLoop(); });
 	old_hunk=0xFFFFFFF;
 
 	sph = hunkbytes/(2352+96);
