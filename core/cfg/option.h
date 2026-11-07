@@ -375,6 +375,8 @@ extern Option<int, false> UITheme;          // 0 -> Dark, 1 -> Light, 2 -> Dream
 constexpr bool LimitFPS = true;
 extern Option<bool> DSPEnabled;
 extern Option<bool> ThreadedAudio;	// Deadcast: the AICA on a thread of its own (aica.cpp)
+extern Option<bool> FastFipr;		// Deadcast: fipr and ftrv in single precision (rec_arm64.cpp)
+extern Option<bool> IdleLoopSkip;	// Deadcast: known wait loops skipped (deadcast/waitloops.h)
 extern Option<int> AudioBufferSize;	//In samples ,*4 for bytes
 extern Option<bool> AutoLatency;
 

@@ -48,6 +48,7 @@ using namespace vixl::aarch64;
 #include "deadcast/waitloops.h"
 #include "deadcast/profiler.h"
 #include "deadcast/mmuwindows.h"
+#include "cfg/option.h"
 
 struct DynaRBI : RuntimeBlockInfo
 {
@@ -80,6 +81,10 @@ static DynaCode *writeStoreQueue32;
 // Deadcast: R0-R15 and T pinned in host registers (arm64_regalloc.h), for the main loop as generated and
 // the blocks compiled for it: without the MMU, with the dynarec's window (addrspace.h)
 static bool pinnedRegs;
+// Flycastrophe: Deadcast's fipr/ftrv and wait-loop skipping as options (config::FastFipr, IdleLoopSkip),
+// read when the block cache resets (reset()), so a game's blocks all agree
+static bool fastFipr = true;
+static bool idleLoopSkip = true;
 // Deadcast: how translated code calls C while registers are pinned: callThunk calls x16, the others one
 // function each (rewrite() turns a faulting access into a call to one). The memory handlers' and
 // lightThunk (the store queue flush) are light: they keep only the host registers C may change.
@@ -374,7 +379,7 @@ public:
 			Add(x3, x3, 1);
 			Str(x3, MemOperand(x2));
 		}
-		if (deadcast::WaitLoopHook hook = deadcast::waitLoopHook(block))
+		if (deadcast::WaitLoopHook hook = idleLoopSkip ? deadcast::waitLoopHook(block) : nullptr)
 		{
 			// Deadcast: a known wait loop goes by without running while nothing changes (waitloops.cpp)
 			Mov(w0, block->vaddr);
@@ -1030,6 +1035,11 @@ public:
 			// Deadcast: fipr and ftrv in single precision, fused multiply-adds: the SH4 computes them with
 			// errors of its own, not exactly either (the interpreter's, in double, is exact)
 			case shop_fipr:
+				if (!fastFipr)
+				{
+					shil_chf[op.op](&op);	// Flycastrophe: the exact canonical version
+					break;
+				}
 				Add(x2, x28, op.rs1.reg_offset());
 				Ld1(v0.V4S(), MemOperand(x2));
 				Add(x2, x28, op.rs2.reg_offset());
@@ -1041,6 +1051,11 @@ public:
 				break;
 
 			case shop_ftrv:
+				if (!fastFipr)
+				{
+					shil_chf[op.op](&op);	// Flycastrophe: the exact canonical version
+					break;
+				}
 				// fd[i] = sum over j of fn[j] * fm[j * 4 + i]: the lanes are the four results
 				Add(x2, x28, op.rs1.reg_offset());
 				Ld1(v0.V4S(), MemOperand(x2));
@@ -3269,6 +3284,8 @@ public:
 
 	void reset() override
 	{
+		fastFipr = config::FastFipr;
+		idleLoopSkip = config::IdleLoopSkip;
 		unwinder.clear();
 		::mainloop = nullptr;
 
