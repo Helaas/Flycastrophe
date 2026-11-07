@@ -469,13 +469,20 @@ void MainVertexArray::defineVtxAttribs()
 	glEnableVertexAttribArray(VERTEX_UV_ARRAY);
 	glVertexAttribPointer(VERTEX_UV_ARRAY, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex,u));
 
-	glEnableVertexAttribArray(VERTEX_NORM_ARRAY);
-	glVertexAttribPointer(VERTEX_NORM_ARRAY, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, nx));
+	// Deadcast's 28-byte vertex: Naomi 2's normals come from a buffer of their own (rend_context::normals),
+	// switched on per frame in SetupMainVBO
+	gl.vbo.normals->bind();
+	glVertexAttribPointer(VERTEX_NORM_ARRAY, 3, GL_FLOAT, GL_FALSE, sizeof(VertexNormal), (void*)0);
 }
 
 void SetupMainVBO()
 {
 	gl.vbo.mainVAO.bind(gl.vbo.geometry.get(), gl.vbo.idxs.get());
+	// only frames with Naomi 2 geometry have normals; elsewhere no shader reads the attribute
+	if (gl.rendContext != nullptr && !gl.rendContext->normals.empty())
+		glEnableVertexAttribArray(VERTEX_NORM_ARRAY);
+	else
+		glDisableVertexAttribArray(VERTEX_NORM_ARRAY);
 	glCheck();
 }
 

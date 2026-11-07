@@ -490,6 +490,7 @@ static void gles_term()
 	gl.vbo.geometry.reset();
 	gl.vbo.modvols.reset();
 	gl.vbo.idxs.reset();
+	gl.vbo.normals.reset();
 	termGLCommon();
 
 	gl_delete_shaders();
@@ -924,6 +925,7 @@ static void gl_create_resources()
 	gl.vbo.geometry = std::make_unique<GlBuffer>(GL_ARRAY_BUFFER);
 	gl.vbo.modvols = std::make_unique<GlBuffer>(GL_ARRAY_BUFFER);
 	gl.vbo.idxs = std::make_unique<GlBuffer>(GL_ELEMENT_ARRAY_BUFFER);
+	gl.vbo.normals = std::make_unique<GlBuffer>(GL_ARRAY_BUFFER);
 
 	gl.quadDrawer = std::make_unique<GlQuadDrawer>();
 }
@@ -1255,6 +1257,15 @@ bool OpenGLRenderer::renderFrame(int width, int height)
 	//move vertex to gpu
 	//Main VBO
 	gl.vbo.geometry->update(&gl.rendContext->verts[0], gl.rendContext->verts.size() * sizeof(decltype(gl.rendContext->verts[0])));
+	// Deadcast's 28-byte vertex: Naomi 2's normals, at the same index as their vertex. ta_add_vertex
+	// fills them up to the last Naomi 2 vertex only, so the rest of the frame's vertices get zeros.
+	std::vector<VertexNormal>& normals = gl.rendContext->normals;
+	if (!normals.empty())
+	{
+		if (normals.size() < gl.rendContext->verts.size())
+			normals.resize(gl.rendContext->verts.size());
+		gl.vbo.normals->update(normals.data(), normals.size() * sizeof(VertexNormal));
+	}
 
 	upload_vertex_indices();
 

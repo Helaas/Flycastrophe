@@ -688,13 +688,9 @@ private:
 		cv->u = f16(vtx->u_name);\
 		cv->v = f16(vtx->v_name);
 
-	#define vert_uv1_32(u_name,v_name) \
-		cv->u1 = (vtx->u_name);\
-		cv->v1 = (vtx->v_name);
-
-	#define vert_uv1_16(u_name,v_name) \
-		cv->u1 = f16(vtx->u_name);\
-		cv->v1 = f16(vtx->v_name);
+	// Deadcast: the second volume of two-volume polygons is not kept (Vertex)
+	#define vert_uv1_32(u_name,v_name)
+	#define vert_uv1_16(u_name,v_name)
 
 		//Color conversions
 	#define vert_packed_color_(to,src) \
@@ -739,19 +735,8 @@ private:
 		cv->spc[Blue] = FaceOffsColor[Blue] * satint / 256;  \
 		cv->spc[Alpha] = FaceOffsColor[Alpha]; }
 
-	#define vert_face_base_color1(baseint) \
-		{ u32 satint = float_to_satu8(vtx->baseint); \
-		cv->col1[Red] = FaceBaseColor1[Red] * satint / 256;  \
-		cv->col1[Green] = FaceBaseColor1[Green] * satint / 256;  \
-		cv->col1[Blue] = FaceBaseColor1[Blue] * satint / 256;  \
-		cv->col1[Alpha] = FaceBaseColor1[Alpha]; }
-
-	#define vert_face_offs_color1(offsint) \
-		{ u32 satint = float_to_satu8(vtx->offsint); \
-		cv->spc1[Red] = FaceOffsColor1[Red] * satint / 256;  \
-		cv->spc1[Green] = FaceOffsColor1[Green] * satint / 256;  \
-		cv->spc1[Blue] = FaceOffsColor1[Blue] * satint / 256;  \
-		cv->spc1[Alpha] = FaceOffsColor1[Alpha]; }
+	#define vert_face_base_color1(baseint)
+	#define vert_face_offs_color1(offsint)
 
 
 	//(Non-Textured, Packed Color)
@@ -865,7 +850,6 @@ private:
 		vert_cvt_base;
 
 		vert_packed_color(col,BaseCol0);
-		vert_packed_color(col1, BaseCol1);
 	}
 
 	//(Non-Textured, Intensity,	with Two Volumes)
@@ -890,12 +874,7 @@ private:
 
 	static void AppendPolyVertex11B(TA_Vertex11B* vtx)
 	{
-		vert_res_base;
-
-		vert_packed_color(col1, BaseCol1);
-		vert_packed_color(spc1, OffsCol1);
-
-		vert_uv1_32(u1, v1);
+		// Deadcast: the second volume, not kept (Vertex)
 	}
 
 	//(Textured, Packed Color, 16bit UV, with Two Volumes)
@@ -911,12 +890,7 @@ private:
 
 	static void AppendPolyVertex12B(TA_Vertex12B* vtx)
 	{
-		vert_res_base;
-
-		vert_packed_color(col1, BaseCol1);
-		vert_packed_color(spc1, OffsCol1);
-
-		vert_uv1_16(u1, v1);
+		// Deadcast: the second volume, not kept (Vertex)
 	}
 
 	//(Textured, Intensity,	with Two Volumes)
@@ -932,12 +906,7 @@ private:
 
 	static void AppendPolyVertex13B(TA_Vertex13B* vtx)
 	{
-		vert_res_base;
-
-		vert_face_base_color1(BaseInt1);
-		vert_face_offs_color1(OffsInt1);
-
-		vert_uv1_32(u1,v1);
+		// Deadcast: the second volume, not kept (Vertex)
 	}
 
 	//(Textured, Intensity, 16bit UV, with Two Volumes)
@@ -953,12 +922,7 @@ private:
 
 	static void AppendPolyVertex14B(TA_Vertex14B* vtx)
 	{
-		vert_res_base;
-
-		vert_face_base_color1(BaseInt1);
-		vert_face_offs_color1(OffsInt1);
-
-		vert_uv1_16(u1, v1);
+		// Deadcast: the second volume, not kept (Vertex)
 	}
 
 	//Sprites
@@ -1447,9 +1411,13 @@ void ta_add_poly(int listType, const ModifierVolumeParam& mvp)
 	vd_ctx = nullptr;
 }
 
-void ta_add_vertex(const Vertex& vtx)
+void ta_add_vertex(const N2Vertex& vtx)
 {
-	ta_ctx->rend.verts.push_back(vtx);
+	rend_context& rc = ta_ctx->rend;
+	if (rc.normals.size() < rc.verts.size())
+		rc.normals.resize(rc.verts.size());
+	rc.verts.push_back(vtx);
+	rc.normals.push_back({ vtx.nx, vtx.ny, vtx.nz });
 	n2CurrentPP->count++;
 }
 

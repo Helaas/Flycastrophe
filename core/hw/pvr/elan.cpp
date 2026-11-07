@@ -545,7 +545,7 @@ struct State
 
 static State state;
 
-static void setCoords(Vertex& vtx, float x, float y, float z)
+static void setCoords(N2Vertex& vtx, float x, float y, float z)
 {
 	vtx.x = x;
 	vtx.y = y;
@@ -553,7 +553,7 @@ static void setCoords(Vertex& vtx, float x, float y, float z)
 }
 
 template <typename Ts>
-static void setUV(const Ts& vs, Vertex& vd)
+static void setUV(const Ts& vs, N2Vertex& vd)
 {
 	if (envMapping)
 	{
@@ -571,7 +571,7 @@ static void setUV(const Ts& vs, Vertex& vd)
 	}
 }
 
-static void SetEnvMapUV(Vertex& vtx)
+static void SetEnvMapUV(N2Vertex& vtx)
 {
 	if (envMapping)
 	{
@@ -589,7 +589,7 @@ static glm::vec3 getNormal(const T& vtx)
 }
 
 template<typename T>
-static void setNormal(Vertex& vd, const T& vs)
+static void setNormal(N2Vertex& vd, const T& vs)
 {
 	glm::vec3 normal = getNormal(vs);
 	vd.nx = normal.x;
@@ -612,10 +612,10 @@ static void setModelColors(glm::vec4& baseCol0, glm::vec4& offsetCol0, glm::vec4
 }
 
 template <typename T>
-static void convertVertex(const T& vs, Vertex& vd);
+static void convertVertex(const T& vs, N2Vertex& vd);
 
 template<>
-void convertVertex(const N2_VERTEX& vs, Vertex& vd)
+void convertVertex(const N2_VERTEX& vs, N2Vertex& vd)
 {
 	setCoords(vd, vs.x, vs.y, vs.z);
 	setNormal(vd, vs);
@@ -633,7 +633,7 @@ void convertVertex(const N2_VERTEX& vs, Vertex& vd)
 }
 
 template<>
-void convertVertex(const N2_VERTEX_VR& vs, Vertex& vd)
+void convertVertex(const N2_VERTEX_VR& vs, N2Vertex& vd)
 {
 	setCoords(vd, vs.x, vs.y, vs.z);
 	setNormal(vd, vs);
@@ -650,7 +650,7 @@ void convertVertex(const N2_VERTEX_VR& vs, Vertex& vd)
 }
 
 template<>
-void convertVertex(const N2_VERTEX_VU& vs, Vertex& vd)
+void convertVertex(const N2_VERTEX_VU& vs, N2Vertex& vd)
 {
 	setCoords(vd, vs.x, vs.y, vs.z);
 	setNormal(vd, vs);
@@ -667,7 +667,7 @@ void convertVertex(const N2_VERTEX_VU& vs, Vertex& vd)
 }
 
 template<>
-void convertVertex(const N2_VERTEX_VUR& vs, Vertex& vd)
+void convertVertex(const N2_VERTEX_VUR& vs, N2Vertex& vd)
 {
 	setCoords(vd, vs.x, vs.y, vs.z);
 	setNormal(vd, vs);
@@ -684,7 +684,7 @@ void convertVertex(const N2_VERTEX_VUR& vs, Vertex& vd)
 }
 
 template<>
-void convertVertex(const N2_VERTEX_VUB& vs, Vertex& vd)
+void convertVertex(const N2_VERTEX_VUB& vs, N2Vertex& vd)
 {
 	setCoords(vd, vs.x, vs.y, vs.z);
 	setNormal(vd, vs);
@@ -766,7 +766,7 @@ class TriangleStripClipper
 public:
 	TriangleStripClipper(bool enabled) : enabled(enabled) {}
 
-	void add(const Vertex& vtx)
+	void add(const N2Vertex& vtx)
 	{
 		if (enabled)
 		{
@@ -782,7 +782,7 @@ public:
 	}
 
 private:
-	void sendVertex(const Vertex& r)
+	void sendVertex(const N2Vertex& r)
 	{
 		if (dupeNext)
 			ta_add_vertex(r);
@@ -792,7 +792,7 @@ private:
 
 	// Three-Dimensional Homogeneous Clipping of Triangle Strips
 	// Patrick-Gilles Maillot. Graphics Gems II - 1991
-	void clip(const Vertex& r, float rDist)
+	void clip(const N2Vertex& r, float rDist)
 	{
 		clipCode >>= 1;
 		clipCode |= (int)(rDist < 0) << 2;
@@ -834,7 +834,7 @@ private:
 				break;
 			case 3: // P and Q outside, R inside
 				{
-					Vertex tmp = interpolate(r, rDist, p, pDist);
+					N2Vertex tmp = interpolate(r, rDist, p, pDist);
 					sendVertex(tmp);
 					sendVertex(tmp);
 					sendVertex(tmp); // One more to preserve strip swap order
@@ -852,7 +852,7 @@ private:
 				break;
 			case 6: // P inside, Q and R outside
 				{
-					Vertex tmp = interpolate(r, rDist, p, pDist);
+					N2Vertex tmp = interpolate(r, rDist, p, pDist);
 					sendVertex(tmp);
 					sendVertex(tmp);
 					sendVertex(tmp); // One more to preserve strip swap order
@@ -869,9 +869,9 @@ private:
 		qDist = rDist;
 	}
 
-	Vertex interpolate(const Vertex& v1, float f1, const Vertex& v2, float f2)
+	N2Vertex interpolate(const N2Vertex& v1, float f1, const N2Vertex& v2, float f2)
 	{
-		Vertex v;
+		N2Vertex v;
 		float a2 = std::abs(f1) / (std::abs(f1) + std::abs(f2));
 		float a1 = 1 - a2;
 		v.x = v1.x * a1 + v2.x * a2;
@@ -900,9 +900,9 @@ private:
 	bool enabled;
 	int count = 0;
 	int clipCode = 0;
-	Vertex p;
+	N2Vertex p;
 	float pDist = 0;
-	Vertex q;
+	N2Vertex q;
 	float qDist = 0;
 	bool dupeNext = false;
 };
@@ -910,11 +910,11 @@ private:
 template <typename T>
 static void sendVertices(const ICHList *list, const T* vtx, bool needClipping)
 {
-	Vertex taVtx;
+	N2Vertex taVtx;
 	verify(list->vertexSize() > 0);
 
-	Vertex fanCenterVtx{};
-	Vertex fanLastVtx{};
+	N2Vertex fanCenterVtx{};
+	N2Vertex fanLastVtx{};
 	bool stripStart = true;
 	int outStripIndex = 0;
 	TriangleStripClipper clipper(needClipping);

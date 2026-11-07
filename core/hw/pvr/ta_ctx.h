@@ -12,6 +12,8 @@ class BaseTextureCacheData;
 struct N2LightModel;
 
 //Vertex storage types
+// Deadcast: only what the GPU reads of a vertex (28 bytes), to cut the memory traffic that slows the
+// SH4 thread. The second volume of two-volume polygons is not kept: the renderer never drew it.
 struct Vertex
 {
 	float x,y,z;
@@ -20,7 +22,11 @@ struct Vertex
 	u8 spc[4];
 
 	float u,v;
-
+};
+// Deadcast: a Naomi 2 vertex as elan.cpp makes it; its normal goes to rend_context::normals
+// (ta_add_vertex), the rest is not kept
+struct N2Vertex : Vertex
+{
 	// Two volumes format
 	u8 col1[4];
 	u8 spc1[4];
@@ -28,6 +34,10 @@ struct Vertex
 	float u1,v1;
 
 	// Naomi2 normal
+	float nx,ny,nz;
+};
+struct VertexNormal
+{
 	float nx,ny,nz;
 };
 
@@ -264,6 +274,7 @@ struct rend_context
 	RGBAColor fog_clamp_max;
 
 	std::vector<Vertex> verts;
+	std::vector<VertexNormal> normals;	// Deadcast: Naomi 2's, for the vertices at the same index (ta_add_vertex)
 	std::vector<u32> idx;
 	std::vector<ModTriangle> modtrig;
 	std::vector<ModifierVolumeParam> global_param_mvo;
@@ -294,6 +305,7 @@ struct rend_context
 		global_param_op.emplace_back();
 		global_param_op.back().init();
 		verts.resize(4);
+		normals.clear();
 
 		fZ_max = 1.0f;
 		matrices.clear();
@@ -409,7 +421,7 @@ void DeserializeTAContext(Deserializer& deser);
 
 void ta_add_poly(const PolyParam& pp);
 void ta_add_poly(int listType, const ModifierVolumeParam& mvp);
-void ta_add_vertex(const Vertex& vtx);
+void ta_add_vertex(const N2Vertex& vtx);
 void ta_add_triangle(const ModTriangle& tri);
 int ta_add_matrix(const float *matrix);
 int ta_add_light(const N2LightModel& light);
