@@ -45,7 +45,8 @@ done), **skipped** (will not be taken, with the reason).
 | --- | --- | --- | --- | --- |
 | 00 | Bootstrap: `FLYCASTROPHE` switch, own VMU folder, GL4 out | none | `-DFLYCASTROPHE=ON` | done |
 | 01 | Perf counters (core only) | `3e3b549579` profiler, `110019952a`, `12fe9e85fe`, `117a12188d`, `055a8c6701`, `6c0c3f68a6` | env `FLYCASTROPHE_PERF=1` | pending |
-| 02 | CHD read-ahead, texture DMA unprotect | `3e3b549579` chd.cpp, `9cda9c4082` | none | pending |
+| 02 | Texture DMA unprotect | `9cda9c4082` | none | ported |
+| 02b | CHD read-ahead | `3e3b549579` chd.cpp | none | pending: neutral on still scenes, possibly slower on a moving replay (a non-sequential read waits for the prefetch in flight); retest with a streaming-heavy measurement |
 | 03 | AICA thread (netplay journal stripped) | `3e3b549579`, `3299519ff9`, AICA half of `d1be34d557` | `reicast_fcr_threaded_audio` | pending |
 | 04 | 4 GB memory window + fault rewrite | `3e3b549579` addrspace, posix_vmem, virtmem, sh4_mmr | none | pending |
 | 05 | Pinned-register dynarec, thunks, inline IRQ, SQ to TA direct | `3e3b549579`, `d1be34d557`, `f42955105f` | env `FLYCASTROPHE_NO_PIN` | pending |
