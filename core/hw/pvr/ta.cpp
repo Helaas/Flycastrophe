@@ -566,6 +566,17 @@ static void DYNACALL ta_thd_data32_i(const simd256_t *data)
 	}
 }
 
+// Deadcast: for the dynarec's store queue flush (rec_arm64.cpp): the transition it found to handle, and
+// where the TA's data and context are
+void DYNACALL ta_vtx_handle(u32 trans)
+{
+	ta_handle_cmd(trans);
+}
+extern u8 **const taDataWrite = &ta_tad.thd_data;
+extern const ptrdiff_t taDataRootOffset = offsetof(tad_context, thd_root) - offsetof(tad_context, thd_data);
+extern void **const taContext = (void **)&ta_ctx;
+extern const size_t taDataSize = TA_DATA_SIZE;
+
 void DYNACALL ta_vtx_data32(const SQBuffer *data)
 {
 	ta_thd_data32_i((const simd256_t *)data);

@@ -2,6 +2,7 @@
 #include "hw/aica/aica_if.h"
 #include "hw/pvr/pvr_mem.h"
 #include "hw/pvr/elan.h"
+#include "hw/sh4/sh4_mmr.h"
 #include "hw/sh4/dyna/blockmanager.h"
 #include "hw/sh4/sh4_mem.h"
 #include "oslib/oslib.h"
@@ -34,6 +35,102 @@ static void* memInfo_ptr[0x100];
 #define MAP_VRAM_START_OFFSET (MAP_RAM_START_OFFSET+RAM_SIZE)
 #define MAP_ARAM_START_OFFSET (MAP_VRAM_START_OFFSET+VRAM_SIZE)
 #define MAP_ERAM_START_OFFSET (MAP_ARAM_START_OFFSET+ARAM_SIZE)
+// Deadcast: the SH4's on-chip RAM (8 KB), after the largest of all the rest
+#define MAP_OCR_START_OFFSET (RAM_SIZE_MAX + VRAM_SIZE_MAX + ARAM_SIZE_MAX + elan::ERAM_SIZE_MAX)
+constexpr u32 OCR_SIZE = 0x2000;
+constexpr u32 OCR_VIEW = 0x20800000;		// its view, after the writable AICA RAM
+static int onChipRamMapped = -1;			// its layout in area 7 (mapOnChipRam), -1 none
+static bool aramHandled;					// aramThroughHandlers
+
+// Deadcast: the dynarec's window on the SH4's address space without the MMU (addrspace.h): the memory
+// games reach with plain loads and stores at its 32-bit addresses, in P0, P1 and P2 alike
+u8 *window;
+constexpr u64 WindowSize = 1ull << 32;
+static constexpr u32 WindowAliases[] = { 0x00000000, 0x80000000, 0xA0000000 };
+
+static void mapWindow()
+{
+	if (window == nullptr)
+		return;
+	virtmem::unmap_to_reserved(window, WindowSize);
+	for (u32 alias : WindowAliases)
+	{
+		struct { u32 start, end, fileOffset, size; bool ok; } areas[] = {
+			{ 0x00800000, 0x01000000, (u32)MAP_ARAM_START_OFFSET, ARAM_SIZE, false },	// read only (written through its handler)
+			{ 0x04000000, 0x05000000, (u32)MAP_VRAM_START_OFFSET, VRAM_SIZE, true },	// the 64-bit path
+			{ 0x0C000000, 0x10000000, (u32)MAP_RAM_START_OFFSET, RAM_SIZE, true },
+		};
+		for (const auto& area : areas)
+			for (u32 at = area.start; at < area.end; at += area.size)
+			{
+				u8 *dest = window + alias + at;
+				bool mapped = area.ok ? virtmem::map_shared(dest, area.fileOffset, area.size)
+						: virtmem::map_shared(dest, area.fileOffset, area.size) && virtmem::region_lock(dest, area.size);
+				if (!mapped)
+				{
+					WARN_LOG(VMEM, "Deadcast: the dynarec's window cannot be mapped");
+					virtmem::release_space(window, WindowSize);
+					window = nullptr;
+					return;
+				}
+			}
+	}
+	NOTICE_LOG(VMEM, "Deadcast: the dynarec's window at %p", window);
+}
+
+u8 *windowToMap(void *p)
+{
+	const u8 *a = (const u8 *)p;
+	if (window == nullptr || ram_base == nullptr || a < window || a >= window + WindowSize)
+		return nullptr;
+	return ram_base + ((a - window) & 0x1FFFFFFF);
+}
+
+bool windowAliasMapped(void *p)
+{
+	if (windowToMap(p) == nullptr)
+		return false;
+	const u32 alias = (u32)((const u8 *)p - window) & 0xE0000000;
+	return std::find(std::begin(WindowAliases), std::end(WindowAliases), alias) != std::end(WindowAliases);
+}
+
+void aramThroughHandlers(bool on)
+{
+	if (ram_base == nullptr || on == aramHandled)
+		return;
+	aramHandled = on;
+	std::vector<u8 *> views { &ram_base[0x00800000] };
+	if (window != nullptr)
+		for (u32 alias : WindowAliases)
+			views.push_back(window + alias + 0x00800000);
+	for (u8 *view : views)
+	{
+		if (on)
+			virtmem::unmap_to_reserved(view, 0x00800000);
+		else
+			for (u32 at = 0; at < 0x00800000; at += ARAM_SIZE)
+				if (!virtmem::map_shared(view + at, MAP_ARAM_START_OFFSET, ARAM_SIZE) || !virtmem::region_lock(view + at, ARAM_SIZE))
+					WARN_LOG(VMEM, "Deadcast: the AICA's RAM cannot be mapped again");
+	}
+}
+
+// a range of the 512 MB map, at offset, (un)locked in the window's aliases of it too
+static void windowLock(u32 offset, u32 size, bool locked)
+{
+	if (window == nullptr)
+		return;
+	for (u32 alias : WindowAliases)
+	{
+		if (locked)
+			virtmem::region_lock(window + alias + offset, size);
+		else
+			virtmem::region_unlock(window + alias + offset, size);
+	}
+}
+
+void protectRamInWindow(u32 offset, u32 size, bool locked) {
+	windowLock(0x0C000000 + offset, size, locked);
+}
 
 void *readConst(u32 addr, bool& ismem, u32 sz)
 {
@@ -395,7 +492,9 @@ bool reserve()
 	if (ram_base != nullptr)
 		return true;
 
-	virtmem::init((void**)&ram_base, (void**)&p_sh4rcb, RAM_SIZE_MAX + VRAM_SIZE_MAX + ARAM_SIZE_MAX + elan::ERAM_SIZE_MAX);
+	virtmem::init((void**)&ram_base, (void**)&p_sh4rcb, RAM_SIZE_MAX + VRAM_SIZE_MAX + ARAM_SIZE_MAX + elan::ERAM_SIZE_MAX + OCR_SIZE);
+	if (ram_base != nullptr && window == nullptr)
+		window = (u8 *)virtmem::reserve_space(WindowSize);
 	return true;
 }
 
@@ -419,6 +518,7 @@ static void termMappings()
 void initMappings()
 {
 	termMappings();
+	aramHandled = false;
 	// Fallback to statically allocated buffers, this results in slow-ops being generated.
 	if (ram_base == nullptr)
 	{
@@ -463,6 +563,13 @@ void initMappings()
 		vram.setRegion(&ram_base[0x04000000], VRAM_SIZE); // Points to first vram mirror (writable and lockable)
 		mem_b.setRegion(&ram_base[0x0C000000], RAM_SIZE); // Main memory, first mirror
 		elan::RAM = &ram_base[0x0A000000];
+		virtmem::unmap_to_reserved(&ram_base[0x1C000000], 0x10000);
+		onChipRamMapped = -1;
+		if (virtmem::map_shared(&ram_base[OCR_VIEW], MAP_OCR_START_OFFSET, OCR_SIZE))
+			sh4_setOnChipRam(&ram_base[OCR_VIEW]);
+		else
+			WARN_LOG(VMEM, "Deadcast: the on-chip RAM has no view: slow accesses");
+		mapWindow();
 	}
 
 	// Clear out memory
@@ -476,8 +583,46 @@ void initMappings()
 			(u32)(ARAM_SIZE / 1_MB), &aica::aica_ram[0]);
 }
 
+// Deadcast: the on-chip RAM where the dynarec's accesses to it (7C000000, masked to area 7: 1C000000)
+// reach it while it is indexed by address bit 13 (CCR.OIX = 0, as games use it): its two 4 KB halves
+// alternate every 8 KB, A A B B, over the first 64 KB. It stays mapped while it is disabled
+// (CCR.ORA = 0, the operand cache then): nothing reads it then, and games switch it on and off every
+// frame. The rest of area 7, the control registers' mirror among it (1F000000), still faults to its
+// handlers.
+void mapOnChipRam(bool indexBit25)
+{
+	if (ram_base == nullptr || sh4_onChipRam() != &ram_base[OCR_VIEW] || onChipRamMapped == (int)indexBit25)
+		return;
+	onChipRamMapped = indexBit25;
+	u8 *start = &ram_base[0x1C000000];
+	constexpr u32 Size = 0x10000;
+	if (indexBit25)
+	{
+		virtmem::unmap_to_reserved(start, Size);
+		if (window != nullptr)
+			virtmem::unmap_to_reserved(window + 0x7C000000, Size);
+		return;
+	}
+	for (u32 page = 0; page < Size / PAGE_SIZE; page++)
+		if (!virtmem::map_shared(start + page * PAGE_SIZE, MAP_OCR_START_OFFSET + ((page >> 1) & 1) * PAGE_SIZE, PAGE_SIZE)
+				|| (window != nullptr
+					&& !virtmem::map_shared(window + 0x7C000000 + page * PAGE_SIZE, MAP_OCR_START_OFFSET + ((page >> 1) & 1) * PAGE_SIZE, PAGE_SIZE)))
+		{
+			WARN_LOG(VMEM, "Deadcast: cannot map the on-chip RAM");
+			virtmem::unmap_to_reserved(start, Size);
+			if (window != nullptr)
+				virtmem::unmap_to_reserved(window + 0x7C000000, Size);
+			return;
+		}
+}
+
 void release()
 {
+	if (window != nullptr)
+	{
+		virtmem::release_space(window, WindowSize);
+		window = nullptr;
+	}
 	if (ram_base != nullptr)
 	{
 		virtmem::destroy();
@@ -498,11 +643,13 @@ void protectVram(u32 addr, u32 size)
 	{
 		virtmem::region_lock(ram_base + 0x04000000 + addr, size);	// P0
 		//virtmem::region_lock(ram_base + 0x06000000 + addr, size);	// P0 - mirror
+		windowLock(0x04000000 + addr, size, true);
 		if (VRAM_SIZE == 0x800000)
 		{
 			// wraps when only 8MB VRAM
 			virtmem::region_lock(ram_base + 0x04000000 + addr + VRAM_SIZE, size);	// P0 wrap
 			//virtmem::region_lock(ram_base + 0x06000000 + addr + VRAM_SIZE, size);	// P0 mirror wrap
+			windowLock(0x04000000 + addr + VRAM_SIZE, size, true);
 		}
 	}
 	else
@@ -520,11 +667,13 @@ void unprotectVram(u32 addr, u32 size)
 	{
 		virtmem::region_unlock(ram_base + 0x04000000 + addr, size);		// P0
 		//virtmem::region_unlock(ram_base + 0x06000000 + addr, size);	// P0 - mirror
+		windowLock(0x04000000 + addr, size, false);
 		if (VRAM_SIZE == 0x800000)
 		{
 			// wraps when only 8MB VRAM
 			virtmem::region_unlock(ram_base + 0x04000000 + addr + VRAM_SIZE, size);		// P0 wrap
 			//virtmem::region_unlock(ram_base + 0x06000000 + addr + VRAM_SIZE, size);	// P0 mirror wrap
+			windowLock(0x04000000 + addr + VRAM_SIZE, size, false);
 		}
 	}
 	else

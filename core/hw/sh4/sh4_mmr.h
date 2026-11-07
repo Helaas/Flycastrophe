@@ -7,6 +7,10 @@
 
 //For mem mapping
 void map_area7();
+// Deadcast: the on-chip RAM (sh4_mmr.cpp): its storage, and CCR changed
+void sh4_setOnChipRam(u8 *ram);
+u8 *sh4_onChipRam();
+void sh4_onChipRamChanged();
 void map_p4();
 
 void sh4_mmr_init();

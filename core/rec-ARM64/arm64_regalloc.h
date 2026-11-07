@@ -35,15 +35,36 @@ enum eFReg {
 static eReg alloc_regs[] = { W19, W20, W21, W22, W23, W24, W25, W26, (eReg)-1 };
 static eFReg alloc_fregs[] = { S8, S9, S10, S11, S12, S13, S14, S15, (eFReg)-1 };
 
+// Deadcast: without the MMU, R0-R15 and T live in host registers for good (pinned, RegAlloc::Pin), so
+// that blocks neither load them at their start nor store them at their end: R0-R7 in w19-w26, R8-R15
+// in w8-w15, T in w18. What else blocks use goes in w4-w7. Calls out of translated code keep all of
+// these (its thunks, rec_arm64.cpp), and only w0-w3, w16 and w17 are scratch.
+static constexpr eReg pinned_gregs[16] = { W19, W20, W21, W22, W23, W24, W25, W26, W8, W9, W10, W11, W12, W13, W14, W15 };
+static constexpr eReg pinned_T = W18;
+static eReg alloc_regs_pinned[] = { W4, W5, W6, W7, (eReg)-1 };
+
 class Arm64Assembler;
 
 struct Arm64RegAlloc : RegAlloc<eReg, eFReg, ALLOC_F64>
 {
 	Arm64RegAlloc(Arm64Assembler *assembler) : assembler(assembler) {}
 
-	void DoAlloc(RuntimeBlockInfo* block)
+	void DoAlloc(RuntimeBlockInfo* block, bool pinning)
 	{
-		RegAlloc::DoAlloc(block, alloc_regs, alloc_fregs);
+		// Deadcast: off. The lazy write-back under the MMU (registers written back only where an access's translation misses,
+		// Arm64Assembler::genMmuSlowLookups) wrote stale host registers over the context: Armada's game, past its intro, never ran.
+		lazyMmuWriteback = false;
+		jdynInHostReg = true;		// Deadcast: the exits use w29 (RelinkBlock)
+		Unpin();
+		if (pinning)
+		{
+			for (int i = 0; i < 16; i++)
+				Pin((Sh4RegType)(reg_r0 + i), pinned_gregs[i]);
+			Pin(reg_sr_T, pinned_T);
+			RegAlloc::DoAlloc(block, alloc_regs_pinned, alloc_fregs);
+		}
+		else
+			RegAlloc::DoAlloc(block, alloc_regs, alloc_fregs);
 	}
 
 	void Preload(u32 reg, eReg nreg) override;

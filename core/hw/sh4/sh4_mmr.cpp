@@ -16,7 +16,25 @@
 #include <array>
 #include <map>
 
-static std::array<u8, 0x2000> OnChipRAM;	// 8 KB
+// Deadcast: in the memory file (addrspace.cpp: mapped where the dynarec reaches it), else here
+static u8 onChipRamBuffer[0x2000];	// 8 KB
+static u8 *OnChipRAM = onChipRamBuffer;
+
+void sh4_setOnChipRam(u8 *ram)
+{
+	if (ram != OnChipRAM)
+		memcpy(ram, OnChipRAM, sizeof(onChipRamBuffer));
+	OnChipRAM = ram;
+}
+
+u8 *sh4_onChipRam() {
+	return OnChipRAM;
+}
+
+// CCR changed: the on-chip RAM in the dynarec's memory map follows it
+void sh4_onChipRamChanged() {
+	addrspace::mapOnChipRam(CCN_CCR.OIX == 1);
+}
 
 //All registers are 4 byte aligned
 
@@ -600,7 +618,7 @@ void sh4_mmr_init()
 
 void sh4_mmr_reset(bool hard)
 {
-	OnChipRAM = {};
+	memset(OnChipRAM, 0, sizeof(onChipRamBuffer));
 	//Reset register values
 	bsc.reset();
 	ccn.reset();
@@ -612,6 +630,7 @@ void sh4_mmr_reset(bool hard)
 	sci.reset();
 	tmu.reset();
 	ubc.reset();
+	sh4_onChipRamChanged();
 
 	MMU_reset();
 	memset(p_sh4rcb->cntx.sq_buffer, 0, sizeof(p_sh4rcb->cntx.sq_buffer));
@@ -663,7 +682,7 @@ namespace sh4
 
 void serialize(Serializer& ser)
 {
-	ser << OnChipRAM;
+	ser.serialize(OnChipRAM, sizeof(onChipRamBuffer));
 
 	ser << CCN;
 	ser << UBC;
@@ -691,7 +710,7 @@ void serialize(Serializer& ser)
 
 void deserialize(Deserializer& deser)
 {
-	deser >> OnChipRAM;
+	deser.deserialize(OnChipRAM, sizeof(onChipRamBuffer));
 
 	deser >> CCN;
 	deser >> UBC;
@@ -727,6 +746,7 @@ void deserialize(Deserializer& deser)
 	sh4_sched_deserialize(deser);
 	// let the serial port reschedule its callback after the scheduler has been deserialized
 	SCIFSerialPort::Instance().postDeserialize();
+	sh4_onChipRamChanged();
 }
 
 void serialize2(Serializer& ser)

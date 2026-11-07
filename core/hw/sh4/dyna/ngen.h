@@ -1,6 +1,7 @@
 // Header file for native generator interface
 
 #pragma once
+#include <functional>
 #include "blockmanager.h"
 #include "oslib/host_context.h"
 #include "../sh4_interpreter.h"
@@ -24,8 +25,13 @@ DynarecCodeEntryPtr DYNACALL rdv_FailedToFindBlock(u32 pc);
 DynarecCodeEntryPtr DYNACALL rdv_FailedToFindBlock_pc();
 //Called when a block check failed, and the block needs to be invalidated
 DynarecCodeEntryPtr DYNACALL rdv_BlockCheckFail(u32 addr);
+// Deadcast: compiles the block at vaddr (main RAM, no MMU) for the FPU mode fpscr now, if none is there and
+// sameCode(addr, its SH4 code's bytes) says it is the code expected (deadcast/codecache.cpp)
+bool rdv_Precompile(u32 vaddr, u32 fpscr, const std::function<bool(u32, u32)>& sameCode);
 // Registers a custom FailedToFindBlock handler function
 void rdv_SetFailedToFindBlockHandler(void (*handler)());
+// Where the translated code is, as executed (Deadcast profiler)
+void rdv_codeRange(uintptr_t& start, uintptr_t& end);
 
 //code -> pointer to code of block, dpc -> if dynamic block, pc. if cond, 0 for next, 1 for branch
 void* DYNACALL rdv_LinkBlock(u8* code,u32 dpc);

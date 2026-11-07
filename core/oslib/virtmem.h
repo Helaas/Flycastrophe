@@ -31,6 +31,15 @@ void reset_mem(void *ptr, unsigned size_bytes);
 void ondemand_page(void *address, unsigned size_bytes);
 // To create the mappings in the address space.
 void create_mappings(const Mapping *vmem_maps, unsigned nummaps);
+// Deadcast: reserves len bytes of address space, nothing mapped (main RAM is mapped in page by page:
+// deadcast/mmuwindows.cpp)
+void *reserve_space(size_t len);
+bool release_space(void *start, size_t len);
+bool map_ram_page(void *dest, u32 ramOffset, bool writable);
+bool unmap_to_reserved(void *start, size_t len);
+bool protect_page(void *start, bool writable);
+// Deadcast: maps len bytes of the memory file from fileOffset, read-write, at dest in the reserved space
+bool map_shared(void *dest, size_t fileOffset, size_t len);
 // Just tries to wipe as much as possible in the relevant area.
 void destroy();
 // Given a block of data in the .text section, prepares it for JIT action.

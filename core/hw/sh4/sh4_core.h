@@ -4,6 +4,9 @@
 #include <cmath>
 
 int UpdateSystem_INTC();
+// Deadcast: the rest of it once the dynarec's main loop has taken the timeslice off sh4_sched_next and
+// found an event due or an interrupt pending (its intc_sched)
+int UpdateSystem_INTC_due();
 bool UpdateSR();
 void setDefaultRoundingMode();
 

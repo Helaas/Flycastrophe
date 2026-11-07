@@ -587,7 +587,7 @@ void SSAOptimizer::ConstPropPass()
 void SSAOptimizer::DeadCodeRemovalPass()
 {
 	u32 last_versions[sh4_reg_count];
-	std::set<RegValue> uses;
+	FlatSet<RegValue> uses;
 
 	memset(last_versions, -1, sizeof(last_versions));
 	for (int opnum = (int)block->oplist.size() - 1; opnum >= 0; opnum--)
@@ -793,7 +793,7 @@ void SSAOptimizer::SimplifyExpressionPass()
 
 void SSAOptimizer::DeadRegisterPass()
 {
-	std::map<RegValue, RegValue> aliases;		// (dest reg, version) -> (source reg, version)
+	FlatMap<RegValue, RegValue> aliases;		// (dest reg, version) -> (source reg, version)
 
 	// Find aliases
 	for (shil_opcode& op : block->oplist)
@@ -804,15 +804,14 @@ void SSAOptimizer::DeadRegisterPass()
 			RegValue dest_reg(op.rd);
 			RegValue src_reg(op.rs1);
 			auto it = aliases.find(src_reg);
-			if (it != aliases.end())
-				// use the final value if the src is itself aliased
-				aliases[dest_reg] = it->second;
-			else
-				aliases[dest_reg] = src_reg;
+			// use the final value if the src is itself aliased (a copy: aliases may grow, and move)
+			const RegValue source = it != aliases.end() ? it->second : src_reg;
+			aliases[dest_reg] = source;
 		}
 	}
 
-	// Attempt to eliminate them
+	// Attempt to eliminate them, in the order of the registers and their versions
+	aliases.sort();
 	for (auto& alias : aliases)
 	{
 		if (writeback_values.count(alias.first) > 0)
