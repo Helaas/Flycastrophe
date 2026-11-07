@@ -441,6 +441,11 @@ bool threaded()
 	return worker::running();
 }
 
+void stopThreadedAudio()
+{
+	stopWorker();
+}
+
 void applyThreadedAudio()
 {
 	if (config::ThreadedAudio)

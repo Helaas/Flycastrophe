@@ -16,6 +16,9 @@ bool acknowledgeSh4Irq(u32 bits);
 void applyThreadedAudio();
 // Deadcast: the AICA on its own thread (else on the SH4's)
 bool threaded();
+// Flycastrophe: the AICA thread stopped as a game unloads. A libretro core on Linux is unloaded without
+// term(), and a thread still running then aborts RetroArch's exit (and runs code being unmapped).
+void stopThreadedAudio();
 
 #define SCIEB_addr 0x289C
 #define SCIPD_addr (0x289C+4)
