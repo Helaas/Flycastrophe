@@ -1011,6 +1011,8 @@ add_subdirectory(core/log)
 add_subdirectory(core/network)
 add_subdirectory(core/oslib)
 add_subdirectory(core/audio)
+# Deadcast's dynarec support files (FLYCASTROPHE.md): wait loops, MMU windows, profiler
+add_subdirectory(core/deadcast)
 add_subdirectory(core/reios)
 add_subdirectory(core/achievements)
 add_subdirectory(core/ui)

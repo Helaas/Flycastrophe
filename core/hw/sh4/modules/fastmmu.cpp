@@ -52,8 +52,14 @@ static u16 bucket_index(u32 address, int size, u32 asid)
 	return ((address >> 20) ^ (address >> 12) ^ (address | asid | (size << 8))) & (NBUCKETS - 1);
 }
 
+SqPage sqPages[256];
 static void cache_entry(const TLB_Entry &entry)
 {
+	const u32 sqMask = mmu_mask[entry.Data.SZ1 * 2 + entry.Data.SZ0];
+	for (u32 asid = 0; asid < 256; asid++)
+		if ((entry.Data.SH == 1 || asid == entry.Address.ASID)
+				&& (sqPages[asid].vpage & sqMask) == ((entry.Address.VPN << 10) & sqMask))
+			sqPages[asid].vpage = 1;
 	if (entry.Data.SZ0 == 0 && entry.Data.SZ1 == 0)
 		return;
 	if (full_table_size >= std::size(full_table))
@@ -69,6 +75,8 @@ static void cache_entry(const TLB_Entry &entry)
 
 static void flush_cache()
 {
+	for (SqPage& sq : sqPages)
+		sq.vpage = 1;
 	full_table_size = 0;
 	memset(entry_buckets, 0, sizeof(entry_buckets));
 }
@@ -197,6 +205,7 @@ bool UTLB_Sync(u32 entry)
 			// Used when FullMMU is off
 			u32 vpn_sq = ((tlb_entry.Address.VPN & 0x7FFFF) >> 10) & 0x3F;//upper bits are always known [0xE0/E1/E2/E3]
 			sq_remap[vpn_sq] = tlb_entry.Data.PPN << 10;
+			sqTaRegionsUpdate();
 		}
 		else if (CCN_MMUCR.AT == 1 && tlb_entry.Address.VPN != 0x30040 && tlb_entry.Address.VPN != 0x30000 && tlb_entry.Data.V == 1)
 		{
@@ -215,6 +224,24 @@ void ITLB_Sync(u32 entry)
 }
 
 //Do a full lookup on the UTLB entry's
+// Deadcast: va's physical address as the MMU maps it now, without changing anything (no replacement, no
+// exception, no WinCE page table walk): false if the UTLB has no entry for it
+bool mmu_peek(u32 va, u32& pa)
+{
+	if (!mmu_enabled() || (va & 0xC0000000) == 0x80000000 || va >= 0xE0000000)
+	{
+		// untranslated: P1, P2, P4
+		pa = va >= 0xE0000000 ? va : va & 0x1FFFFFFF;
+		return true;
+	}
+	const TLB_Entry *entry;
+	if (!find_entry(va, &entry))
+		return false;
+	u32 mask = mmu_mask[entry->Data.SZ1 * 2 + entry->Data.SZ0];
+	pa = (entry->Data.PPN << 10) | (va & ~mask);
+	return true;
+}
+
 MmuError mmu_full_lookup(u32 va, const TLB_Entry** tlb_entry_ret, u32& rv)
 {
 	if (lru_entry != NULL)
@@ -280,10 +307,18 @@ MmuError mmu_full_lookup(u32 va, const TLB_Entry** tlb_entry_ret, u32& rv)
 template<u32 translation_type>
 MmuError mmu_full_SQ(u32 va, u32& rv)
 {
+	SqPage& sq = sqPages[CCN_PTEH.ASID];
+	if ((va & ~0xfff) == sq.vpage)
+	{
+		rv = sq.ppage | (va & 0xfe0);
+		return MmuError::NONE;
+	}
 	MmuError lookup = mmu_full_lookup(va, nullptr, rv);
 
 	if (lookup != MmuError::NONE)
 		return lookup;
+	sq.vpage = va & ~0xfff;
+	sq.ppage = rv & ~0xfff;
 
 	rv &= ~31;//lower 5 bits are forced to 0
 

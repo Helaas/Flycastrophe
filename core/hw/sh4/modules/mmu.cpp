@@ -1,3 +1,4 @@
+#include "deadcast/mmuwindows.h"
 #include "mmu.h"
 #include "hw/mem/addrspace.h"
 #include "hw/sh4/sh4_if.h"
@@ -67,6 +68,7 @@ bool UTLB_Sync(u32 entry)
 		// Used when FullMMU is off
 		u32 vpn_sq = ((UTLB[entry].Address.VPN & 0x7FFFF) >> 10) & 0x3F;//upper bits are always known [0xE0/E1/E2/E3]
 		sq_remap[vpn_sq] = UTLB[entry].Data.PPN << 10;
+		sqTaRegionsUpdate();
 
 		return true;
 	}
@@ -454,13 +456,36 @@ void mmu_set_state()
 	{
 		mmuOn = false;
 	}
+#ifdef FAST_MMU
+	// Deadcast: the windows of the dynarec's accesses (deadcast/mmuwindows.h), the ASID's current
+	if (mmuOn && mmuwin::init())
+		mmuwin::switchAsid(CCN_PTEH.ASID);
+#endif
 
 	SetMemoryHandlers();
 	setSqwHandler();
 }
 
 #ifdef FAST_MMU
-u32 mmuAddressLUT[0x100000];
+uintptr_t mmuAddressLUT[0x100000];
+MmuDispatchEntry mmuDispatchCache[MmuDispatchEntries];
+u32 mmuStatFullFlushes, mmuStatPartialFlushes, mmuStatMisses;
+
+MmuFilled mmuDispatchFilled;
+MmuFilled mmuSlot0Filled;
+
+void mmuDispatchCacheFlush()
+{
+	mmuwin::flushDispatch();
+	if (mmuDispatchFilled.count <= MmuFilled::Max)
+		for (u32 i = 0; i < mmuDispatchFilled.count; i++)
+			mmuDispatchCache[mmuDispatchFilled.index[i]].vaddr = 1;
+	else
+		for (MmuDispatchEntry& entry : mmuDispatchCache)
+			entry.vaddr = 1;
+	mmuDispatchFilled.count = 0;
+}
+static const bool mmuDispatchCacheEmpty = (mmuDispatchFilled.count = MmuFilled::Max + 1, mmuDispatchCacheFlush(), true);
 #endif
 
 void MMU_init()
@@ -483,7 +508,7 @@ void MMU_init()
 #ifdef FAST_MMU
 	// pre-fill kernel memory
 	for (u32 vpn = std::size(mmuAddressLUT) / 2; vpn < std::size(mmuAddressLUT); vpn++)
-		mmuAddressLUT[vpn] = vpn << 12;
+		mmuAddressLUT[vpn] = mmuHostPage(vpn << 12, vpn << 12);
 #endif
 }
 

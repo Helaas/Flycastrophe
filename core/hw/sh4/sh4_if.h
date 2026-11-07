@@ -120,6 +120,14 @@ struct alignas(32) SQBuffer {
 };
 
 void setSqwHandler();
+// Deadcast: which 1 MB regions of the store queues' area feed the TA's polygon FIFO, the handler and the
+// remap as they are: the dynarec flushes those itself (rec_arm64.cpp). 64 bytes in the context's
+// spare room (Sh4Context::jitSave). Updated by setSqwHandler, as sq_remap changes and as the CPU starts.
+void sqTaRegionsUpdate();
+struct Sh4Context;
+// Deadcast: a store queue write under the MMU, unless translating its address raises an exception:
+// nonzero then, nothing written
+u32 DYNACALL sqWriteMmuTry(u32 dest, Sh4Context *ctx);
 struct Sh4Context;
 typedef void DYNACALL SQWriteFunc(u32 dst, Sh4Context *ctx);
 
@@ -167,6 +175,11 @@ struct alignas(64) Sh4Context
 			int cycle_counter;
 
 			SQWriteFunc *doSqWrite;
+
+			// Deadcast: the ARM64 dynarec's, while translated code calls out (its thunks): the host
+			// registers a call may change, and the return address. In the room raw leaves, which save
+			// states keep as they are.
+			u64 jitSave[16];
 		};
 		u64 raw[64];
 	};
@@ -214,6 +227,7 @@ private:
 	};
 };
 static_assert(sizeof(Sh4Context) == 512, "Invalid Sh4Context size");
+constexpr size_t SqTaRegionsOffset = offsetof(Sh4Context, jitSave) + 64;
 
 #define FPCB_SIZE (RAM_SIZE_MAX/2)
 #define FPCB_MASK (FPCB_SIZE -1)

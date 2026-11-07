@@ -1,6 +1,7 @@
 /*
 	All non fpu opcodes
 */
+#include "deadcast/waitloops.h"
 #include "types.h"
 
 #include "hw/sh4/sh4_mem.h"
@@ -964,6 +965,7 @@ sh4op(i0000_0000_0001_1011)
 
 	while (!UpdateSystem_INTC())//448
 	{
+		deadcast::sleepTimeslices++;
 		if (i++>1000)
 		{
 			s=0;

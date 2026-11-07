@@ -24,6 +24,8 @@
 #include "hw/sh4/modules/mmu.h"
 #include "ssa.h"
 
+#include <algorithm>
+#include <array>
 #include <deque>
 #include <map>
 #include <vector>
@@ -34,6 +36,40 @@ template<typename nreg_t, typename nregf_t, bool AllocVec2 = false>
 class RegAlloc
 {
 public:
+	// Deadcast: under the MMU, a memory access normally needs every register written back first, in
+	// case its address translation raises an exception. A host that writes them back only where the
+	// translation can raise one (the ARM64 dynarec's out-of-line lookups) sets lazyMmuWriteback: reads
+	// and writes are then no flush points, and mmuDirty lists, for each, the registers whose value
+	// the context does not have yet, to write back before translating. The same for pref, which
+	// translates the store queue's address.
+	struct DirtyReg
+	{
+		Sh4RegType reg;
+		u32 host_reg;
+		bool isFloat;
+	};
+	bool lazyMmuWriteback = false;
+	std::vector<DirtyReg> mmuDirty;
+	// Deadcast: a host whose block exits take the jump address from where jcond and jdyn leave it (the
+	// ARM64 dynarec: w29) sets this: pc_dyn, which only those exits read, is never written back
+	bool jdynInHostReg = false;
+
+	// Deadcast: registers a host keeps in host registers of their own for good, across blocks (pinned):
+	// always allocated, never loaded, written back nor spilled here. The host keeps the context in
+	// step wherever other code reads or writes them there (the ARM64 dynarec's calls out).
+	void Pin(Sh4RegType reg, nreg_t host_reg)
+	{
+		verify(!IsFloat(reg) && reg >= 0 && reg < sh4_reg_count);
+		pinned[reg] = host_reg;
+		isPinned[reg] = true;
+	}
+	void Unpin() {
+		isPinned.fill(false);
+	}
+	bool IsPinned(Sh4RegType reg) const {
+		return reg >= 0 && reg < sh4_reg_count && isPinned[reg];
+	}
+
 	RegAlloc() = default;
 	virtual ~RegAlloc() = default;
 
@@ -52,6 +88,56 @@ public:
 			host_fregs.push_back(*regsf_avail++);
 	}
 
+	// Deadcast: registers the block's first ops read before writing them, loaded together at its start:
+	// on an in-order CPU (Cortex-A53) a load right before its use stalls. At most maxGregs and maxFregs,
+	// from the first maxOps ops, up to one that flushes registers.
+	void PreloadLiveIns(size_t maxOps, u32 maxGregs, u32 maxFregs)
+	{
+		std::vector<Sh4RegType> written;
+		u32 gregs = 0, fregs = 0;
+		for (size_t i = 0; i < block->oplist.size() && i < maxOps; i++)
+		{
+			const shil_opcode& op = block->oplist[i];
+			if (op.op == shop_ifb || op.op == shop_sync_sr || op.op == shop_sync_fpscr)
+				break;
+			for (const shil_param *param : { &op.rs1, &op.rs2, &op.rs3 })
+			{
+				if (!param->is_reg() || param->count() > MaxVecSize)
+					continue;
+				for (u32 j = 0; j < param->count(); j++)
+				{
+					Sh4RegType reg = (Sh4RegType)(param->_reg + j);
+					if (reg_alloced.count(reg) != 0 || IsPinned(reg) || std::find(written.begin(), written.end(), reg) != written.end())
+						continue;
+					u32 host_reg;
+					if (IsFloat(reg))
+					{
+						if (fregs >= maxFregs || host_fregs.empty())
+							continue;
+						host_reg = host_fregs.back();
+						host_fregs.pop_back();
+						fregs++;
+						Preload_FPU(reg, (nregf_t)host_reg);
+					}
+					else
+					{
+						if (gregs >= maxGregs || host_gregs.empty())
+							continue;
+						host_reg = host_gregs.back();
+						host_gregs.pop_back();
+						gregs++;
+						Preload(reg, (nreg_t)host_reg);
+					}
+					reg_alloced[reg] = { host_reg, param->version[j], false, false };
+				}
+			}
+			for (const shil_param *param : { &op.rd, &op.rd2 })
+				if (param->is_reg())
+					for (u32 j = 0; j < param->count(); j++)
+						written.push_back((Sh4RegType)(param->_reg + j));
+		}
+	}
+
 	void OpBegin(shil_opcode* op, int opid)
 	{
 		opnum = opid;
@@ -59,7 +145,7 @@ public:
 		{
 			FlushAllRegs(true);
 		}
-		else if (mmu_enabled() && (op->op == shop_readm || op->op == shop_writem || op->op == shop_pref))
+		else if (mmu_enabled() && !lazyMmuWriteback && (op->op == shop_pref || op->op == shop_readm || op->op == shop_writem))
 		{
 			FlushAllRegs(false);
 		}
@@ -100,6 +186,15 @@ public:
 			AllocSourceReg(op->rs1);
 			AllocSourceReg(op->rs2);
 			AllocSourceReg(op->rs3);
+			// the destinations already allocated still hold their value before this op
+			bool lazyMmuOp = lazyMmuWriteback && mmu_enabled() && (op->op == shop_readm || op->op == shop_writem || op->op == shop_pref);
+			std::vector<Sh4RegType> heldDests;
+			if (lazyMmuOp)
+				for (const shil_param *dest : { &op->rd, &op->rd2 })
+					if (dest->is_reg() && dest->count() <= MaxVecSize)
+						for (u32 i = 0; i < dest->count(); i++)
+							if (reg_alloced.count((Sh4RegType)(dest->_reg + i)) != 0)
+								heldDests.push_back((Sh4RegType)(dest->_reg + i));
 			// Hard flush vector ops destination regs
 			// Note that this is incorrect if a reg is both src (scalar) and dest (vec). However such an op doesn't exist.
 			if (op->rd.is_reg() && op->rd.count() > MaxVecSize)
@@ -120,6 +215,21 @@ public:
 			}
 			AllocDestReg(op->rd);
 			AllocDestReg(op->rd2);
+			if (lazyMmuOp)
+			{
+				// what the context lacks before this op: the dirty registers, but not the destinations
+				// just allocated, which hold nothing yet
+				mmuDirty.clear();
+				for (const auto& [reg, alloc] : reg_alloced)
+				{
+					if (!alloc.dirty)
+						continue;
+					bool fresh = (DefsReg(op, reg, false) || DefsReg(op, reg, true))
+							&& std::find(heldDests.begin(), heldDests.end(), reg) == heldDests.end();
+					if (!fresh)
+						mmuDirty.push_back({ reg, alloc.host_reg, IsFloat(reg) });
+				}
+			}
 		}
 		ssa_printf("%08x  %s gregs %zd fregs %zd", block->vaddr + op->guest_offs, op->dissasm().c_str(), host_gregs.size(), host_fregs.size());
 	}
@@ -230,6 +340,9 @@ public:
 
 	bool reg_used(nreg_t host_reg)
 	{
+		for (int reg = 0; reg < sh4_reg_count; reg++)
+			if (isPinned[reg] && pinned[reg] == host_reg)
+				return true;
 		for (auto const& reg : reg_alloced)
 			if ((nreg_t)reg.second.host_reg == host_reg && !IsFloat(reg.first))
 				return true;
@@ -277,6 +390,8 @@ private:
 
 	nreg_t mapg(Sh4RegType reg)
 	{
+		if (IsPinned(reg))
+			return pinned[reg];
 		verify(reg_alloced.count(reg));
 		return (nreg_t)reg_alloced[reg].host_reg;
 	}
@@ -298,7 +413,7 @@ private:
 	{
 		if (IsFloat(reg))
 			return false;
-		return reg_alloced.find(reg) != reg_alloced.end();
+		return IsPinned(reg) || reg_alloced.find(reg) != reg_alloced.end();
 	}
 
 	bool IsAllocAny(Sh4RegType reg)
@@ -367,6 +482,8 @@ private:
 		for (u32 i = 0; i < param.count(); i++)
 		{
 			Sh4RegType sh4reg = (Sh4RegType)(param._reg + i);
+			if (IsPinned(sh4reg))
+				continue;
 			auto it = reg_alloced.find(sh4reg);
 			if (it == reg_alloced.end())
 			{
@@ -411,12 +528,15 @@ private:
 
 	bool NeedsWriteBack(Sh4RegType reg, u32 version)
 	{
+		if (reg == reg_pc_dyn && jdynInHostReg)
+			return false;
 		for (size_t i = opnum + 1; i < block->oplist.size(); i++)
 		{
 			shil_opcode* op = &block->oplist[i];
 			// if a subsequent op needs all or some regs flushed to mem
 			// TODO we could look at the ifb op to optimize what to flush
-			if (op->op == shop_ifb || (mmu_enabled() && (op->op == shop_readm || op->op == shop_writem || op->op == shop_pref)))
+			if (op->op == shop_ifb || (mmu_enabled() && !lazyMmuWriteback
+					&& (op->op == shop_pref || op->op == shop_readm || op->op == shop_writem)))
 				return true;
 			if (op->op == shop_sync_sr && (/*reg == reg_sr_T ||*/ reg == reg_sr_status || (reg >= reg_r0 && reg <= reg_r7)
 					|| (reg >= reg_r0_Bank && reg <= reg_r7_Bank)))
@@ -445,6 +565,8 @@ private:
 		for (u32 i = 0; i < param.count(); i++)
 		{
 			Sh4RegType sh4reg = (Sh4RegType)(param._reg + i);
+			if (IsPinned(sh4reg))
+				continue;
 			auto it = reg_alloced.find(sh4reg);
 			if (it == reg_alloced.end())
 			{
@@ -658,6 +780,9 @@ private:
 	std::deque<nregf_t> host_fregs;
 	std::vector<Sh4RegType> pending_flushes;
 	std::map<Sh4RegType, reg_alloc> reg_alloced;
+	// as arrays: looked up for every register of every op compiled
+	std::array<nreg_t, sh4_reg_count> pinned {};
+	std::array<bool, sh4_reg_count> isPinned {};
 	int opnum = 0;
 
 	bool final_opend = false;

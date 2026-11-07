@@ -76,6 +76,8 @@ static void context_segfault(host_context_t* hostctx, void* segfault_ctx)
  	#else
  		bicopy<ToSegfault>(hostctx->pc, MCTX(.pc));
  		bicopy<ToSegfault>(hostctx->x0, MCTX(.regs[0]));
+		for (int i = 0; i < 31; i++)
+			bicopy<ToSegfault>(hostctx->x[i], MCTX(.regs[i]));
  	#endif
 #elif HOST_CPU == CPU_X86
 	#if defined(__FreeBSD__)

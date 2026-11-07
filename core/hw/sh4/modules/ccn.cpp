@@ -29,7 +29,10 @@ static void CCN_PTEH_write(u32 addr, u32 value)
 	temp.reg_data = value & 0xfffffcff;
 #ifdef FAST_MMU
 	if (temp.ASID != CCN_PTEH.ASID)
+	{
 		mmuAddressLUTFlush(false);
+		mmuwin::switchAsid(temp.ASID);
+	}
 #endif
 
 	CCN_PTEH = temp;
@@ -78,7 +81,10 @@ static void CCN_CCR_write(u32 addr, u32 value)
 		temp.OCI = 0;
 	}
 
+	const bool onChipRamChanged = temp.OIX != CCN_CCR.OIX;
 	CCN_CCR=temp;
+	if (onChipRamChanged)
+		sh4_onChipRamChanged();
 }
 
 static u32 CPU_VERSION_read(u32 addr)

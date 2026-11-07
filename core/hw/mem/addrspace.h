@@ -77,6 +77,26 @@ static inline bool virtmemEnabled() {
 void bm_reset(); // FIXME rename? move?
 bool bm_lockedWrite(u8* address); // FIXME rename?
 
+// Deadcast: the SH4's on-chip RAM in the dynarec's memory map, as CCR has it (addrspace.cpp)
+void mapOnChipRam(bool indexBit25);
+
+// Deadcast: the dynarec's window on the SH4's address space without the MMU: 4 GB, where RAM, AICA RAM
+// and VRAM (its 64-bit path) are mapped at their addresses in P0, P1 and P2, and the on-chip RAM at
+// 7C000000, an access a single load or store at window + address; everything else faults (the
+// dynarec's access stubs). Null without virtual memory.
+extern u8 *window;
+// where in the 512 MB map (ram_base) the window address p is, else null
+u8 *windowToMap(void *p);
+// whether the window address p is in an alias the window maps (P0, P1, P2): only there is a fault
+// a protection one (RAM's code, VRAM's textures), elsewhere (U0's mirrors, P3) nothing is mapped
+bool windowAliasMapped(void *p);
+// main RAM's code protection (bm_LockPage), in the window's aliases of it
+void protectRamInWindow(u32 offset, u32 size, bool locked);
+// Deadcast: the SH4's views of the AICA's RAM (area 0, and the window's aliases of it) gone (on), so that
+// every SH4 access to it faults and the dynarec turns it into a call of its handler (sb_mem.cpp), or back
+// read only (initMappings maps them so as well): a netplay session's AICA thread in step (aica.cpp)
+void aramThroughHandlers(bool on);
+
 void protectVram(u32 addr, u32 size);
 void unprotectVram(u32 addr, u32 size);
 u32 getVramOffset(void *addr);

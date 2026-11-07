@@ -180,6 +180,11 @@ void Sh4Interpreter::ExecuteDelayslot_RTE()
 int UpdateSystem_INTC()
 {
 	Sh4cntx.sh4_sched_next -= SH4_TIMESLICE;
+	return UpdateSystem_INTC_due();
+}
+
+int UpdateSystem_INTC_due()
+{
 	if (Sh4cntx.sh4_sched_next < 0)
 		sh4_sched_tick(SH4_TIMESLICE);
 	if (Sh4cntx.interrupt_pend)

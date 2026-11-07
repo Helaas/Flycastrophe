@@ -43,8 +43,13 @@ Option<bool> DSPEnabled(CORE_OPTION_NAME "_enable_dsp", false);
 #ifdef FLYCASTROPHE
 // Deadcast's Threaded Audio: the AICA on a thread of its own (aica.cpp), on by default
 Option<bool> ThreadedAudio(CORE_OPTION_NAME "_fcr_threaded_audio", true);
+// Deadcast's dynarec: fipr/ftrv in single precision, known wait loops skipped (rec_arm64.cpp), on by default
+Option<bool> FastFipr(CORE_OPTION_NAME "_fcr_fast_fipr", true);
+Option<bool> IdleLoopSkip(CORE_OPTION_NAME "_fcr_idle_loop_skip", true);
 #else
 Option<bool> ThreadedAudio("", false);
+Option<bool> FastFipr("", false);
+Option<bool> IdleLoopSkip("", false);
 #endif
 #if HOST_CPU == CPU_ARM
 Option<int> AudioBufferSize("", 5644);	// 128 ms

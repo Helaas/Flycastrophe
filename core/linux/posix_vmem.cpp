@@ -169,7 +169,8 @@ bool init(void **vmem_base_addr, void **sh4rcb_addr, size_t ramSize)
 		return false;
 
 	// Now try to allocate a contiguous piece of memory.
-	reserved_size = 512_MB + sizeof(Sh4RCB) + ARAM_SIZE_MAX + 0x10000;
+	// (and after the writable AICA RAM, the view of the SH4's on-chip RAM: addrspace.cpp)
+	reserved_size = 512_MB + sizeof(Sh4RCB) + ARAM_SIZE_MAX + 0x20000;
 	reserved_base = mem_region_reserve(NULL, reserved_size);
 	if (!reserved_base) {
 		close(vmem_fd);
@@ -222,6 +223,42 @@ void reset_mem(void *ptr, unsigned size_bytes) {
 void ondemand_page(void *address, unsigned size_bytes) {
 	bool rc = region_unlock(address, size_bytes);
 	verify(rc);
+}
+
+void *reserve_space(size_t len)
+{
+	void *p = mmap(nullptr, len, PROT_NONE, MAP_PRIVATE | MAP_ANON | MAP_NORESERVE, -1, 0);
+	return p == MAP_FAILED ? nullptr : p;
+}
+
+bool release_space(void *start, size_t len)
+{
+	return munmap(start, len) == 0;
+}
+
+bool map_ram_page(void *dest, u32 ramOffset, bool writable)
+{
+	// main RAM is first in the memory file (addrspace.cpp, MAP_RAM_START_OFFSET)
+	void *p = mmap(dest, PAGE_SIZE, PROT_READ | (writable ? PROT_WRITE : 0), MAP_SHARED | MAP_NOSYNC | MAP_FIXED,
+			vmem_fd, ramOffset);
+	return p == dest;
+}
+
+bool unmap_to_reserved(void *start, size_t len)
+{
+	void *p = mmap(start, len, PROT_NONE, MAP_PRIVATE | MAP_ANON | MAP_NORESERVE | MAP_FIXED, -1, 0);
+	return p == start;
+}
+
+bool protect_page(void *start, bool writable)
+{
+	return mprotect(start, PAGE_SIZE, PROT_READ | (writable ? PROT_WRITE : 0)) == 0;
+}
+
+bool map_shared(void *dest, size_t fileOffset, size_t len)
+{
+	void *p = mmap(dest, len, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_NOSYNC | MAP_FIXED, vmem_fd, fileOffset);
+	return p == dest;
 }
 
 // Creates mappings to the underlying file including mirroring sections

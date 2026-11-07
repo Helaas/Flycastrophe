@@ -19,12 +19,76 @@
     along with reicast.  If not, see <https://www.gnu.org/licenses/>.
  */
 #pragma once
+#include <algorithm>
 #include <cstdio>
-#include <set>
-#include <map>
+#include <utility>
+#include <vector>
 #include "types.h"
 #include "shil.h"
 #include "blockmanager.h"
+
+// Deadcast: a set and a map kept in a vector and searched in order: a block has a few dozen register
+// values at most, and std::set and std::map allocate a node for each
+template<typename K>
+class FlatSet
+{
+public:
+	using const_iterator = typename std::vector<K>::const_iterator;
+	void insert(const K& k) {
+		if (find(k) == end())
+			values.push_back(k);
+	}
+	const_iterator find(const K& k) const {
+		return std::find(values.begin(), values.end(), k);
+	}
+	size_t count(const K& k) const {
+		return find(k) != end() ? 1 : 0;
+	}
+	const_iterator end() const {
+		return values.end();
+	}
+	void clear() {
+		values.clear();
+	}
+private:
+	std::vector<K> values;
+};
+
+template<typename K, typename V>
+class FlatMap
+{
+public:
+	using iterator = typename std::vector<std::pair<K, V>>::iterator;
+	iterator begin() {
+		return values.begin();
+	}
+	iterator end() {
+		return values.end();
+	}
+	iterator find(const K& k) {
+		return std::find_if(values.begin(), values.end(), [&](const std::pair<K, V>& p) { return p.first == k; });
+	}
+	V& operator[](const K& k)
+	{
+		iterator it = find(k);
+		if (it != end())
+			return it->second;
+		values.emplace_back(k, V());
+		return values.back().second;
+	}
+	iterator erase(iterator it) {
+		return values.erase(it);
+	}
+	void clear() {
+		values.clear();
+	}
+	// in the keys' order, as std::map is
+	void sort() {
+		std::sort(values.begin(), values.end(), [](const std::pair<K, V>& a, const std::pair<K, V>& b) { return a.first < b.first; });
+	}
+private:
+	std::vector<std::pair<K, V>> values;
+};
 
 class SSAOptimizer
 {
@@ -160,7 +224,7 @@ private:
 	}
 
 	RuntimeBlockInfo* block;
-	std::set<RegValue> writeback_values;
+	FlatSet<RegValue> writeback_values;
 
 	struct {
 		u32 prop_constants = 0;
@@ -176,6 +240,6 @@ private:
 	// add version pass
 	u32 reg_versions[sh4_reg_count];
 	// const prop pass
-	std::map<RegValue, u32> constprop_values;	// (reg num, version) -> value
+	FlatMap<RegValue, u32> constprop_values;	// (reg num, version) -> value
 	int opnum = 0;
 };

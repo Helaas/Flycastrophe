@@ -3,9 +3,13 @@
 	Its based on a simple hashed-lists idea
 */
 
+#include "deadcast/mmuwindows.h"
+#include "deadcast/profiler.h"
 #include <algorithm>
 #include <set>
 #include <map>
+#include <deque>
+#include <unordered_map>
 #include "blockmanager.h"
 #include "ngen.h"
 
@@ -146,8 +150,22 @@ DynarecCodeEntryPtr DYNACALL bm_GetCodeByVAddr(u32 addr)
 	if (rv != MmuError::NONE)
 	{
 		DoMMUException(addr, rv, MMU_TT_IREAD);
-		mmu_instruction_translation(Sh4cntx.pc, paddr);
+		addr = Sh4cntx.pc;
+		rv = mmu_instruction_translation(addr, paddr);
 	}
+#ifdef FAST_MMU
+	// Deadcast: cache the user page as the memory accesses do (mmuDynarecLookup), for the dynarec's
+	// main loop to find the next block's code without calling here
+	if (rv == MmuError::NONE && (addr >> 31) == 0)
+	{
+		// Deadcast: slot 0's in the window's own table, kept across ASID changes (deadcast/mmuwindows.h)
+		uintptr_t *codeLut = mmuwin::codeLut();
+		if (codeLut != nullptr && (addr >> 12) < MmuSlot0Pages)
+			codeLut[addr >> 12] = mmuHostPage(addr, paddr);
+		else
+			mmuCachePage(addr, paddr);
+	}
+#endif
 
 	return bm_GetCode(paddr);
 }
@@ -207,8 +225,20 @@ RuntimeBlockInfoPtr bm_GetStaleBlock(void* dynarec_code)
 	return NULL;
 }
 
+std::vector<RuntimeBlockInfoPtr> bm_AllBlocks()
+{
+	std::vector<RuntimeBlockInfoPtr> blocks;
+	for (const auto& [code, block] : blkmap)
+		blocks.push_back(block);
+	blocks.insert(blocks.end(), del_blocks.begin(), del_blocks.end());
+	return blocks;
+}
+
+u32 bmStatCompiled, bmStatCacheResets;	// Deadcast: for the perf line (spg.cpp)
+
 void bm_AddBlock(RuntimeBlockInfo* blk)
 {
+	bmStatCompiled++;
 	RuntimeBlockInfoPtr block(blk);
 	if (block->temp_block)
 		all_temp_blocks.insert(block);
@@ -238,6 +268,17 @@ void bm_AddBlock(RuntimeBlockInfo* blk)
 
 }
 
+void bm_ForEachBlock(const std::function<void(const RuntimeBlockInfo&)>& fn)
+{
+	for (const auto& it : blkmap)
+		fn(*it.second);
+}
+
+bool bm_HasBlock(u32 addr)
+{
+	return (void*)bm_GetCode(addr) != (void*)ngen_FailedToFindBlock;
+}
+
 void bm_DiscardBlock(RuntimeBlockInfo* block)
 {
 	// Remove from block map
@@ -254,6 +295,9 @@ void bm_DiscardBlock(RuntimeBlockInfo* block)
 	// Remove from jump table
 	verify((void*)bm_GetCode(block_ptr->addr) == CC_RW2RX((void*)block_ptr->code));
 	FPCA(block_ptr->addr) = ngen_FailedToFindBlock;
+#ifdef FAST_MMU
+	mmuDispatchCacheFlush();
+#endif
 
 	if (block_ptr->temp_block)
 		all_temp_blocks.erase(block_ptr);
@@ -269,6 +313,9 @@ void bm_Periodical_1s()
 
 void bm_vmem_pagefill(void** ptr, u32 size_bytes)
 {
+#ifdef FAST_MMU
+	mmuDispatchCacheFlush();
+#endif
 	for (size_t i = 0; i < size_bytes / sizeof(ptr[0]); i++)
 	{
 		ptr[i]=(void*)ngen_FailedToFindBlock;
@@ -278,6 +325,7 @@ void bm_vmem_pagefill(void** ptr, u32 size_bytes)
 void bm_Reset()
 {
 	bm_CleanupDeletedBlocks();
+	mmuwin::unprotectAll();
 	protected_blocks = 0;
 	unprotected_blocks = 0;
 
@@ -298,6 +346,7 @@ void bm_Reset()
 			virtmem::region_unlock(addrspace::ram_base + 0x0C000000, RAM_SIZE);
 			virtmem::region_unlock(addrspace::ram_base + 0x0E000000, RAM_SIZE);
 		}
+		addrspace::protectRamInWindow(0, RAM_SIZE, false);
 	}
 	else
 #endif
@@ -309,8 +358,14 @@ void bm_Reset()
 void bm_LockPage(u32 addr, u32 size)
 {
 	addr = addr & (RAM_MASK - PAGE_MASK);
+	// Deadcast: the page's mappings in the MMU windows too (deadcast/mmuwindows.h)
+	for (u32 offset = 0; offset < size; offset += PAGE_SIZE)
+		mmuwin::protectRamPage(addr + offset, true);
 	if (addrspace::virtmemEnabled())
+	{
 		virtmem::region_lock(addrspace::ram_base + 0x0C000000 + addr, size);
+		addrspace::protectRamInWindow(addr, size, true);
+	}
 	else
 		virtmem::region_lock(&mem_b[addr], size);
 }
@@ -318,14 +373,112 @@ void bm_LockPage(u32 addr, u32 size)
 void bm_UnlockPage(u32 addr, u32 size)
 {
 	addr = addr & (RAM_MASK - PAGE_MASK);
+	for (u32 offset = 0; offset < size; offset += PAGE_SIZE)
+		mmuwin::protectRamPage(addr + offset, false);
 	if (addrspace::virtmemEnabled())
+	{
 		virtmem::region_unlock(addrspace::ram_base + 0x0C000000 + addr, size);
+		addrspace::protectRamInWindow(addr, size, false);
+	}
 	else
 		virtmem::region_unlock(&mem_b[addr], size);
 }
 
+// Deadcast: code a game rewrites in place again and again with the same few versions (Armada writes its
+// vertex routines into two buffers, a few versions draw after draw, hundreds of times a second): each version
+// is compiled once, as any block, kept (parked) while another version is there, and put back when its code
+// is there again, instead of compiled again, unoptimised (a temp block), every time. At most MaxParked
+// versions an address, the oldest dropped; an address compiled WildCompiles times goes to temp blocks.
+namespace
+{
+struct SmcAddress
+{
+	std::deque<RuntimeBlockInfoPtr> parked;
+	u32 compiles = 0;
+};
+std::unordered_map<u32, SmcAddress> smcAddresses;
+constexpr size_t MaxParked = 8;
+constexpr u32 WildCompiles = 64;
+}
+
+bool bm_SmcVariantsUsable(u32 addr)
+{
+	auto it = smcAddresses.find(addr);
+	return it == smcAddresses.end() || it->second.compiles < WildCompiles;
+}
+
+void bm_SmcVariantCompiled(RuntimeBlockInfo* block)
+{
+	const u8 *code = GetMemPtr(block->addr, block->sh4_code_size);
+	if (code == nullptr)
+		return;
+	block->smcCode.assign(code, code + block->sh4_code_size);
+	smcAddresses[block->addr].compiles++;
+}
+
+// as bm_DiscardBlock, but kept for bm_UnparkBlock
+void bm_ParkBlock(RuntimeBlockInfo* block)
+{
+	auto it = blkmap.find((void*)block->code);
+	verify(it != blkmap.end());
+	RuntimeBlockInfoPtr block_ptr = it->second;
+	blkmap.erase(it);
+
+	block_ptr->pNextBlock = NULL;
+	block_ptr->pBranchBlock = NULL;
+	block_ptr->Relink();
+
+	verify((void*)bm_GetCode(block_ptr->addr) == CC_RW2RX((void*)block_ptr->code));
+	FPCA(block_ptr->addr) = ngen_FailedToFindBlock;
+#ifdef FAST_MMU
+	mmuDispatchCacheFlush();
+#endif
+	// the blocks linked to it go through the main loop
+	block_ptr->Discard();
+
+	auto& parked = smcAddresses[block_ptr->addr].parked;
+	parked.push_back(block_ptr);
+	if (parked.size() > MaxParked)
+	{
+		del_blocks.push_back(parked.front());
+		parked.pop_front();
+	}
+}
+
+// the version of the code at addr (physical) compiled for vaddr, if parked and that code is there again
+DynarecCodeEntryPtr bm_UnparkBlock(u32 addr, u32 vaddr, fpscr_t fpu)
+{
+	auto it = smcAddresses.find(addr);
+	if (it == smcAddresses.end())
+		return nullptr;
+	auto& parked = it->second.parked;
+	for (auto p = parked.begin(); p != parked.end(); ++p)
+	{
+		RuntimeBlockInfoPtr block = *p;
+		// what the decoder compiled it for (state_Setup)
+		if (block->vaddr != vaddr || block->fpu_cfg.PR != fpu.PR || block->fpu_cfg.SZ != fpu.SZ
+				|| block->fpu_cfg.RM != fpu.RM)
+			continue;
+		const u8 *code = GetMemPtr(addr, block->sh4_code_size);
+		if (code == nullptr || memcmp(code, block->smcCode.data(), block->sh4_code_size) != 0)
+			continue;
+		parked.erase(p);
+		verify((void*)bm_GetCode(addr) == (void*)ngen_FailedToFindBlock);
+		blkmap[(void*)block->code] = block;
+		FPCA(addr) = (DynarecCodeEntryPtr)CC_RW2RX(block->code);
+#ifdef FAST_MMU
+		mmuDispatchCacheFlush();
+#endif
+		return block->code;
+	}
+	return nullptr;
+}
+
 void bm_ResetCache()
 {
+#ifdef FAST_MMU
+	mmuDispatchCacheFlush();
+#endif
 	sh4Dynarec->reset();
 	addrspace::bm_reset();
 
@@ -343,6 +496,10 @@ void bm_ResetCache()
 	}
 
 	blkmap.clear();
+	// Deadcast: the parked versions' code is gone too
+	for (auto& [addr, smc] : smcAddresses)
+		del_blocks.insert(del_blocks.end(), smc.parked.begin(), smc.parked.end());
+	smcAddresses.clear();
 	// blkmap includes temp blocks as well
 	all_temp_blocks.clear();
 
@@ -367,6 +524,9 @@ void bm_ResetCache()
 
 void bm_ResetTempCache(bool full)
 {
+#ifdef FAST_MMU
+	mmuDispatchCacheFlush();
+#endif
 	if (!full)
 	{
 		for (const auto& block : all_temp_blocks)
@@ -433,6 +593,8 @@ void sh4_jitsym(FILE* out)
 
 RuntimeBlockInfo::~RuntimeBlockInfo()
 {
+	// Deadcast: how many times blocks ran before they went (profiling: deadcast/profiler.h)
+	profilerBlockGone(runs);
 	if (sh4_code_size != 0)
 	{
 		if (read_only)
@@ -512,7 +674,11 @@ void bm_RamWriteAccess(u32 addr)
 {
 	addr &= RAM_MASK;
 	if (unprotected_pages[addr / PAGE_SIZE])
+	{
+		// Deadcast: should an alias of it in the dynarec's window still be locked, not again
+		addrspace::protectRamInWindow(addr & ~PAGE_MASK, PAGE_SIZE, false);
 		return;
+	}
 
 	unprotected_pages[addr / PAGE_SIZE] = true;
 	bm_UnlockPage(addr);

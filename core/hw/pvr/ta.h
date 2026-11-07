@@ -12,6 +12,7 @@ void ta_vtx_ListInit(bool continuation);
 void ta_vtx_SoftReset();
 
 void DYNACALL ta_vtx_data32(const SQBuffer *data);
+void DYNACALL ta_vtx_handle(u32 trans);
 void ta_vtx_data(const SQBuffer *data, u32 size);
 
 // Deadcast: without fetchTextures, ta_fetch_textures() then fetches them (it may need the renderer's
