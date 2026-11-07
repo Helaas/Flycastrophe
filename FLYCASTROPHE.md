@@ -36,7 +36,7 @@ releases live in [Flycastrophe-pak](https://github.com/Helaas/Flycastrophe-pak).
 
 ## Ledger
 
-Deadcast reviewed through **`82b57f2571`** (2026-11-07).
+Deadcast reviewed through **`b24817b`** (2026-11-08).
 
 Status: **ported** (taken as is), **adapted** (taken with Flycastrophe glue), **pending** (not yet
 done), **skipped** (will not be taken, with the reason).
@@ -47,7 +47,7 @@ done), **skipped** (will not be taken, with the reason).
 | 01 | Perf counters (core only) | `3e3b549579` profiler, `110019952a`, `12fe9e85fe`, `117a12188d`, `055a8c6701`, `6c0c3f68a6` | env `FLYCASTROPHE_PERF=1` | pending |
 | 02 | Texture DMA unprotect | `9cda9c4082` | none | ported |
 | 02b | CHD read-ahead | `3e3b549579` chd.cpp | none | pending: neutral on still scenes, possibly slower on a moving replay (a non-sequential read waits for the prefetch in flight); retest with a streaming-heavy measurement |
-| 03 | AICA thread (netplay journal stripped) | `3e3b549579`, `3299519ff9`, AICA half of `d1be34d557`, `52cfec5` | `reicast_fcr_threaded_audio` (on) | ported; Flycastrophe stops the thread as a game unloads (RetroArch unloads the core without `term()`) |
+| 03 | AICA thread (netplay journal stripped) | `3e3b549579`, `3299519ff9`, AICA half of `d1be34d557`, `52cfec5` | `reicast_fcr_threaded_audio` (on) | ported; GD-ROM sector reads locked (`imgread/common.cpp`), since CD audio reads the disc from the AICA thread; Flycastrophe stops the thread as a game unloads (RetroArch unloads the core without `term()`) |
 | 04 | 4 GB memory window + fault rewrite | `3e3b549579` addrspace, posix_vmem, virtmem, sh4_mmr | none | ported with 05, 06, 07, 13 as one dynarec unit (SA2 +23.2%, Crazy Taxi +2.0%) |
 | 05 | Pinned-register dynarec, thunks, inline IRQ, SQ to TA direct | `3e3b549579`, `d1be34d557`, `f42955105f` | none (Deadcast has no switch) | ported (dynarec unit, row 04) |
 | 06 | NEON fipr/ftrv | `3e3b549579` rec_arm64 | `reicast_fcr_fast_fipr` (on) | ported (dynarec unit, row 04); with row 07 worth ~3% on SA2 |
@@ -60,9 +60,10 @@ done), **skipped** (will not be taken, with the reason).
 | 13 | MMU windows, versioned block cache (Windows CE) | `3e3b549579` mmuwindows, `a7ed1b550b` | none | ported (dynarec unit, row 04); Sega Rally 2 attract checked |
 | 14 | Code cache on disk | `9909d48688`, `f42955105f` | none | adapted: `<content>.blocks` in RetroArch's save directory (`Saves/Flycastrophe/` under Leaf), written on a normal quit; no warm-up within 2 s of the last (rewind, run-ahead); Crazy Taxi 5890 blocks in 313 ms, SA2 7741 in 433 ms |
 
-After the review point: `52cfec5` (Threaded Audio on by default) ported with row 03;
-`9ffccd7c7f` (frame skip always at its most) taken as row 11's default, with the option kept; not yet
-reviewed: `b5854cb951` (Options pages), `039413c` (1.2.4).
+Since `82b57f2571`: `52cfec5` (Threaded Audio on by default) ported with row 03; `9ffccd7c7f`
+(frame skip always at its most) taken as row 11's default, with the option kept; `b5854cb951`
+(Options pages, `ui/`), `039413c` (1.2.4), `6822371` (Pak Store screenshots) and `b24817b`
+(README) have nothing for a libretro core.
 
 Rows 04, 05, 06, 07 and 13 are interleaved in Deadcast's `rec_arm64.cpp` and depend on each other,
 so they were ported as one unit (Deadcast's files as Deadcast has them, then Flycastrophe's option
