@@ -51,8 +51,6 @@ void setFirstProvokingVertex(rend_context& rendContext)
 				Vertex& lastVertex = rendContext.verts[idx];
 				memcpy(vertex.col, lastVertex.col, sizeof(vertex.col));
 				memcpy(vertex.spc, lastVertex.spc, sizeof(vertex.spc));
-				memcpy(vertex.col1, lastVertex.col1, sizeof(vertex.col1));
-				memcpy(vertex.spc1, lastVertex.spc1, sizeof(vertex.spc1));
 			}
 		}
 	};

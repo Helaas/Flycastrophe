@@ -256,6 +256,8 @@ struct gl_ctx
 		std::unique_ptr<GlBuffer> geometry;
 		std::unique_ptr<GlBuffer> modvols;
 		std::unique_ptr<GlBuffer> idxs;
+		// Deadcast's 28-byte vertex: Naomi 2's normals, one per vertex, in a buffer of their own
+		std::unique_ptr<GlBuffer> normals;
 	} vbo;
 
 	struct
