@@ -47,7 +47,7 @@ done), **skipped** (will not be taken, with the reason).
 | 01 | Perf counters (core only) | `3e3b549579` profiler, `110019952a`, `12fe9e85fe`, `117a12188d`, `055a8c6701`, `6c0c3f68a6` | env `FLYCASTROPHE_PERF=1` | pending |
 | 02 | Texture DMA unprotect | `9cda9c4082` | none | ported |
 | 02b | CHD read-ahead | `3e3b549579` chd.cpp | none | pending: neutral on still scenes, possibly slower on a moving replay (a non-sequential read waits for the prefetch in flight); retest with a streaming-heavy measurement |
-| 03 | AICA thread (netplay journal stripped) | `3e3b549579`, `3299519ff9`, AICA half of `d1be34d557` | `reicast_fcr_threaded_audio` | pending |
+| 03 | AICA thread (netplay journal stripped) | `3e3b549579`, `3299519ff9`, AICA half of `d1be34d557`, `52cfec5` | `reicast_fcr_threaded_audio` (on) | ported |
 | 04 | 4 GB memory window + fault rewrite | `3e3b549579` addrspace, posix_vmem, virtmem, sh4_mmr | none | pending |
 | 05 | Pinned-register dynarec, thunks, inline IRQ, SQ to TA direct | `3e3b549579`, `d1be34d557`, `f42955105f` | env `FLYCASTROPHE_NO_PIN` | pending |
 | 06 | NEON fipr/ftrv | `3e3b549579` rec_arm64 | `reicast_fcr_fast_fipr` | pending |
@@ -60,8 +60,8 @@ done), **skipped** (will not be taken, with the reason).
 | 13 | MMU windows, versioned block cache (Windows CE) | `3e3b549579` mmuwindows, `a7ed1b550b` | none | pending |
 | 14 | Code cache on disk | `9909d48688`, `f42955105f` | env | pending |
 
-After the review point, not yet reviewed: `9ffccd7c7f` (frame skip always at its most),
-`b5854cb951` (Options pages).
+After the review point: `52cfec5` (Threaded Audio on by default) ported with row 03; not yet
+reviewed: `9ffccd7c7f` (frame skip always at its most), `b5854cb951` (Options pages), `039413c` (1.2.4).
 
 ### Skipped
 
