@@ -943,8 +943,13 @@ void Emulator::loadstate(Deserializer& deser)
 
 	mmu_set_state();
 	getSh4Executor()->ResetCache();
-	// Deadcast: the blocks this game ran before, compiled now rather than in its first seconds
-	deadcast::codecache::warm();
+	// Deadcast: the blocks this game ran before, compiled now rather than in its first seconds.
+	// Flycastrophe: not again within 2 s, since RetroArch's rewind and run-ahead load a state every frame.
+	static std::chrono::steady_clock::time_point lastWarm;
+	const auto now = std::chrono::steady_clock::now();
+	if (now - lastWarm > std::chrono::seconds(2))
+		deadcast::codecache::warm();
+	lastWarm = now;
 	EventManager::event(Event::LoadState);
 }
 
