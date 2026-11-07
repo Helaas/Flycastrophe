@@ -72,6 +72,9 @@ public:
 		Updates = other.Updates;
 		palette_hash = other.palette_hash;
 		texture_hash = other.texture_hash;
+		uploadedHash = other.uploadedHash;
+		uploadedType = other.uploadedType;
+		uploadedGpuPalette = other.uploadedGpuPalette;
 		old_vqtexture_hash = other.old_vqtexture_hash;
 		old_texture_hash = other.old_texture_hash;
 		std::swap(custom_image_data, other.custom_image_data);
@@ -106,6 +109,10 @@ public:
 	//used for palette updates
 	u32 palette_hash;			// Palette hash at time of last update
 	u32 texture_hash;			// xxhash of texture data, used for custom textures
+	// Deadcast: dataHash() at its last upload, and what it was uploaded as
+	u64 uploadedHash = 0;
+	TextureType uploadedType = TextureType::_565;
+	bool uploadedGpuPalette = false;
 	u32 old_vqtexture_hash;		// legacy hash for vq textures
 	u32 old_texture_hash;		// legacy hash
 	u8* custom_image_data;		// loaded custom image data
@@ -150,6 +157,7 @@ public:
 	}
 
 	void ComputeHash();
+	u64 dataHash();
 	bool Update();
 	virtual void UploadToGPU(int width, int height, const u8 *temp_tex_buffer, bool mipmapped, bool mipmapsIncluded = false) = 0;
 	virtual bool Force32BitTexture(TextureType type) const { return false; }

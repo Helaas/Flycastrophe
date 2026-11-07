@@ -54,7 +54,7 @@ done), **skipped** (will not be taken, with the reason).
 | 07 | Idle-loop skips | `3e3b549579`, `b1b0cb1744` | `reicast_fcr_idle_loop_skip` (on) | ported (dynarec unit, row 04) |
 | 08 | 28-byte vertex, Naomi 2 normals in their own GL buffer | `3e3b549579` ta_ctx.h, ta_vtx.cpp, elan.cpp, sorter.cpp | none | adapted (Crazy Taxi +1.6%, SA2 +0.5%; VF4 lighting checked) |
 | 09 | TA parse thread (GL: textures fetched on RetroArch's thread) | `3e3b549579` Renderer_if.cpp, ta_ctx.cpp, ta_vtx.cpp | `reicast_fcr_parse_thread` (on) | ported (Crazy Taxi +10.1%, SA2 -2.6%) |
-| 10 | Unchanged textures not re-uploaded | `3e3b549579` TexCache, `ff68543516` (TexCache part) | none | pending |
+| 10 | Unchanged textures not re-uploaded | `3e3b549579` TexCache, `ff68543516` (TexCache part) | none | ported; neutral on the bench (Crazy Taxi -0.2%, SA2 -1.4%, within noise), for games that rewrite textures unchanged |
 | 11 | Frameskip on lag, audio fill | `f212a71804`, `1b8db315e8` | `reicast_auto_skip_frame` | pending |
 | 12 | Sorting heuristics, Daytona exception, fast GD-ROM load default | `3e3b549579` ta_util, `564410027b`, `a7ed1b550b` | default change | pending |
 | 13 | MMU windows, versioned block cache (Windows CE) | `3e3b549579` mmuwindows, `a7ed1b550b` | none | ported (dynarec unit, row 04); Sega Rally 2 attract checked |
