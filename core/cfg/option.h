@@ -374,6 +374,7 @@ extern Option<int, false> UITheme;          // 0 -> Dark, 1 -> Light, 2 -> Dream
 
 constexpr bool LimitFPS = true;
 extern Option<bool> DSPEnabled;
+extern Option<bool> ThreadedAudio;	// Deadcast: the AICA on a thread of its own (aica.cpp)
 extern Option<int> AudioBufferSize;	//In samples ,*4 for bytes
 extern Option<bool> AutoLatency;
 

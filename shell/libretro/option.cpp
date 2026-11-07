@@ -40,6 +40,12 @@ Option<bool> ForceFreePlay(CORE_OPTION_NAME "_force_freeplay", true);
 // Sound
 
 Option<bool> DSPEnabled(CORE_OPTION_NAME "_enable_dsp", false);
+#ifdef FLYCASTROPHE
+// Deadcast's Threaded Audio: the AICA on a thread of its own (aica.cpp), on by default
+Option<bool> ThreadedAudio(CORE_OPTION_NAME "_fcr_threaded_audio", true);
+#else
+Option<bool> ThreadedAudio("", false);
+#endif
 #if HOST_CPU == CPU_ARM
 Option<int> AudioBufferSize("", 5644);	// 128 ms
 #else
