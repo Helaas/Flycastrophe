@@ -14,7 +14,10 @@ void ta_vtx_SoftReset();
 void DYNACALL ta_vtx_data32(const SQBuffer *data);
 void ta_vtx_data(const SQBuffer *data, u32 size);
 
-void ta_parse(TA_context *ctx, bool primRestart);
+// Deadcast: without fetchTextures, ta_fetch_textures() then fetches them (it may need the renderer's
+// thread, which the parsing does not)
+void ta_parse(TA_context *ctx, bool primRestart, bool fetchTextures = true);
+void ta_fetch_textures(TA_context *ctx);
 
 class TaTypeLut
 {

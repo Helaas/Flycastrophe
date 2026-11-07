@@ -316,6 +316,8 @@ struct TA_context
 	rend_context rend;
 
 	TA_context *nextContext = nullptr;
+	bool parsed = false;	// Deadcast: parsed off the renderer's thread, its textures still to fetch
+	bool endSignaled = false;	// Deadcast: the emulation let go on as it was queued (Renderer_if.cpp)
 	/*
 		Dreamcast games use up to 20k vtx, 30k idx, 1k (in total) parameters.
 		at 30 fps, thats 600kvtx (900 stripped)
@@ -367,6 +369,8 @@ struct TA_context
 		tad.Clear();
 		nextContext = nullptr;
 		rend.Clear();
+		parsed = false;
+		endSignaled = false;
 	}
 
 	~TA_context()
@@ -395,6 +399,8 @@ void SetCurrentTARC(u32 addr);
 bool QueueRender(TA_context* ctx);
 TA_context* DequeueRender();
 void FinishRender(TA_context* ctx);
+void ReleaseRender(TA_context* ctx);
+void RecycleRender(TA_context* ctx);
 
 //must be moved to proper header
 void FillBGP(TA_context* ctx);

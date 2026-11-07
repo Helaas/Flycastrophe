@@ -14,6 +14,9 @@
 
 #include <mutex>
 #include <deque>
+#include <condition_variable>
+#include <thread>
+#include "oslib/oslib.h"
 
 #ifdef LIBRETRO
 void retro_rend_present();
@@ -25,6 +28,85 @@ u32 FrameCount=1;
 Renderer* renderer;
 
 static cResetEvent renderEnd;
+
+// Deadcast: with a renderer that parses off its thread (parsesOffThread), a queued frame's TA data is
+// parsed on a thread of its own at once, and the render thread only fetches textures and draws
+// (render()). The queue slot is freed before drawing, so the next frame is parsed meanwhile and the
+// emulation goes on without waiting. A render to texture copied back to VRAM (RenderToTextureBuffer)
+// still waits until drawn.
+namespace parsing
+{
+static std::thread thread;
+static std::mutex mutex;
+static std::condition_variable changed;
+static TA_context *queued;	// to parse, or being parsed
+static bool stopping;
+}
+
+static void parseLoop()
+{
+	ThreadName _("deadcast-parse");
+	std::unique_lock<std::mutex> lock(parsing::mutex);
+	while (true)
+	{
+		parsing::changed.wait(lock, [] { return parsing::queued != nullptr || parsing::stopping; });
+		if (parsing::stopping)
+			break;
+		TA_context *ctx = parsing::queued;
+		lock.unlock();
+		bool parsed = true;
+		try {
+			renderer->Parse(ctx);
+		} catch (...) {
+			// parsed again on the renderer's thread, where the error shows
+			parsed = false;
+		}
+		ctx->parsed = parsed;
+		lock.lock();
+		parsing::queued = nullptr;
+		parsing::changed.notify_all();
+	}
+}
+
+// the emulation thread: a frame queued for rendering
+static void parseQueued(TA_context *ctx)
+{
+	if (renderer == nullptr || !renderer->parsesOffThread())
+		return;
+	std::lock_guard<std::mutex> lock(parsing::mutex);
+	if (!parsing::thread.joinable())
+	{
+		parsing::stopping = false;
+		parsing::thread = std::thread(parseLoop);
+	}
+	parsing::queued = ctx;
+	parsing::changed.notify_all();
+	if ((!ctx->rend.isRTT || !config::RenderToTextureBuffer) && !config::EmulateFramebuffer)
+	{
+		ctx->endSignaled = true;
+		renderEnd.Set();
+	}
+}
+
+// until the parse thread is done with whatever it has
+static void parseWait()
+{
+	std::unique_lock<std::mutex> lock(parsing::mutex);
+	parsing::changed.wait(lock, [] { return parsing::queued == nullptr; });
+}
+
+static void parseStop()
+{
+	{
+		std::lock_guard<std::mutex> lock(parsing::mutex);
+		if (!parsing::thread.joinable())
+			return;
+		parsing::stopping = true;
+	}
+	parsing::changed.notify_all();
+	parsing::thread.join();
+	parsing::queued = nullptr;
+}
 u32 fb_w_cur = 1;
 static cResetEvent vramRollback;
 
@@ -212,41 +294,54 @@ private:
 			retro_resize_renderer(taContext->rend.framebufferWidth, taContext->rend.framebufferHeight,
 					getOutputFramebufferAspectRatio());
 #endif
+		const bool offThread = renderer->parsesOffThread();
+		if (offThread)
+			parseWait();
 		{
 			FC_PROFILE_SCOPE_NAMED("Renderer::Process");
 			try {
 				renderer->Process(taContext);
 			} catch (...) {
-				renderEnd.Set();
+				if (!taContext->endSignaled)
+					renderEnd.Set();
 				rend_allow_rollback();
 				FinishRender(taContext);
 				throw;
 			}
 		}
 
-		if (renderToScreen)
+		if (renderToScreen && !taContext->endSignaled)
 			// If rendering to texture or in full framebuffer emulation, continue locking until the frame is rendered
 			renderEnd.Set();
 		rend_allow_rollback();
+		// Deadcast: the next frame may be queued, and parsed, while this one is drawn
+		if (offThread)
+			ReleaseRender(taContext);
 		{
 			FC_PROFILE_SCOPE_NAMED("Renderer::Render");
 			try {
 				renderer->Render();
 			} catch (...) {
-				if (!renderToScreen)
+				if (!renderToScreen && !taContext->endSignaled)
 					renderEnd.Set();
-				FinishRender(taContext);
+				if (offThread)
+					RecycleRender(taContext);
+				else
+					FinishRender(taContext);
 				throw;
 			}
 		}
 
-		if (!renderToScreen)
+		if (!renderToScreen && !taContext->endSignaled)
 			renderEnd.Set();
 		else if (config::DelayFrameSwapping && fb_w_cur == FB_R_SOF1)
 			present();
 
 		//clear up & free data ..
-		FinishRender(taContext);
+		if (offThread)
+			RecycleRender(taContext);
+		else
+			FinishRender(taContext);
 	}
 
 	void renderFramebuffer(const FramebufferInfo& config)
@@ -484,6 +579,7 @@ void rend_term_renderer()
 	// also leave the producer side wedged, which manifests as audio/video
 	// drift after a renderer switch.
 	rend_cancel_emu_wait();
+	parseStop();
 
 	if (renderer != nullptr)
 	{
@@ -495,6 +591,7 @@ void rend_term_renderer()
 
 void rend_reset()
 {
+	parseWait();
 	FinishRender(DequeueRender());
 	render_called = false;
 	pend_rend = false;
@@ -582,6 +679,7 @@ void rend_start_render()
 	{
 		palette_update();
 		pend_rend = true;
+		parseQueued(ctx);
 		pvrQueue.enqueue(PvrMessageQueue::Render);
 		if (!config::DelayFrameSwapping && !ctx->rend.isRTT && !config::EmulateFramebuffer)
 			pvrQueue.enqueue(PvrMessageQueue::Present);

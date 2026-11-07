@@ -65,6 +65,10 @@ struct Renderer
 	virtual void Term() = 0;
 
 	virtual void Process(TA_context *ctx) = 0;
+	// Deadcast: a renderer whose TA parsing needs nothing of its own thread parses on another one
+	// (Renderer_if.cpp): Parse() there, then Process() on the renderer's for the rest
+	virtual bool parsesOffThread() { return false; }
+	virtual void Parse(TA_context *ctx) {}
 	virtual bool Render() = 0;
 	virtual void RenderFramebuffer(const FramebufferInfo& info) = 0;
 	virtual bool RenderLastFrame() { return false; }

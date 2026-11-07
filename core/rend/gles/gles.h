@@ -497,6 +497,9 @@ struct OpenGLRenderer : Renderer
 	void Term() override;
 
 	void Process(TA_context* ctx) override;
+	// Deadcast's TA parse thread (Renderer_if.cpp): Flycastrophe only
+	bool parsesOffThread() override;
+	void Parse(TA_context* ctx) override;
 
 	bool Render() override;
 
