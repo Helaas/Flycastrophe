@@ -158,6 +158,8 @@ public:
 
 	void ComputeHash();
 	u64 dataHash();
+	// Deadcast perf: whether a texture's new data is data it had lately (the perf line's "seen before")
+	void noteTextureData(u64 hash, u32 bytes);
 	bool Update();
 	virtual void UploadToGPU(int width, int height, const u8 *temp_tex_buffer, bool mipmapped, bool mipmapsIncluded = false) = 0;
 	virtual bool Force32BitTexture(TextureType type) const { return false; }

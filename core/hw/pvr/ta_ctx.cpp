@@ -72,7 +72,11 @@ bool QueueRender(TA_context* ctx)
 			// Deadcast: whatever the frame skip: a frame is dropped only by the lag above. Dropped here, as
 			// upstream's Maximum did whenever the renderer was still busy, NBA 2K2 lost 13 frames a second
 			// with the SH4 62% busy.
+		{
+			const auto waitStart = perfNow();
 			frame_finished.Wait();
+			perfWaited(waitStart);
+		}
 	}
 
 	if (!skipFrame && !rqueue && !ctx->rend.isRTT)

@@ -18,8 +18,10 @@
 #include "xbrz/xbrz.h"
 #include "hw/pvr/pvr_mem.h"
 #include "hw/mem/addrspace.h"
+#include "hw/pvr/spg.h"
 
 #include <mutex>
+#include <unordered_map>
 #include <xxhash.h>
 
 #ifdef _OPENMP
@@ -495,6 +497,22 @@ void BaseTextureCacheData::ComputeHash()
 	}
 }
 
+// Deadcast perf: whether a texture's new data is data it had in the last 600 frames (the hash includes its
+// address), not at its last upload
+void BaseTextureCacheData::noteTextureData(u64 hash, u32 bytes)
+{
+	static std::mutex mutex;
+	static std::unordered_map<u64, u32> seen;	// data hash -> the frame it was last uploaded at
+	std::lock_guard<std::mutex> lock(mutex);
+	auto it = seen.find(hash);
+	if (it != seen.end() && FrameCount - it->second < 600)
+		perfTextureRecurring();
+	seen[hash] = FrameCount;
+	if (seen.size() > 20000)
+		for (auto i = seen.begin(); i != seen.end(); )
+			i = FrameCount - i->second >= 600 ? seen.erase(i) : std::next(i);
+}
+
 bool BaseTextureCacheData::Update()
 {
 	//texture state tracking stuff
@@ -575,6 +593,11 @@ bool BaseTextureCacheData::Update()
 		protectVRam();
 		size = originalSize;
 		return true;
+	}
+	if (perfOn())
+	{
+		perfTextureUpdated(size);
+		noteTextureData(newDataHash, size);
 	}
 	if (custom_texture.enabled())
 	{

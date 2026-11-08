@@ -10,12 +10,171 @@
 #include <algorithm>
 #include <array>
 #include <chrono>
+#include <atomic>
+#include <cstdlib>
+#include <pthread.h>
+#include <time.h>
+#include "deadcast/waitloops.h"
+#include "hw/sh4/modules/mmu.h"
 
 #ifdef TEST_AUTOMATION
 #include "input/gamepad_device.h"
 #endif
 
 //SPG emulation; Scanline/Raster beam registers & interrupts
+
+// Deadcast perf (spg.h), the part that applies under RetroArch (no presenter, GPU timers or audio backend
+// of its own). FLYCASTROPHE_PERF=1 turns it on.
+static const bool perfEnabled = [] { const char *e = std::getenv("FLYCASTROPHE_PERF"); return e != nullptr && *e != '\0' && *e != '0'; }();
+static std::atomic<u64> perfWaitUs, perfRenderUs, perfRenderMaxUs;
+static std::atomic<u32> perfRenders, perfTextureRenders, perfTextureUpdates, perfTextureBytes, perfTextureAgain;
+static std::atomic<bool> perfRenderClockSet, perfAicaClockSet;
+static clockid_t perfRenderClock, perfAicaClock;
+extern u32 bmStatCompiled, bmStatCacheResets;
+extern u64 bmStatCompileUs;
+extern float emulationLagMs;
+
+static u64 perfNowUs()
+{
+	return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+}
+
+static u64 perfCpuUs(clockid_t clock)
+{
+	timespec ts;
+	clock_gettime(clock, &ts);
+	return (u64)ts.tv_sec * 1000000 + ts.tv_nsec / 1000;
+}
+
+bool perfOn() {
+	return perfEnabled;
+}
+
+unsigned long long perfNow() {
+	return perfEnabled ? perfNowUs() : 0;
+}
+
+void perfWaited(unsigned long long start)
+{
+	if (perfEnabled)
+		perfWaitUs.fetch_add(perfNowUs() - start, std::memory_order_relaxed);
+}
+
+void perfRendered(unsigned long long start, bool toTexture)
+{
+	if (!perfEnabled)
+		return;
+	if (!perfRenderClockSet.load(std::memory_order_acquire))
+	{
+		pthread_getcpuclockid(pthread_self(), &perfRenderClock);
+		perfRenderClockSet.store(true, std::memory_order_release);
+	}
+	if (toTexture)
+		perfTextureRenders.fetch_add(1, std::memory_order_relaxed);
+	const u64 took = perfNowUs() - start;
+	perfRenderUs.fetch_add(took, std::memory_order_relaxed);
+	u64 max = perfRenderMaxUs.load(std::memory_order_relaxed);
+	while (took > max && !perfRenderMaxUs.compare_exchange_weak(max, took, std::memory_order_relaxed))
+		;
+	perfRenders.fetch_add(1, std::memory_order_relaxed);
+}
+
+void perfTextureUpdated(u32 size)
+{
+	if (!perfEnabled)
+		return;
+	perfTextureUpdates.fetch_add(1, std::memory_order_relaxed);
+	perfTextureBytes.fetch_add(size, std::memory_order_relaxed);
+}
+
+void perfTextureRecurring()
+{
+	if (perfEnabled)
+		perfTextureAgain.fetch_add(1, std::memory_order_relaxed);
+}
+
+void perfAicaThread()
+{
+	if (!perfEnabled)
+		return;
+	pthread_getcpuclockid(pthread_self(), &perfAicaClock);
+	perfAicaClockSet.store(true, std::memory_order_release);
+}
+
+static u32 Frame_Cycles;
+
+// each emulated vblank (SH4 thread): a line every second of real time
+static void perfVblank()
+{
+	static u64 start, windowStart, emuCpu, renderCpu, aicaCpu, lastVblank, frameMaxUs;
+	static u32 vblanks, frames, skipped, framesOver;
+	extern u32 fskip;
+	const u64 now = perfNowUs();
+	if (lastVblank != 0)
+	{
+		// the wall time between two emulated vblanks: over 17.5 ms (a frame is 16.68), that frame was late
+		const u64 frame = now - lastVblank;
+		frameMaxUs = std::max(frameMaxUs, frame);
+		if (frame > 17500)
+			framesOver++;
+	}
+	lastVblank = now;
+	const bool renderClock = perfRenderClockSet.load(std::memory_order_acquire);
+	const bool aicaClock = perfAicaClockSet.load(std::memory_order_acquire);
+	if (start == 0)
+	{
+		start = windowStart = now;
+		frames = FrameCount;
+		skipped = fskip;
+		perfWaitUs = 0;
+		emuCpu = perfCpuUs(CLOCK_THREAD_CPUTIME_ID);
+		renderCpu = renderClock ? perfCpuUs(perfRenderClock) : 0;
+		aicaCpu = aicaClock ? perfCpuUs(perfAicaClock) : 0;
+		return;
+	}
+	vblanks++;
+	if (now - windowStart < 1000000)
+		return;
+	const double secs = (now - windowStart) / 1e6;
+	const double window = (double)(now - windowStart);
+	const double nominal = (double)SH4_MAIN_CLOCK / Frame_Cycles;
+	const u64 emuNow = perfCpuUs(CLOCK_THREAD_CPUTIME_ID);
+	const u64 renderNow = renderClock ? perfCpuUs(perfRenderClock) : 0;
+	const u64 aicaNow = aicaClock ? perfCpuUs(perfAicaClock) : 0;
+	const u32 renders = perfRenders.exchange(0);
+	const u64 renderUs = perfRenderUs.exchange(0);
+	NOTICE_LOG(COMMON, "Flycastrophe perf %6.1f s: vblank %5.2f/s %5.1f%% lag %4.1f ms | rendered %5.2f/s skipped %5.2f/s"
+			" | emu cpu %3.0f%% waits %3.0f%% | render cpu %3.0f%% | aica cpu %3.0f%%"
+			" | renders %u (to textures %u) %.1f ms max %.1f | textures updated %u (%u KB, seen before %u)"
+			" | compiled %u in %.1f ms resets %u | wait turns skipped %u asleep %.1f%% | mmu flushes %u+%u misses %u"
+			" | emu frames late %u max %.1f ms",
+			(now - start) / 1e6, vblanks / secs, vblanks / secs / nominal * 100.0, emulationLagMs,
+			(FrameCount - frames) / secs, (fskip - skipped) / secs,
+			(emuNow - emuCpu) / window * 100.0, perfWaitUs.exchange(0) / window * 100.0,
+			renderCpu != 0 ? (renderNow - renderCpu) / window * 100.0 : 0.0,
+			aicaCpu != 0 ? (aicaNow - aicaCpu) / window * 100.0 : 0.0,
+			renders, perfTextureRenders.exchange(0), renders ? renderUs / 1000.0 / renders : 0.0, perfRenderMaxUs.exchange(0) / 1000.0,
+			perfTextureUpdates.exchange(0), perfTextureBytes.exchange(0) / 1024, perfTextureAgain.exchange(0),
+			bmStatCompiled, bmStatCompileUs / 1000.0, bmStatCacheResets,
+			deadcast::waitLoopTurnsSkipped,
+			deadcast::sleepTimeslices * (double)SH4_TIMESLICE / ((double)vblanks * Frame_Cycles) * 100.0,
+			mmuStatFullFlushes, mmuStatPartialFlushes, mmuStatMisses,
+			framesOver, frameMaxUs / 1000.0);
+	windowStart = now;
+	vblanks = 0;
+	frames = FrameCount;
+	skipped = fskip;
+	emuCpu = emuNow;
+	renderCpu = renderNow;
+	aicaCpu = aicaNow;
+	framesOver = 0;
+	frameMaxUs = 0;
+	bmStatCompiled = bmStatCacheResets = 0;
+	bmStatCompileUs = 0;
+	deadcast::waitLoopTurnsSkipped = 0;
+	deadcast::sleepTimeslices = 0;
+	mmuStatFullFlushes = mmuStatPartialFlushes = mmuStatMisses = 0;
+}
 
 static u32 clc_pvr_scanline;
 static u32 pvr_numscanlines = 512;
@@ -29,7 +188,6 @@ static u64 last_fps;
 // 27 mhz pixel clock
 constexpr int PIXEL_CLOCK = 27 * 1000 * 1000;
 static u32 Line_Cycles;
-static u32 Frame_Cycles;
 int render_end_schid;
 int vblank_schid;
 
@@ -166,6 +324,8 @@ static int spg_line_sched(int tag, int cycles, int jitter, void *arg)
 				SPG_STATUS.fieldnum = 0;
 
 			rend_vblank();
+			if (perfEnabled)
+				perfVblank();
 
 			u64 now = getTimeMs();
 			cpu_time_idx = (cpu_time_idx + 1) % cpu_cycles.size();
