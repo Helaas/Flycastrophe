@@ -44,9 +44,9 @@ done), **skipped** (will not be taken, with the reason).
 | # | Topic | Deadcast source | Option / switch | Status |
 | --- | --- | --- | --- | --- |
 | 00 | Bootstrap: `FLYCASTROPHE` switch, own VMU folder, GL4 out | none | `-DFLYCASTROPHE=ON` | done |
-| 01 | Perf counters (core only) | `3e3b549579` profiler, `110019952a`, `12fe9e85fe`, `117a12188d`, `055a8c6701`, `6c0c3f68a6` | env `FLYCASTROPHE_PERF=1` | pending |
+| 01 | Perf counters (core only) | `3e3b549579` profiler, `110019952a`, `12fe9e85fe`, `117a12188d`, `055a8c6701`, `6c0c3f68a6` | env `FLYCASTROPHE_PERF=1` | adapted: the perf line's names and format, the part that applies under RetroArch (emulated vblanks, lag, renders, the SH4, render and AICA threads' CPU, waits, texture updates and repeats, compiles, wait loops, MMU); no presenter, GPU, audio backend or trace parts; Deadcast's sampling profiler came with row 04 |
 | 02 | Texture DMA unprotect | `9cda9c4082` | none | ported |
-| 02b | CHD read-ahead | `3e3b549579` chd.cpp | none | pending: neutral on still scenes, possibly slower on a moving replay (a non-sequential read waits for the prefetch in flight); retest with a streaming-heavy measurement |
+| 02b | CHD read-ahead | `3e3b549579` chd.cpp | none | skipped: disc reads take under 1% of a thread on the MLP1. Timed per read: Crazy Taxi's city streaming 606 ms without, 670 ms with (one 26 ms wait on a prefetch in flight); SA2 and CD audio (Sega Rally 2) reads halved to quartered, but they were 3-5 ms a second |
 | 03 | AICA thread (netplay journal stripped) | `3e3b549579`, `3299519ff9`, AICA half of `d1be34d557`, `52cfec5` | `reicast_fcr_threaded_audio` (on) | ported; GD-ROM sector reads locked (`imgread/common.cpp`), since CD audio reads the disc from the AICA thread; Flycastrophe stops the thread as a game unloads (RetroArch unloads the core without `term()`) |
 | 04 | 4 GB memory window + fault rewrite | `3e3b549579` addrspace, posix_vmem, virtmem, sh4_mmr | none | ported with 05, 06, 07, 13 as one dynarec unit (SA2 +23.2%, Crazy Taxi +2.0%) |
 | 05 | Pinned-register dynarec, thunks, inline IRQ, SQ to TA direct | `3e3b549579`, `d1be34d557`, `f42955105f` | none (Deadcast has no switch) | ported (dynarec unit, row 04) |

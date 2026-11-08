@@ -294,6 +294,7 @@ private:
 			retro_resize_renderer(taContext->rend.framebufferWidth, taContext->rend.framebufferHeight,
 					getOutputFramebufferAspectRatio());
 #endif
+		const auto renderStart = perfNow();
 		const bool offThread = renderer->parsesOffThread();
 		if (offThread)
 			parseWait();
@@ -336,6 +337,7 @@ private:
 			renderEnd.Set();
 		else if (config::DelayFrameSwapping && fb_w_cur == FB_R_SOF1)
 			present();
+		perfRendered(renderStart, !renderToScreen);
 
 		//clear up & free data ..
 		if (offThread)
@@ -701,7 +703,11 @@ int rend_end_render(int tag, int cycles, int jitter, void *arg)
 		asic_RaiseInterrupt(holly_RENDER_DONE_vd);
 	}
 	if (pend_rend && config::ThreadedRendering)
+	{
+		const auto waitStart = perfNow();
 		renderEnd.Wait();
+		perfWaited(waitStart);
+	}
 
 	return 0;
 }
