@@ -153,6 +153,20 @@ public:
 		glTexParameteri(target, pname, param);
 	}
 
+	// Flycastrophe (FlyCast Fast UMRK): anisotropy cached like the filters, instead of a GL call per textured polygon
+	// (pname compared by value: GL_TEXTURE_MAX_ANISOTROPY, 0x84FE, is defined in gles.h, after this header)
+	void TexParameterf(GLenum target,  GLenum pname,  GLfloat param)
+	{
+		if (target == GL_TEXTURE_2D && !_disable_cache && pname == 0x84FE)
+		{
+			TextureParameters &cur_params = _texture_params[_texture];
+			if (cur_params._max_anisotropy == param)
+				return;
+			cur_params._max_anisotropy = param;
+		}
+		glTexParameterf(target, pname, param);
+	}
+
 	GLuint GenTexture() {
 		if (_texture_cache_size == 0) {
 			_texture_cache_size = TEXTURE_ID_CACHE_SIZE;
@@ -220,12 +234,13 @@ public:
 private:
 	class TextureParameters {
 	public:
-		TextureParameters() : _min_filter(0xFFFFFFFFu), _mag_filter(0xFFFFFFFFu), _wrap_s(0xFFFFFFFFu), _wrap_t(0xFFFFFFFFu) {}
+		TextureParameters() : _min_filter(0xFFFFFFFFu), _mag_filter(0xFFFFFFFFu), _wrap_s(0xFFFFFFFFu), _wrap_t(0xFFFFFFFFu), _max_anisotropy(-1.f) {}
 
 		GLenum _min_filter;
 		GLenum _mag_filter;
 		GLenum _wrap_s;
 		GLenum _wrap_t;
+		GLfloat _max_anisotropy;
 	};
 
 	void setCapability(GLenum cap, GLboolean value) {

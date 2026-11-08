@@ -622,6 +622,8 @@ void findGLVersion()
 }
 
 struct ShaderUniforms_t ShaderUniforms;
+// starts at 1 so a new program (uniform_serial 0) is stale; only ever advanced (gles.h)
+u64 shader_uniform_serial = 1;
 
 GLuint gl_CompileShader(const char* shader,GLuint type)
 {
@@ -756,6 +758,15 @@ PipelineShader *GetProgram(bool cp_AlphaTest, bool pp_InsideClipping,
 		shader->dithering = dithering;
 		CompilePipelineShader(shader);
 	}
+	// Flycastrophe (FlyCast Fast UMRK): the common uniforms, once per frame, for the programs the frame uses
+	// (RenderFrame used to bind and update every program each frame)
+	if (shader->commonUniformsStale())
+	{
+		glcache.UseProgram(shader->program);
+		ShaderUniforms.Set(shader);
+		resetN2UniformCache(shader);
+		shader->markCommonUniformsCurrent();
+	}
 
 	return shader;
 }
@@ -868,6 +879,7 @@ bool CompilePipelineShader(PipelineShader* s)
 		initN2Uniforms(s);
 
 	ShaderUniforms.Set(s);
+	s->markCommonUniformsCurrent();
 
 	return true;
 }
@@ -1194,12 +1206,8 @@ bool OpenGLRenderer::renderFrame(int width, int height)
 		ShaderUniforms.dithering = false;
 	}
 
-	for (auto& it : gl.shaders)
-	{
-		glcache.UseProgram(it.second.program);
-		ShaderUniforms.Set(&it.second);
-		resetN2UniformCache(&it.second);
-	}
+	// Flycastrophe (FlyCast Fast UMRK): every program stale; GetProgram updates each one the frame uses
+	shader_uniform_serial++;
 #ifndef GLES2
 	if (gl.prim_restart_fixed_supported)
 		glEnable(GL_PRIMITIVE_RESTART_FIXED_INDEX);
