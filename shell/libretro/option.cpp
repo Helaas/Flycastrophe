@@ -107,7 +107,8 @@ Option<bool> ParseThread(CORE_OPTION_NAME "_fcr_parse_thread", true);
 Option<bool> ParseThread("", false);
 #endif
 Option<bool> VblankPacing(CORE_OPTION_NAME "_vblank_pacing");
-Option<int> AnisotropicFiltering(CORE_OPTION_NAME "_anisotropic_filtering");
+// Flycastrophe: by value ("4" is 4x), not by its position in the list (which made "4" 2x and "2" off)
+IntOption AnisotropicFiltering(CORE_OPTION_NAME "_anisotropic_filtering");
 Option<int> TextureFiltering(CORE_OPTION_NAME "_texture_filtering");
 Option<bool> PowerVR2Filter(CORE_OPTION_NAME "_pvr2_filtering");
 Option<int64_t> PixelBufferSize("", 512_MB);
