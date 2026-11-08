@@ -1,0 +1,125 @@
+lifecycle: device b1622a9e81b735ad, card /mnt/sdcard
+prior dev-catalog-url: <none>; prior DC core choice: <default>
+ok   feed reachable from device
+/Volumes/Storage/UMRK/.worktrees/jawaka-pakrat-smoke/build/mlp1/bin/jawaka-pakrat-smoke: 1 file pushed, 0 skipped. 223.3 MB/s (392192 bytes in 0.002s)
+ok   pushed jawaka-pakrat-smoke
+=== baseline ===
+lifecycle: Flycastrophe is installed from an earlier run: uninstalling it first
+Content catalog: reused gen-5b7d9d7496d8c90031f708d04ee3866a4b770b5f83aa92b6fff57ef61a1498e4 (scan)
+RetroArch discovery: scanning with 46 systems / 79 cores
+RetroArch discovery: skipping unsupported ROM folder COLECO (COLECO has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VB (VB has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VECTREX (VECTREX has no packaged launch target)
+RetroArch discovery: skipping unknown ROM folder SCUMMVM
+catalog=gen-5b7d9d7496d8c90031f708d04ee3866a4b770b5f83aa92b6fff57ef61a1498e4
+pak dir: absent
+DC default+alternates: flycast_standalone flycast,flycast_fast_umrk,km_flycast_xtreme
+NAOMI default+alternates: flycast_standalone flycast,flycast_fast_umrk,km_flycast_xtreme
+ATOMISWAVE default+alternates: flycast_standalone flycast,flycast_fast_umrk,km_flycast_xtreme
+ok   baseline: no Flycastrophe
+=== install ===
+Content catalog: published gen-219af35df11561433f39d69579f8c400009d464a36a010fae969bcb7aacc12e8 (scan)
+RetroArch discovery: scanning with 46 systems / 80 cores
+RetroArch discovery: skipping unsupported ROM folder COLECO (COLECO has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VB (VB has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VECTREX (VECTREX has no packaged launch target)
+RetroArch discovery: skipping unknown ROM folder SCUMMVM
+Content catalog: reused gen-219af35df11561433f39d69579f8c400009d464a36a010fae969bcb7aacc12e8 (scan)
+RetroArch discovery: scanning with 46 systems / 80 cores
+RetroArch discovery: skipping unsupported ROM folder COLECO (COLECO has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VB (VB has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VECTREX (VECTREX has no packaged launch target)
+RetroArch discovery: skipping unknown ROM folder SCUMMVM
+download: http://127.0.0.1:8765/pakrat/v1/artifacts/org.helaas.flycastrophe/0.1.0/Flycastrophe.mlp1.pak.zip
+rescan: games=2035 systems=28 apps=11
+rescan: games=2035 systems=28 apps=11
+daemon-scan: {"type":"ok","action":"scan-library started","message":"scan-library started","title_hints_accepted":0}
+installed: org.helaas.flycastrophe 0.1.0 -> Apps/mlp1/Flycastrophe.pak
+outcome: kind=app refusal=none themes_changed=0 theme_updated=0 selection_cleared=0 theme_dir=- reasons=- error=-
+/mnt/sdcard/Apps/mlp1/Flycastrophe.pak:
+total 256
+drwxr-xr-x  4 root root 32768 Nov  8 23:09 .
+drwxr-xr-x 16 root root 32768 Nov  8 23:09 ..
+-rwxr-xr-x  1 root root   195 Nov  8 23:09 .pakrat-commit
+-rwxr-xr-x  1 root root 18092 Nov  9  2026 LICENSE-CORE.txt
+-rwxr-xr-x  1 root root   912 Nov  9  2026 LICENSES.md
+drwxr-xr-x  2 root root 32768 Nov  8 23:09 cores
+drwxr-xr-x  2 root root 32768 Nov  8 23:09 info
+-rwxr-xr-x  1 root root   854 Nov  9  2026 pak.json
+
+/mnt/sdcard/Apps/mlp1/Flycastrophe.pak/cores:
+total 28960
+drwxr-xr-x 2 root root    32768 Nov  8 23:09 .
+drwxr-xr-x 4 root root    32768 Nov  8 23:09 ..
+-rwxr-xr-x 1 root root 29586728 Nov  9  2026 flycastrophe_libretro.so
+
+/mnt/sdcard/Apps/mlp1/Flycastrophe.pak/info:
+total 96
+drwxr-xr-x 2 root root 32768 Nov  8 23:09 .
+drwxr-xr-x 4 root root 32768 Nov  8 23:09 ..
+-rwxr-xr-x 1 root root  2029 Nov  9  2026 flycastrophe_libretro.info
+DC: flycast_standalone flycast,flycast_fast_umrk,km_flycast_xtreme,flycastrophe
+NAOMI: flycast_standalone flycast,flycast_fast_umrk,km_flycast_xtreme,flycastrophe
+ATOMISWAVE: flycast_standalone flycast,flycast_fast_umrk,km_flycast_xtreme,flycastrophe
+ok   install: core 077a9b914035a111251597a06978963f4ecdb179c51cab20b78af67c5ab54008, in the catalog and in the DC, NAOMI and Atomiswave pickers, no Apps entry
+=== reinstall ===
+Content catalog: reused gen-219af35df11561433f39d69579f8c400009d464a36a010fae969bcb7aacc12e8 (scan)
+RetroArch discovery: scanning with 46 systems / 80 cores
+RetroArch discovery: skipping unsupported ROM folder COLECO (COLECO has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VB (VB has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VECTREX (VECTREX has no packaged launch target)
+RetroArch discovery: skipping unknown ROM folder SCUMMVM
+Content catalog: reused gen-219af35df11561433f39d69579f8c400009d464a36a010fae969bcb7aacc12e8 (scan)
+RetroArch discovery: scanning with 46 systems / 80 cores
+RetroArch discovery: skipping unsupported ROM folder COLECO (COLECO has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VB (VB has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VECTREX (VECTREX has no packaged launch target)
+RetroArch discovery: skipping unknown ROM folder SCUMMVM
+download: http://127.0.0.1:8765/pakrat/v1/artifacts/org.helaas.flycastrophe/0.1.0/Flycastrophe.mlp1.pak.zip
+rescan: games=2035 systems=28 apps=11
+rescan: games=2035 systems=28 apps=11
+daemon-scan: {"type":"ok","action":"scan-library started","message":"scan-library started","title_hints_accepted":0}
+installed: org.helaas.flycastrophe 0.1.0 -> Apps/mlp1/Flycastrophe.pak
+outcome: kind=app refusal=none themes_changed=0 theme_updated=0 selection_cleared=0 theme_dir=- reasons=- error=-
+ok   reinstall idempotent
+=== picker persistence ===
+ok   DC choice of flycastrophe retained across rescan
+=== run the installed core (bench RetroArch config, no RetroAchievements login) ===
+/Volumes/Storage/UMRK/tmp/dc-core-bench/states/upstream-crazy-taxi.state: 1 file pushed, 0 skipped. 32.7 MB/s (10391763 bytes in 0.303s)
+ok   installed core ran Crazy Taxi from its state and quit cleanly
+=== uninstall ===
+Content catalog: reused gen-5b7d9d7496d8c90031f708d04ee3866a4b770b5f83aa92b6fff57ef61a1498e4 (scan)
+RetroArch discovery: scanning with 46 systems / 79 cores
+RetroArch discovery: skipping unsupported ROM folder COLECO (COLECO has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VB (VB has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VECTREX (VECTREX has no packaged launch target)
+RetroArch discovery: skipping unknown ROM folder SCUMMVM
+rescan: games=2035 systems=28 apps=11
+daemon-scan: {"type":"ok","action":"scan-library started","message":"scan-library started","title_hints_accepted":0}
+uninstalled: org.helaas.flycastrophe (userdata preserved)
+outcome: kind=app refusal=none themes_changed=0 theme_updated=0 selection_cleared=0 theme_dir=- reasons=- error=-
+DC: flycast_standalone flycast,flycast_fast_umrk,km_flycast_xtreme
+NAOMI: flycast_standalone flycast,flycast_fast_umrk,km_flycast_xtreme
+ATOMISWAVE: flycast_standalone flycast,flycast_fast_umrk,km_flycast_xtreme
+ok   uninstall: pak, ownership and pickers retracted; saved DC choice kept, DC default is flycast_standalone
+=== final: installed ===
+Content catalog: reused gen-219af35df11561433f39d69579f8c400009d464a36a010fae969bcb7aacc12e8 (scan)
+RetroArch discovery: scanning with 46 systems / 80 cores
+RetroArch discovery: skipping unsupported ROM folder COLECO (COLECO has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VB (VB has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VECTREX (VECTREX has no packaged launch target)
+RetroArch discovery: skipping unknown ROM folder SCUMMVM
+Content catalog: reused gen-219af35df11561433f39d69579f8c400009d464a36a010fae969bcb7aacc12e8 (scan)
+RetroArch discovery: scanning with 46 systems / 80 cores
+RetroArch discovery: skipping unsupported ROM folder COLECO (COLECO has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VB (VB has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VECTREX (VECTREX has no packaged launch target)
+RetroArch discovery: skipping unknown ROM folder SCUMMVM
+download: http://127.0.0.1:8765/pakrat/v1/artifacts/org.helaas.flycastrophe/0.1.0/Flycastrophe.mlp1.pak.zip
+rescan: games=2035 systems=28 apps=11
+rescan: games=2035 systems=28 apps=11
+daemon-scan: {"type":"ok","action":"scan-library started","message":"scan-library started","title_hints_accepted":0}
+installed: org.helaas.flycastrophe 0.1.0 -> Apps/mlp1/Flycastrophe.pak
+outcome: kind=app refusal=none themes_changed=0 theme_updated=0 selection_cleared=0 theme_dir=- reasons=- error=-
+ok   final state: Flycastrophe 0.1.0 installed from the feed
+=== done ===
