@@ -40,6 +40,8 @@ runs, frame times and audio underruns are in
 - A code cache on disk: the code a game ran is compiled again right after a state load, rather
   than during its first seconds.
 - Frame skipping when a game falls behind, so it keeps full speed and clean sound.
+- From Leaf's FlyCast Fast UMRK: fewer GL calls each frame (texture filters and anisotropy go through the
+  GL cache, and only the shaders a frame uses get their constants updated).
 
 Left out: Deadcast's Vulkan renderer work (Flycastrophe renders with GLES, which measured faster
 here), and everything specific to Deadcast's own program and to the TrimUI Brick.
@@ -57,7 +59,8 @@ Each speed change you might want to turn off has a core option, on by default:
 | Idle Loop Skip | Skips the wait loops of the games Flycastrophe knows. Turn it off if a game hangs or runs at the wrong speed. |
 | Auto Skip Frame | Set to Maximum: skips up to two frames in a row while a game is behind. |
 
-Transparency sorting defaults to per-strip, and per-pixel sorting isn't available. With
+Audio DSP and anisotropic filtering are off by default, as in Deadcast; turn the DSP on if a game's sound
+lacks its reverb. Transparency sorting defaults to per-strip, and per-pixel sorting isn't available. With
 `FLYCASTROPHE_PERF=1` in its environment, the core logs a line every second with its emulated
 speed, thread loads and frame skips.
 
