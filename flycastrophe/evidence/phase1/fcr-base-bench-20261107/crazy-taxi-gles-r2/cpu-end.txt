@@ -1,0 +1,14 @@
+uptime 16202.32
+cpu  680378 0 138268 5568310 1155 0 33761 0 0 0
+weston 47827 30778
+thread 6370 retroarch 4484 124
+thread 6377 retroarch 341 4
+thread 6379 mali-mem-purge 2 1
+thread 6380 mali-utility-wo 0 0
+thread 6381 mali-utility-wo 0 0
+thread 6382 mali-utility-wo 0 0
+thread 6383 mali-utility-wo 0 0
+thread 6384 mali-cmar-backe 221 260
+thread 6387 mali-compiler 22 0
+thread 6394 threaded-ml 45 31
+thread 6403 Flycast-emu 4763 48

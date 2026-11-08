@@ -1,0 +1,18 @@
+# Crazy Taxi forward drive.
+# The savestate loads with the HUD gear badge on "R" (reverse). One press of
+# "B" shifts it to "D" and it stays there (the shift is idempotent, so it is
+# safe inside this loop). The accelerator is the "RT" trigger. The old script
+# held RT alone, so the taxi reversed the whole run and backed the camera into
+# walls; that is what the correctness gate had been flagging.
+B 200
+sleep 0.3
+RT 4000
+sleep 0.2
+RT+LEFT 500
+sleep 0.2
+RT 3000
+sleep 0.2
+RT+RIGHT 500
+sleep 0.2
+RT 4000
+sleep 0.2

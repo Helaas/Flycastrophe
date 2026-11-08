@@ -1,0 +1,3 @@
+[libretro INFO] [BOOT] Game ID is [VIRTUA FIGHTER 4 JAPAN]
+[libretro INFO] [BOOT] Game ID is [VIRTUA FIGHTER 4 JAPAN]
+[INFO] [Core] Unloading game...

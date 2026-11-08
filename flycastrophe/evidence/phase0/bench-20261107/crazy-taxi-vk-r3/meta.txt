@@ -1,0 +1,16 @@
+arm=vk
+game=crazy-taxi
+round=3
+rom=/media/sdcard1/Roms/DC/Crazy Taxi (USA).chd
+core_sha256=6ac785f80f5f1ebdad5af0ea5a13ba7baa87fe5a60337697c13f38e4382bcf0b
+ra_bin=/userdata/umrk-dev/flycastrophe/bin/retroarch
+extra_env=. /userdata/umrk-dev/flycastrophe/env.sh
+ra_sha256=e32307a83b77e89cce33539dbc46e63d25d29bd5b2ff325bbdba11e2527d79fd
+state_sha256=f2277910af6adb084c015bc0985133eb21d22687f5e6b3443a6d3fa3b1dc5290
+warmup_s=15
+seconds=60
+start_utc=2026-11-07T17:43:50Z
+temp_start=55555
+startup_s=1.53
+result=ok
+temp_end=66250

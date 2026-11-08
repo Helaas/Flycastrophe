@@ -1,0 +1,58 @@
+Subject: Answer the preferred HW render with a built driver
+
+Leaf writes video_driver "gl" for its GLES RetroArch, and this Vulkan-only
+build reads the same file. RetroArch already falls back to its first built
+driver when the configured one is missing, but GET_PREFERRED_HW_RENDER and
+the SET_HW_RENDER check still answered from the configured name, so a core
+offering several renderers was told to use one that cannot run.
+---
+diff --git a/runloop.c b/runloop.c
+index 0f6c840..dde4af4 100644
+--- a/runloop.c
++++ b/runloop.c
+@@ -721,6 +721,26 @@ static bool runloop_clear_all_thread_waits(
+    return true;
+ }
+ 
++/* The configured video driver may name one this build does not have: a
++ * frontend that shares its config with another RetroArch (Leaf writes "gl"
++ * for its GLES build) hands a Vulkan-only build the same file. RetroArch
++ * already falls back to its first built driver when it starts the video
++ * driver; answer the core's questions with that same driver, so a core that
++ * supports several renderers picks the one that will actually run. */
++static const char *runloop_built_video_driver(const char *configured)
++{
++   if (     !string_is_empty(configured)
++         && driver_find_index("video_driver", configured) >= 0)
++      return configured;
++   if (video_drivers[0])
++   {
++      RARCH_LOG("[Environ] Video driver \"%s\" is not built in, using \"%s\".\n",
++            configured ? configured : "", video_drivers[0]->ident);
++      return video_drivers[0]->ident;
++   }
++   return configured;
++}
++
+ static bool dynamic_verify_hw_context(
+       const char *video_ident,
+       bool driver_switch_enable,
+@@ -2227,7 +2247,8 @@ bool runloop_environment_cb(unsigned cmd, void *data)
+       {
+          unsigned *cb = (unsigned*)data;
+          settings_t *settings          = config_get_ptr();
+-         const char *video_driver_name = settings->arrays.video_driver;
++         const char *video_driver_name = runloop_built_video_driver(
++               settings->arrays.video_driver);
+          bool driver_switch_enable     = settings->bools.driver_switch_enable;
+ 
+          RARCH_LOG("[Environ] GET_PREFERRED_HW_RENDER, video driver: \"%s\"...\n", video_driver_name);
+@@ -2298,7 +2319,7 @@ bool runloop_environment_cb(unsigned cmd, void *data)
+          }
+ 
+          if (!dynamic_verify_hw_context(
+-                  settings->arrays.video_driver,
++                  runloop_built_video_driver(settings->arrays.video_driver),
+                   settings->bools.driver_switch_enable,
+                   cb->context_type, cb->version_minor, cb->version_major))
+          {

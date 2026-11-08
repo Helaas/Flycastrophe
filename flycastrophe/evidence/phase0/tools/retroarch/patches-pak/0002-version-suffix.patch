@@ -1,0 +1,31 @@
+Subject: Suffix the VERSION reply
+
+Leaf promotes a session's settings into its shared RetroArch config only when
+VERSION matches its own RetroArch. This build differs (Vulkan only), so the
+reply reads 1.22.2-flycastrophe. Only the command reply changes.
+---
+diff --git a/command.c b/command.c
+index f1b8c9c..63d6338 100644
+--- a/command.c
++++ b/command.c
+@@ -1501,10 +1501,19 @@ bool command_write_ram(command_t *cmd, const char *arg)
+ }
+ #endif
+ 
++/* Leaf promotes a session's settings into its shared RetroArch configuration
++ * only when this reply matches its own RetroArch's version. This build is not
++ * that RetroArch (Vulkan only, no GL), so it says so here and nowhere else:
++ * the menu, logs and the RetroAchievements user agent keep the plain version. */
++#ifndef FLYCASTROPHE_VERSION_SUFFIX
++#define FLYCASTROPHE_VERSION_SUFFIX "-flycastrophe"
++#endif
++
+ bool command_version(command_t *cmd, const char* arg)
+ {
+    char reply[256];
+-   size_t  _len  = strlcpy(reply, PACKAGE_VERSION, sizeof(reply));
++   size_t  _len  = strlcpy(reply,
++         PACKAGE_VERSION FLYCASTROPHE_VERSION_SUFFIX, sizeof(reply));
+    reply[  _len] = '\n';
+    reply[++_len] = '\0';
+    cmd->replier(cmd, reply, _len);

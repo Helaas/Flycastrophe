@@ -1,0 +1,3 @@
+[libretro INFO] [BOOT] Game ID is [METAL SLUG 6]
+[libretro INFO] [BOOT] Game ID is [METAL SLUG 6]
+[INFO] [Core] Unloading game...

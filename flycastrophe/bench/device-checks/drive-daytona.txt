@@ -1,0 +1,3 @@
+# Daytona USA 2001: through the 50/60 Hz prompt, memory card and menus with A
+A 120
+sleep 1.5

@@ -1,0 +1,3 @@
+[libretro INFO] [BOOT] Game ID is [CAPCOM VS SNK  JAPAN]
+[libretro INFO] [BOOT] Game ID is [CAPCOM VS SNK  JAPAN]
+[INFO] [Core] Unloading game...

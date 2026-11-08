@@ -1,0 +1,7 @@
+[libretro INFO] [GDROM] fcrread data calls 17 sectors 213 ms 18.1 max 2.6 | cdda calls 0 ms 0.0 max 0.0
+[libretro INFO] [GDROM] fcrread data calls 19 sectors 264 ms 16.5 max 2.4 | cdda calls 0 ms 0.0 max 0.0
+[libretro INFO] [GDROM] fcrread data calls 19 sectors 264 ms 18.5 max 2.8 | cdda calls 0 ms 0.0 max 0.0
+[libretro INFO] [GDROM] fcrread data calls 16 sectors 226 ms 18.0 max 2.2 | cdda calls 0 ms 0.0 max 0.0
+[libretro INFO] [GDROM] fcrread data calls 15 sectors 211 ms 20.4 max 2.6 | cdda calls 0 ms 0.0 max 0.0
+[libretro INFO] [GDROM] fcrread data calls 14 sectors 192 ms 13.7 max 2.4 | cdda calls 0 ms 0.0 max 0.0
+[libretro INFO] [GDROM] fcrread data calls 23 sectors 314 ms 50.0 max 8.9 | cdda calls 0 ms 0.0 max 0.0

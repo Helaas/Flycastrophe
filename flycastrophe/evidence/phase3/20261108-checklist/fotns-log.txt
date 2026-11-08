@@ -1,0 +1,3 @@
+[libretro INFO] [BOOT] Game ID is [HOKUTO NO KEN]
+[libretro INFO] [BOOT] Game ID is [HOKUTO NO KEN]
+[INFO] [Core] Unloading game...

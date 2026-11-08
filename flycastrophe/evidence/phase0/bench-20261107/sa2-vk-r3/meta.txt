@@ -1,0 +1,16 @@
+arm=vk
+game=sa2
+round=3
+rom=/mnt/sdcard/Roms/DC/Sonic Adventure 2 (Europe) (En,Ja,Fr,De,Es).chd
+core_sha256=6ac785f80f5f1ebdad5af0ea5a13ba7baa87fe5a60337697c13f38e4382bcf0b
+ra_bin=/userdata/umrk-dev/flycastrophe/bin/retroarch
+extra_env=. /userdata/umrk-dev/flycastrophe/env.sh
+ra_sha256=e32307a83b77e89cce33539dbc46e63d25d29bd5b2ff325bbdba11e2527d79fd
+state_sha256=a2ce19d02300f61646d4a9f5de0262f816586d9ef17b9289ed59b983a0cf66fe
+warmup_s=15
+seconds=60
+start_utc=2026-11-07T17:47:06Z
+temp_start=56666
+startup_s=2.33
+result=ok
+temp_end=66875

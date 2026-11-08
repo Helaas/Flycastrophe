@@ -1,0 +1,7 @@
+[libretro INFO] [PVR] fcrdbg calls 300 skips 192 lag 2.7 maxLag 50.0 auto 2
+[libretro INFO] [PVR] fcrdbg calls 600 skips 105 lag 2.3 maxLag 38.9 auto 2
+[libretro INFO] [PVR] fcrdbg calls 900 skips 19 lag -5.9 maxLag 27.2 auto 2
+[libretro INFO] [PVR] fcrdbg calls 1200 skips 0 lag -12.7 maxLag 0.0 auto 2
+[libretro INFO] [PVR] fcrdbg calls 1500 skips 0 lag -20.4 maxLag 0.0 auto 2
+[libretro INFO] [PVR] fcrdbg calls 1800 skips 0 lag -28.0 maxLag 0.0 auto 2
+[libretro INFO] [PVR] fcrdbg calls 2100 skips 4 lag -10.4 maxLag 38.3 auto 2
