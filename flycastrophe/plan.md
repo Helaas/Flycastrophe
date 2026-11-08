@@ -8,7 +8,7 @@ is in [evidence/](evidence/), the scripts in [bench/](bench/README.md).
 > GLES RetroArch at the 60 fps cap and 1.1-2.1% slower uncapped; the SH4 emulator thread is the
 > limit in both. By decision 2 the user reassessed and chose **GLES in Leaf's own RetroArch**.
 > Phase 0 results and why: [Phase 0 outcome](#phase-0-outcome-vulkan-gate-done) below and
-> [flycastrophe-evidence/phase0/README.md](evidence/phase0/README.md).
+> [evidence/phase0/README.md](evidence/phase0/README.md).
 > Phase 1 started 2026-11-07: `Helaas/Flycastrophe` forked (default branch `main` at `7adbf3c`,
 > upstream workflows disabled). PR 00 is Helaas/Flycastrophe#1; `fcr-base` matches the stock core
 > uncapped (+1.4% Crazy Taxi, +3.9% SA2; `flycastrophe-evidence/phase1/`). `Flycastrophe-pak` is
@@ -33,7 +33,7 @@ is in [evidence/](evidence/), the scripts in [bench/](bench/README.md).
 > FlyCast Fast UMRK 35.0/58.2); uncapped Crazy Taxi 71.6 vs 58.9 vs 48.5 (same scene), SA2 91.4 vs
 > 61.4 vs Leaf's Flycast (FlyCast Fast UMRK's 2022 state is another scene; the 2026 cores refuse
 > 2022 states). Boot checklist: all 17 games boot and exit cleanly; hands-on play still to do. Results:
-> [flycastrophe-evidence/phase2/README.md](evidence/phase2/README.md).
+> [evidence/phase2/README.md](evidence/phase2/README.md).
 
 ## Context
 
@@ -101,7 +101,7 @@ pak version `0.1.0`; `min_leaf_version` `0.14.0` (current stable). Option prefix
 
 ## Phase 0 outcome (Vulkan gate, done)
 
-Full record: [flycastrophe-evidence/phase0/README.md](evidence/phase0/README.md),
+Full record: [evidence/phase0/README.md](evidence/phase0/README.md),
 raw runs in `bench-20261107/` and `bench-20261107-uncapped/` beside it.
 
 1. **No Mali Vulkan stack on the MLP1 offers `VK_KHR_wayland_surface`.** The system WSI layer is
