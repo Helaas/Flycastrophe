@@ -28,6 +28,10 @@ is in [evidence/](evidence/), the scripts in [bench/](bench/README.md).
 > core sha256 `4a22ad60…` from two clean local builds and CI. Pak Rat device pass done the same day
 > (install, reinstall, pickers, uninstall, recovery; left installed from a local feed). Next: hands-on play,
 > then a release only on the user's go. Plan, evidence and bench moved into this repository's `flycastrophe/`.
+> Later 2026-11-08: a code cache crash found with upstream issues' savestates (stale block list, RetroArch
+> aborted on a state load) fixed in #16; the pak repinned to `7c96a64` (Helaas/Flycastrophe-pak#3, core
+> `d15c5988…`, two clean builds and CI agree) and reinstalled on the card through Pak Rat
+> (`evidence/phase3/20261108-pakrat-update/`).
 > Release bar run 2026-11-08 ([phase3](evidence/phase3/README.md)): with audio on,
 > Flycastrophe holds 60 fps on both games with the lowest frame-time p95 (Leaf's Flycast 58.5/59.9,
 > FlyCast Fast UMRK 35.0/58.2); uncapped Crazy Taxi 71.6 vs 58.9 vs 48.5 (same scene), SA2 91.4 vs
