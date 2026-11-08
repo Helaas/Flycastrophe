@@ -45,6 +45,10 @@
 
 void DrawStrips();
 
+// Flycastrophe (FlyCast Fast UMRK): the common uniforms' generation, advanced once per RenderFrame after every
+// common ShaderUniforms value is prepared. A program whose uniform_serial equals it is up to date.
+extern u64 shader_uniform_serial;
+
 struct PipelineShader
 {
 	GLuint program;
@@ -118,6 +122,11 @@ struct PipelineShader
 	bool naomi2;
 	bool divPosZ;
 	bool dithering;
+
+	// Flycastrophe: the last shader_uniform_serial whose common uniforms this program has; 0 is never
+	u64 uniform_serial = 0;
+	bool commonUniformsStale() const { return uniform_serial != shader_uniform_serial; }
+	void markCommonUniformsCurrent() { uniform_serial = shader_uniform_serial; }
 };
 
 class GlBuffer

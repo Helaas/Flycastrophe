@@ -224,7 +224,11 @@ void SetGPState(const PolyParam* gp,u32 cflip=0)
 		{
 			//bilinear filtering
 			//PowerVR supports also trilinear via two passes, but we ignore that for now
-			glcache.TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mipmapped  && Type != ListType_Punch_Through ? GL_LINEAR_MIPMAP_NEAREST : GL_LINEAR);
+			// Flycastrophe (FlyCast Fast UMRK): anisotropy wants the trilinear minification filter (below);
+			// chosen here in one call rather than set and then set again
+			const bool anisotropic = gl.max_anisotropy > 1.f && config::AnisotropicFiltering > 1;
+			glcache.TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, mipmapped  && Type != ListType_Punch_Through
+					? (anisotropic ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR_MIPMAP_NEAREST) : GL_LINEAR);
 			glcache.TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		}
 
@@ -236,15 +240,10 @@ void SetGPState(const PolyParam* gp,u32 cflip=0)
 		if (gl.max_anisotropy > 1.f)
 		{
 			if (config::AnisotropicFiltering > 1 && !nearest_filter)
-			{
-				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY,
+				glcache.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY,
 						std::min<float>(config::AnisotropicFiltering, gl.max_anisotropy));
-				// Set the recommended minification filter for best results
-				if (mipmapped && Type != ListType_Punch_Through)
-					glcache.TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			}
 			else
-				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY, 1.f);
+				glcache.TexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY, 1.f);
 		}
 	}
 
