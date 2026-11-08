@@ -110,6 +110,14 @@ void warm()
 	unsigned long long hash;
 	while (std::fscanf(f, "%x %x %x %llx", &vaddr, &fpscr, &size, &hash) == 4)
 	{
+		// Flycastrophe: the recorded code checked before it is decoded. Another save of the same game can
+		// hold other code or data there, and decoding that can throw (a branch in a delay slot), which
+		// nothing catches on the way out of a state load: RetroArch aborted.
+		if (hashOf(vaddr, size) != hash)
+		{
+			skipped++;
+			continue;
+		}
 		const bool done = rdv_Precompile(vaddr, fpscr, [size, hash](u32 addr, u32 codeSize) {
 			return codeSize == size && hashOf(addr, codeSize) == hash;
 		});

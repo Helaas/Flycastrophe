@@ -1,0 +1,123 @@
+== trystates/ecco-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Ecco the Dolphin - Defender of the Future (USA) (En,Fr,De,Es).state.auto", 28191580 bytes.
+[libretro INFO] [BOOT] Game ID is [MK-51033]
+[libretro INFO] [DYNAREC] Deadcast: 8844 blocks kept for the next state load (/userdata/dc-core-bench/saves/Ecco the Dolphin - Defender of the Future (USA) (En,Fr,De,Es).blocks)
+== trystates/evolution2-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Evolution 2 - Far Off Promise (USA).state.auto", 27925787 bytes.
+[libretro INFO] [BOOT] Game ID is [T1711N]
+[libretro INFO] [DYNAREC] Deadcast: 3179 blocks kept for the next state load (/userdata/dc-core-bench/saves/Evolution 2 - Far Off Promise (USA).blocks)
+== trystates/lol1033-en-retroarch.log
+  what():  Fatal: SH4 branch instruction in delay slot
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/L.O.L. - Lack of Love (Japan) (En) (v1.001).state.auto", 27920011 bytes.
+[libretro INFO] [BOOT] Game ID is [T2106M]
+terminate called after throwing an instance of 'FlycastException'
+== trystates/lol1033-ja-retroarch.log
+  what():  Fatal: SH4 branch instruction in delay slot
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/L.O.L. - Lack of Love (Japan).state.auto", 27920011 bytes.
+[libretro INFO] [BOOT] Game ID is [T2106M]
+terminate called after throwing an instance of 'FlycastException'
+== trystates/lol1610-en-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/L.O.L. - Lack of Love (Japan) (En) (v1.001).state.auto", 28153327 bytes.
+[libretro INFO] [BOOT] Game ID is [T2106M]
+[libretro INFO] [DYNAREC] Deadcast: 4170 blocks kept for the next state load (/userdata/dc-core-bench/saves/L.O.L. - Lack of Love (Japan) (En) (v1.001).blocks)
+== trystates/lol1610-ja-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/L.O.L. - Lack of Love (Japan).state.auto", 28153327 bytes.
+[libretro INFO] [BOOT] Game ID is [T2106M]
+[libretro INFO] [DYNAREC] Deadcast: 4170 blocks kept for the next state load (/userdata/dc-core-bench/saves/L.O.L. - Lack of Love (Japan).blocks)
+== trystates/pso2-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Phantasy Star Online Ver. 2 (USA) (En,Ja,Fr,De,Es).state.auto", 36580088 bytes.
+[libretro INFO] [BOOT] Game ID is [MK-51193]
+[libretro INFO] [DYNAREC] Deadcast: 6564 blocks kept for the next state load (/userdata/dc-core-bench/saves/Phantasy Star Online Ver. 2 (USA) (En,Ja,Fr,De,Es).blocks)
+== trystates/sa2-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Sonic Adventure 2 (USA) (En,Ja,Fr,De,Es).state.auto", 27793039 bytes.
+[libretro INFO] [BOOT] Game ID is [MK-51117]
+[libretro INFO] [DYNAREC] Deadcast: 5206 blocks kept for the next state load (/userdata/dc-core-bench/saves/Sonic Adventure 2 (USA) (En,Ja,Fr,De,Es).blocks)
+== trystates/sonic-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Sonic Adventure (USA) (En,Ja,Fr,De,Es) (Rev A).state.auto", 36580088 bytes.
+[libretro INFO] [BOOT] Game ID is [MK-51000]
+[libretro INFO] [DYNAREC] Deadcast: 11174 blocks kept for the next state load (/userdata/dc-core-bench/saves/Sonic Adventure (USA) (En,Ja,Fr,De,Es) (Rev A).blocks)
+== trystates/spiderman-0-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Spider-Man (USA).state.auto", 28020951 bytes.
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[libretro INFO] [DYNAREC] Deadcast: 4150 blocks kept for the next state load (/userdata/dc-core-bench/saves/Spider-Man (USA).blocks)
+== trystates/spiderman-1-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Spider-Man (USA).state.auto", 28158503 bytes.
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[libretro INFO] [DYNAREC] Deadcast: 4150 blocks compiled ahead in 258 ms (0 not: changed, compiled already or no room)
+[libretro INFO] [DYNAREC] Deadcast: 8808 blocks kept for the next state load (/userdata/dc-core-bench/saves/Spider-Man (USA).blocks)
+== trystates/spiderman-2-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Spider-Man (USA).state.auto", 28098199 bytes.
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[libretro INFO] [DYNAREC] Deadcast: 8808 blocks compiled ahead in 482 ms (0 not: changed, compiled already or no room)
+[libretro INFO] [DYNAREC] Deadcast: 9617 blocks kept for the next state load (/userdata/dc-core-bench/saves/Spider-Man (USA).blocks)
+== trystates/techromancer-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Tech Romancer (USA).state.auto", 27925911 bytes.
+[libretro INFO] [BOOT] Game ID is [T1208N]
+[libretro INFO] [DYNAREC] Deadcast: 8188 blocks kept for the next state load (/userdata/dc-core-bench/saves/Tech Romancer (USA).blocks)
+== trystates/vigilante8-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Vigilante 8 - 2nd Offense (USA).state.auto", 28337383 bytes.
+[libretro INFO] [BOOT] Game ID is [T13002N]
+[libretro INFO] [DYNAREC] Deadcast: 5453 blocks kept for the next state load (/userdata/dc-core-bench/saves/Vigilante 8 - 2nd Offense (USA).blocks)
+== trystates-stock/lol1033-ja-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/L.O.L. - Lack of Love (Japan).state.auto", 27920011 bytes.
+[libretro INFO] [BOOT] Game ID is [T2106M]
+== trystates-stock/lol1610-ja-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/L.O.L. - Lack of Love (Japan).state.auto", 28153327 bytes.
+[libretro INFO] [BOOT] Game ID is [T2106M]
+== trystates-nocache/lol1033-ja-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/L.O.L. - Lack of Love (Japan).state.auto", 27920011 bytes.
+[libretro INFO] [BOOT] Game ID is [T2106M]
+[libretro INFO] [DYNAREC] Deadcast: 3534 blocks kept for the next state load (/userdata/dc-core-bench/saves/L.O.L. - Lack of Love (Japan).blocks)
+== ccfix-fcr-rel/lol1033-ja-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/L.O.L. - Lack of Love (Japan).state.auto", 27920011 bytes.
+[libretro INFO] [BOOT] Game ID is [T2106M]
+[libretro INFO] [DYNAREC] Deadcast: 3534 blocks compiled ahead in 194 ms (0 not: changed, compiled already or no room)
+[libretro INFO] [DYNAREC] Deadcast: 3534 blocks kept for the next state load (/userdata/dc-core-bench/saves/L.O.L. - Lack of Love (Japan).blocks)
+== ccfix-fcr-rel/lol1610-ja-retroarch.log
+  what():  Fatal: SH4 branch instruction in delay slot
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/L.O.L. - Lack of Love (Japan).state.auto", 28153327 bytes.
+[libretro INFO] [BOOT] Game ID is [T2106M]
+terminate called after throwing an instance of 'FlycastException'
+== ccfix-fcr-ccfix/lol1033-ja-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/L.O.L. - Lack of Love (Japan).state.auto", 27920011 bytes.
+[libretro INFO] [BOOT] Game ID is [T2106M]
+[libretro INFO] [DYNAREC] Deadcast: 4566 blocks compiled ahead in 254 ms (140 not: changed, compiled already or no room)
+[libretro INFO] [DYNAREC] Deadcast: 4690 blocks kept for the next state load (/userdata/dc-core-bench/saves/L.O.L. - Lack of Love (Japan).blocks)
+== ccfix-fcr-ccfix/lol1610-ja-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/L.O.L. - Lack of Love (Japan).state.auto", 28153327 bytes.
+[libretro INFO] [BOOT] Game ID is [T2106M]
+[libretro INFO] [DYNAREC] Deadcast: 3361 blocks compiled ahead in 189 ms (173 not: changed, compiled already or no room)
+[libretro INFO] [DYNAREC] Deadcast: 4706 blocks kept for the next state load (/userdata/dc-core-bench/saves/L.O.L. - Lack of Love (Japan).blocks)
+== trystates-fcr-relnoopt/lol1033-ja-retroarch.log
+  what():  Fatal: SH4 branch instruction in delay slot
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/L.O.L. - Lack of Love (Japan).state.auto", 27920011 bytes.
+[libretro INFO] [BOOT] Game ID is [T2106M]
+terminate called after throwing an instance of 'FlycastException'
+== trystates-fcr-pr08/lol1033-ja-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/L.O.L. - Lack of Love (Japan).state.auto", 27920011 bytes.
+[libretro INFO] [BOOT] Game ID is [T2106M]
+terminate called without an active exception
+== trystates-fcr-dyn/lol1033-ja-retroarch.log
+[INFO] [Core] Unloading core symbols...
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/L.O.L. - Lack of Love (Japan).state.auto", 27920011 bytes.
+[libretro INFO] [BOOT] Game ID is [T2106M]
+terminate called without an active exception

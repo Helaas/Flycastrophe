@@ -247,7 +247,14 @@ bool rdv_Precompile(u32 vaddr, u32 fpscr, const std::function<bool(u32, u32)>& s
 	RuntimeBlockInfo* rbi = sh4Dynarec->allocateBlock();
 	fpscr_t fpu;
 	fpu.full = fpscr;
-	if (!rbi->Setup(vaddr, fpu) || !sameCode(rbi->addr, rbi->sh4_code_size))
+	bool decoded;
+	try {
+		decoded = rbi->Setup(vaddr, fpu);
+	} catch (const FlycastException&) {
+		// Flycastrophe: code that can't be decoded is skipped (deadcast/codecache.cpp checks it first)
+		decoded = false;
+	}
+	if (!decoded || !sameCode(rbi->addr, rbi->sh4_code_size))
 	{
 		delete rbi;
 		return false;
