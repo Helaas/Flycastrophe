@@ -1,0 +1,2 @@
+[libretro ERROR] [SAVESTATE] Loading state failed: Unsupported version
+[libretro ERROR] [SAVESTATE] Loading state failed: Unsupported version

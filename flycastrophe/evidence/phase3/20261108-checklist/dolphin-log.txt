@@ -1,0 +1,3 @@
+[libretro INFO] [BOOT] Game ID is [Dolphin Blue]
+[libretro INFO] [BOOT] Game ID is [Dolphin Blue]
+[INFO] [Core] Unloading game...

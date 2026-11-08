@@ -1,0 +1,6 @@
+retroarch_commit=69a4f0ea1e8aaf442ae4858f2e7f2b31a1776576
+toolchain=ghcr.io/utility-muffin-research-kitchen/mlp1-toolchain@sha256:66aac16fb8b07e663c9b4d66970f272df195a6eba98dfad8286eabbaa617faf9
+configure=--host=aarch64-buildroot-linux-gnu --disable-qt --disable-discord --disable-x11 --enable-wayland --disable-libdecor --disable-dbus --enable-pulse --disable-jack --disable-oss --enable-vulkan --disable-vulkan_display --enable-slang --enable-spirv_cross --enable-builtinglslang --disable-opengl --disable-opengl1 --disable-opengl_core --disable-opengles --disable-opengles3 --disable-egl --disable-kms --disable-mali_fbdev --enable-ssl --enable-networking --enable-command --enable-sdl2 --enable-alsa --disable-udev --enable-freetype --enable-zlib --disable-ffmpeg
+cflags=-O2 -mcpu=cortex-a55 -mtune=cortex-a55 -ffunction-sections -fdata-sections -DNDEBUG -D_GNU_SOURCE
+needed=ld-linux-aarch64.so.1 libSDL2-2.0.so.0 libasound.so.2 libc.so.6 libfreetype.so.6 libgcc_s.so.1 libm.so.6 libpulse.so.0 libstdc++.so.6 libwayland-client.so.0 libwayland-cursor.so.0 libwayland-egl.so.1 
+sha256=e32307a83b77e89cce33539dbc46e63d25d29bd5b2ff325bbdba11e2527d79fd

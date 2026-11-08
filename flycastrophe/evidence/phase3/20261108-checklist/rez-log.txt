@@ -1,0 +1,3 @@
+[libretro INFO] [BOOT] Game ID is [MK-5119250]
+[libretro INFO] [BOOT] Game ID is [MK-5119250]
+[INFO] [Core] Unloading game...

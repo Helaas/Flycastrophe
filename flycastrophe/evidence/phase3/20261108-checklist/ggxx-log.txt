@@ -1,0 +1,3 @@
+[libretro INFO] [BOOT] Game ID is [GUILTY GEAR XX VERSION 1.0]
+[libretro INFO] [BOOT] Game ID is [GUILTY GEAR XX VERSION 1.0]
+[INFO] [Core] Unloading game...

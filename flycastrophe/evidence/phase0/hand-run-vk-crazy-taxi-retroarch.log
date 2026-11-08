@@ -1,0 +1,135 @@
+[WARN] [GameMode] GameMode cannot be enabled on this system ("dlopen failed - libgamemode.so: cannot open shared object file: No such file or directory.") https://github.com/FeralInteractive/gamemode needs to be installed.
+[WARN] [Config] GameMode unsupported - disabling...
+[INFO] RetroArch 1.22.2 (Git 69a4f0e)
+[INFO] === Build =======================================
+[INFO] Capabilities: ASIMD 
+[INFO] Version: 1.22.2
+[INFO] Git: 69a4f0e
+[INFO] Built: Nov  7 2026
+[INFO] =================================================
+[ERROR] Couldn't find any video driver named "gl"
+[INFO] Available video drivers are:
+[INFO] 	vulkan
+[INFO] 	sdl2
+[INFO] 	null
+[WARN] Going to default to first video driver...
+[INFO] [Input] Found input driver: "sdl2".
+[INFO] [Core info] Wrote to cache file: "/userdata/dc-core-bench/info/core_info.cache".
+[INFO] [Core] Loading dynamic libretro core from: "/userdata/dc-core-bench/cores/stock_libretro.so".
+[INFO] [Override] Redirecting save file to "/userdata/dc-core-bench/saves/Crazy Taxi (USA).srm".
+[INFO] [Override] Redirecting save state to "/userdata/dc-core-bench/states/Crazy Taxi (USA).state".
+[INFO] [Environ] GET_VFS_INTERFACE. Core requested version >= V3, providing V3.
+[INFO] [Environ] GET_CORE_OPTIONS_VERSION.
+[INFO] [Environ] GET_LANGUAGE: "0".
+[INFO] [Environ] SET_CORE_OPTIONS_V2_INTL.
+[INFO] [Environ] SET_CONTROLLER_INFO.
+[INFO] [Environ] SET_SUPPORT_NO_GAME: yes.
+[INFO] [Environ] GET_LED_INTERFACE.
+[INFO] [Environ] GET_LOG_INTERFACE.
+[INFO] [Environ] GET_PERF_INTERFACE.
+[INFO] [Environ] SET_PIXEL_FORMAT: XRGB8888.
+[INFO] [Environ] SET_KEYBOARD_CALLBACK.
+[INFO] [Environ] GET_DISK_CONTROL_INTERFACE_VERSION.
+[INFO] [Environ] SET_DISK_CONTROL_EXT_INTERFACE.
+[libretro INFO] [VMEM] Info: nvmem is enabled
+[libretro INFO] [VMEM] BASE 0x7f72880000 RAM(16 MB) 0x7f7e880000 VRAM64(8 MB) 0x7f76880000 ARAM(2 MB) 0x7f92880000
+[INFO] [Content] Content loading skipped. Implementation will load it on its own.
+[libretro INFO] [BOOT] retro_load_game: /media/sdcard1/Roms/DC/Crazy Taxi (USA).chd
+[INFO] [Environ] GET_RUMBLE_INTERFACE.
+[INFO] [Environ] GET_SYSTEM_DIRECTORY: "/userdata/dc-core-bench/system".
+[INFO] [Environ] GET_SAVE_DIRECTORY: "/userdata/dc-core-bench/saves".
+[ERROR] [Environ] GET_VARIABLE: reicast_texupscale - Invalid value.
+[ERROR] [Environ] GET_VARIABLE: reicast_texupscale_max_filtered_texture_size - Invalid value.
+[ERROR] [Environ] GET_VARIABLE: reicast_dump_unique_textures - Invalid value.
+[INFO] [Environ] SET_SAVE_STATE_IN_BACKGROUND: no.
+[libretro INFO] File extension is: .chd
+[INFO] [Environ] Video driver "gl" is not built in, using "vulkan".
+[INFO] [Environ] GET_PREFERRED_HW_RENDER, video driver: "vulkan"...
+[INFO] [Environ] GET_PREFERRED_HW_RENDER: RETRO_HW_CONTEXT_VULKAN.
+[INFO] [Environ] SET_HW_RENDER, context type: vulkan.
+[INFO] [HW] Requesting Vulkan context.
+[INFO] [Environ] Video driver "gl" is not built in, using "vulkan".
+[INFO] [Environ] SET_HW_RENDER_CONTEXT_NEGOTIATION_INTERFACE.
+[libretro INFO] [VMEM] Info: nvmem is enabled
+[libretro INFO] [VMEM] BASE 0x7f72880000 RAM(16 MB) 0x7f7e880000 VRAM64(8 MB) 0x7f76880000 ARAM(2 MB) 0x7f92880000
+[ERROR] [Environ] GET_VARIABLE: reicast_texupscale - Invalid value.
+[ERROR] [Environ] GET_VARIABLE: reicast_texupscale_max_filtered_texture_size - Invalid value.
+[ERROR] [Environ] GET_VARIABLE: reicast_dump_unique_textures - Invalid value.
+[libretro INFO] [BOOT] Game ID is [MK-51035]
+[INFO] [Environ] GET_SYSTEM_DIRECTORY: "/userdata/dc-core-bench/system".
+[libretro INFO] [BOOT] Game ID is [MK-51035]
+[INFO] [Environ] SET_ROTATION: "0" (0 deg).
+[INFO] [SRAM] Skipping SRAM load.
+[INFO] [State] Found auto save state in "/userdata/dc-core-bench/states/Crazy Taxi (USA).state.auto".
+[INFO] [State] Auto-loading save state from "/userdata/dc-core-bench/states/Crazy Taxi (USA).state.auto" succeeded.
+[INFO] [Core] Version of libretro API: 1, Compiled against API: 1
+[INFO] [Core] Geometry: 640x480, Aspect: 1.333, FPS: 59.95, Sample rate: 44100.00 Hz.
+[INFO] [Video] Set video size to: fullscreen.
+[INFO] [Video] Using HW render, vulkan driver forced.
+[INFO] [Video] "vulkan" saved as cached driver.
+[INFO] [Wayland] Registered interface wl_compositor at version 5.
+[INFO] [Wayland] Registered interface wp_viewporter at version 1.
+[INFO] [Wayland] Registered interface wp_single_pixel_buffer_manager_v1 at version 1.
+[INFO] [Wayland] Registered interface zwp_relative_pointer_manager_v1 at version 1.
+[INFO] [Wayland] Registered interface zwp_pointer_constraints_v1 at version 1.
+[INFO] [Wayland] Registered interface wl_data_device_manager at version 3.
+[INFO] [Wayland] Registered interface wl_shm at version 1.
+[INFO] [Wayland] Registered interface wl_seat at version 7.
+[INFO] [Wayland] Registered interface xdg_wm_base at version 5.
+[INFO] [Wayland] Registered interface wl_output at version 3.
+[INFO] [Wayland] Compositor doesn't support the zwp_idle_inhibit_manager_v1 protocol.
+[INFO] [Wayland] Compositor doesn't support the zxdg_decoration_manager_v1 protocol.
+[INFO] [Wayland] Compositor doesn't support the wp_fractional_scale_manager_v1 protocol.
+[INFO] [Wayland] Compositor doesn't support the wp_cursor_shape_manager_v1 protocol.
+[INFO] [Wayland] Compositor doesn't support the wp_content_type_manager_v1 protocol.
+[INFO] [Wayland] Compositor doesn't support the xdg_toplevel_icon_manager_v1 protocol.
+[INFO] [Vulkan] Vulkan dynamic library loaded.
+[INFO] [Vulkan] Got HW context negotiation interface 1.
+[INFO] [Vulkan] Found GPU at index 0: "Mali-G52".
+[INFO] [Vulkan] Using GPU index 0.
+[libretro INFO] [RENDERER] Device extension enabled: VK_KHR_swapchain
+[libretro INFO] [RENDERER] Device extension enabled: VK_EXT_provoking_vertex
+[libretro INFO] [RENDERER] Device extension enabled: VK_KHR_buffer_device_address
+[libretro INFO] [RENDERER] provokingVertexSupported 1
+[libretro INFO] [RENDERER] bufferDeviceAddressSupported 1
+[INFO] [Vulkan] Using semaphores for WSI acquire.
+[INFO] [Vulkan] Using GPU: "Mali-G52".
+[INFO] [Vulkan] Got 3 swapchain images.
+[INFO] [Wayland] Failed to specify monitor for fullscreen, letting compositor decide.
+[INFO] [Vulkan] Using resolution 720x960.
+[INFO] [Vulkan] Using BGRA8888 format.
+[INFO] [Vulkan] Loading stock shader.
+[WARN] [SDL] Couldn't open haptic device of the joypad #0: Haptic: Joystick isn't a haptic device..
+[INFO] [SDL] Falling back to joystick rumble.
+[INFO] [Input] Found joypad driver: "sdl2".
+[INFO] [Autoconf] Loong Gamepad (39171/39187) not configured, using fallback.
+[INFO] [Autoconf] Loong Gamepad (39171/39187) not configured, using fallback.
+[INFO] [Video] Found display server: "null".
+[libretro INFO] [RENDERER] retro_vk_context_reset
+[libretro INFO] [RENDERER] GPU Supports Vulkan API: 1.3.303
+[libretro INFO] [RENDERER] GPU Supports vkGetPhysicalDeviceProperties2
+[libretro INFO] [RENDERER] Using depth format D32SfloatS8Uint tiling Optimal
+[libretro INFO] [RENDERER] VulkanRenderer::Init
+[INFO] [Audio] Set audio input rate to: 44140.24 Hz.
+[INFO] [PulseAudio] Requested 49152 bytes buffer, got 32256.
+[INFO] [Audio] Started synchronous audio driver.
+[INFO] [ALSA] Using ALSA version 1.2.11
+[INFO] [Microphone] Initialized microphone driver.
+[INFO] [Display] Found display driver: "vulkan".
+[INFO] [NetCMD] bringing_up_command_interface_at_port 55358.
+[INFO] [Network] Bringing up remote interface on port 55400.
+[INFO] [Environ] SET_INPUT_DESCRIPTORS.
+[ERROR] [Environ] GET_VARIABLE: reicast_texupscale - Invalid value.
+[ERROR] [Environ] GET_VARIABLE: reicast_texupscale_max_filtered_texture_size - Invalid value.
+[ERROR] [Environ] GET_VARIABLE: reicast_dump_unique_textures - Invalid value.
+[INFO] [Playlist] Loading favorites file: "/userdata/dc-core-bench/home/.config/retroarch/playlists/builtin/content_favorites.lpl".
+[WARN] [SDL] Couldn't open haptic device of the joypad #0: Haptic: Joystick isn't a haptic device..
+[INFO] [SDL] Falling back to joystick rumble.
+[INFO] [Autoconf] Loong Gamepad (39171/39187) not configured, using fallback.
+[INFO] [Autoconf] Loong Gamepad (39171/39187) not configured, using fallback.
+[WARN] [SDL] Failed to create rumble effect for joypad 1: Haptic: Error uploading effect to the device: Connection timed out.
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Crazy Taxi (USA).state.auto", 36439664 bytes.
+[INFO] [State] Saving state "RAM", 27519712 bytes.
+[INFO] [Environ] GET_SYSTEM_DIRECTORY: "/userdata/dc-core-bench/system".
+[INFO] [Environ] SET_GEOMETRY: 640x480, Aspect: 1.333.
+[WARN] [SDL] Failed to rumble joypad 0: That operation is not supported.

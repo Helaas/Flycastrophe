@@ -1,35 +1,14 @@
-# Flycastrophe
+# Flycastrophe port ledger
 
-Flycastrophe is [Flycast](https://github.com/flyinghead/flycast)'s libretro core with the speed
-changes from [Deadcast](https://github.com/tyrannotorus/emulator-dreamcast-deadcast) ported in,
-built for [Leaf](https://github.com/Utility-Muffin-Research-Kitchen) on the Miniloong Pocket 1
-(RK3566, Mali-G52, GLES 3.2). It runs in Leaf's own RetroArch beside the stock flycast core.
-The name owns the jank: Deadcast trades accuracy for speed, and so does this.
-
-Credit for the emulator goes to flyinghead and Flycast's contributors; credit for the speed work
-goes to tyrannotorus (Deadcast). Mistakes in the port are ours.
-
-## Building
-
-Flycastrophe is upstream's libretro build with one extra switch:
-
-```
-cmake -S . -B build -DLIBRETRO=ON -DFLYCASTROPHE=ON -DUSE_GLES=ON -DUSE_VULKAN=OFF \
-      -DUSE_OPENMP=OFF -DCMAKE_BUILD_TYPE=Release
-cmake --build build --target flycast_libretro
-```
-
-`FLYCASTROPHE=ON` names the output `flycastrophe_libretro.so`, reports the library as
-"Flycastrophe", keeps shared VMUs in `<system>/dc/flycastrophe/`, and leaves out the per-pixel
-(GL4) renderer. Flycastrophe's own glue stays behind that switch or in `core/flycastrophe/`;
-Deadcast's ports change Flycast's files where they must and keep Deadcast's new files in
-`core/deadcast/`, as Deadcast names them. The device build, packaging and
-releases live in [Flycastrophe-pak](https://github.com/Helaas/Flycastrophe-pak).
+What Flycastrophe has taken from [Deadcast](https://github.com/tyrannotorus/emulator-dreamcast-deadcast),
+what it left out, and why. What Flycastrophe is, how fast it is and how to build it:
+[README.md](README.md). The plan and the measurements behind each row: [flycastrophe/](flycastrophe/README.md).
 
 ## Keeping up with both upstreams
 
 - **Flycast:** `main` follows `upstream/master` by merge, through a pull request. No rebases,
-  no force-pushes.
+  no force-pushes. `README.md` is Flycastrophe's own: on a merge conflict there, keep ours and look
+  at what upstream changed.
 - **Deadcast** has no shared history with Flycast (its tree is Flycast `1b63c8a` plus its own
   squashed work), so its changes arrive as file diffs. Each port is one pull request, each
   commit names the Deadcast commit it takes from, and this ledger records the outcome.

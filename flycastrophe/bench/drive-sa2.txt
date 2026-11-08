@@ -1,0 +1,16 @@
+SU+A 500
+sleep 0.1
+SU 500
+sleep 0.1
+SU+RIGHT+A 500
+sleep 0.1
+SU 500
+sleep 0.1
+SU+A 500
+sleep 0.1
+SU 500
+sleep 0.1
+SU+LEFT+A 500
+sleep 0.1
+SU 500
+sleep 0.1

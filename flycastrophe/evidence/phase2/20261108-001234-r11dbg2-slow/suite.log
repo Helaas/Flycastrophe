@@ -1,0 +1,9 @@
+23:12:34 suite /Volumes/Storage/UMRK/tmp/dc-core-bench/evidence/fcr-phase0-20261108-001234-r11dbg2-slow rounds=1 warmup=5 seconds=20 arms=fcr-r11dbg2 games=crazy-taxi
+23:12:34 round=1 game=crazy-taxi arm=fcr-r11dbg2 temp=44375
+/Volumes/Storage/UMRK/tmp/dc-core-bench/out/fcr-r11dbg2_libretro.so: 1 file pushed, 0 skipped. 28.7 MB/s (29574440 bytes in 0.981s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/rapad: 1 file pushed, 0 skipped. 440.4 MB/s (528104 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-loop.sh: 1 file pushed, 0 skipped. 1.2 MB/s (441 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/core-options-fcrskip.cfg: 1 file pushed, 0 skipped. 1.1 MB/s (453 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/states/upstream-crazy-taxi.state: 1 file pushed, 0 skipped. 29.7 MB/s (10391763 bytes in 0.333s)
+    startup_s=1.56 result=ok 
+23:13:25 suite done

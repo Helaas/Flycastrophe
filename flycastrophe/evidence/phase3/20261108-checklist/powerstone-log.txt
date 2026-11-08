@@ -1,0 +1,3 @@
+[libretro INFO] [BOOT] Game ID is [T1201N]
+[libretro INFO] [BOOT] Game ID is [T1201N]
+[INFO] [Core] Unloading game...
