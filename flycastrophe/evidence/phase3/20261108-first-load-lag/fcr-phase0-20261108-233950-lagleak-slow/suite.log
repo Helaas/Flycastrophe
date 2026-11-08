@@ -1,0 +1,87 @@
+22:39:50 suite /Volumes/Storage/UMRK/tmp/dc-core-bench/evidence/fcr-phase0-20261108-233950-lagleak-slow rounds=3 warmup=10 seconds=30 arms=fcr-b37 fcr-leak games=crazy-taxi sa2
+22:39:50 round=1 game=crazy-taxi arm=fcr-leak temp=43125
+/Volumes/Storage/UMRK/tmp/dc-core-bench/out/fcr-leak_libretro.so: 1 file pushed, 0 skipped. 33.3 MB/s (29586728 bytes in 0.847s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/rapad: 1 file pushed, 0 skipped. 483.4 MB/s (528104 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-loop.sh: 1 file pushed, 0 skipped. 1.3 MB/s (441 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/core-options-fcrskip.cfg: 1 file pushed, 0 skipped. 0.5 MB/s (453 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/states/upstream-crazy-taxi.state: 1 file pushed, 0 skipped. 34.7 MB/s (10391763 bytes in 0.286s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-crazy-taxi.txt: 1 file pushed, 0 skipped. 0.8 MB/s (516 bytes in 0.001s)
+    startup_s=3.53 result=ok 
+22:40:58 round=1 game=crazy-taxi arm=fcr-b37 temp=50625
+/Volumes/Storage/UMRK/tmp/dc-core-bench/rapad: 1 file pushed, 0 skipped. 350.7 MB/s (528104 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-loop.sh: 1 file pushed, 0 skipped. 1.2 MB/s (441 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/core-options-fcrskip.cfg: 1 file pushed, 0 skipped. 0.4 MB/s (453 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/states/upstream-crazy-taxi.state: 1 file pushed, 0 skipped. 36.1 MB/s (10391763 bytes in 0.275s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-crazy-taxi.txt: 1 file pushed, 0 skipped. 0.7 MB/s (516 bytes in 0.001s)
+    startup_s=2.60 result=ok 
+22:42:04 round=1 game=sa2 arm=fcr-leak temp=50625
+/Volumes/Storage/UMRK/tmp/dc-core-bench/rapad: 1 file pushed, 0 skipped. 344.4 MB/s (528104 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-loop.sh: 1 file pushed, 0 skipped. 1.2 MB/s (441 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/core-options-fcrskip.cfg: 1 file pushed, 0 skipped. 0.4 MB/s (453 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/states/upstream-sa2.state: 1 file pushed, 0 skipped. 39.4 MB/s (8663601 bytes in 0.210s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-sa2.txt: 1 file pushed, 0 skipped. 0.2 MB/s (155 bytes in 0.001s)
+    startup_s=2.15 result=ok 
+22:43:07 round=1 game=sa2 arm=fcr-b37 temp=50000
+/Volumes/Storage/UMRK/tmp/dc-core-bench/rapad: 1 file pushed, 0 skipped. 365.3 MB/s (528104 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-loop.sh: 1 file pushed, 0 skipped. 1.2 MB/s (441 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/core-options-fcrskip.cfg: 1 file pushed, 0 skipped. 0.4 MB/s (453 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/states/upstream-sa2.state: 1 file pushed, 0 skipped. 38.8 MB/s (8663601 bytes in 0.213s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-sa2.txt: 1 file pushed, 0 skipped. 0.2 MB/s (155 bytes in 0.001s)
+    startup_s=2.15 result=ok 
+22:44:11 round=2 game=crazy-taxi arm=fcr-b37 temp=50000
+/Volumes/Storage/UMRK/tmp/dc-core-bench/rapad: 1 file pushed, 0 skipped. 366.4 MB/s (528104 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-loop.sh: 1 file pushed, 0 skipped. 1.2 MB/s (441 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/core-options-fcrskip.cfg: 1 file pushed, 0 skipped. 0.4 MB/s (453 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/states/upstream-crazy-taxi.state: 1 file pushed, 0 skipped. 34.9 MB/s (10391763 bytes in 0.284s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-crazy-taxi.txt: 1 file pushed, 0 skipped. 0.7 MB/s (516 bytes in 0.001s)
+    startup_s=2.78 result=ok 
+22:45:16 round=2 game=crazy-taxi arm=fcr-leak temp=50625
+/Volumes/Storage/UMRK/tmp/dc-core-bench/rapad: 1 file pushed, 0 skipped. 356.5 MB/s (528104 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-loop.sh: 1 file pushed, 0 skipped. 1.3 MB/s (441 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/core-options-fcrskip.cfg: 1 file pushed, 0 skipped. 0.5 MB/s (453 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/states/upstream-crazy-taxi.state: 1 file pushed, 0 skipped. 39.6 MB/s (10391763 bytes in 0.250s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-crazy-taxi.txt: 1 file pushed, 0 skipped. 0.8 MB/s (516 bytes in 0.001s)
+    startup_s=2.76 result=ok 
+22:46:23 round=2 game=sa2 arm=fcr-b37 temp=51875
+/Volumes/Storage/UMRK/tmp/dc-core-bench/rapad: 1 file pushed, 0 skipped. 2268.6 MB/s (528104 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-loop.sh: 1 file pushed, 0 skipped. 4.1 MB/s (441 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/core-options-fcrskip.cfg: 1 file pushed, 0 skipped. 3.6 MB/s (453 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/states/upstream-sa2.state: 1 file pushed, 0 skipped. 37.0 MB/s (8663601 bytes in 0.223s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-sa2.txt: 1 file pushed, 0 skipped. 0.2 MB/s (155 bytes in 0.001s)
+    startup_s=2.14 result=ok 
+22:47:26 round=2 game=sa2 arm=fcr-leak temp=50625
+/Volumes/Storage/UMRK/tmp/dc-core-bench/rapad: 1 file pushed, 0 skipped. 2150.0 MB/s (528104 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-loop.sh: 1 file pushed, 0 skipped. 4.3 MB/s (441 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/core-options-fcrskip.cfg: 1 file pushed, 0 skipped. 4.8 MB/s (453 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/states/upstream-sa2.state: 1 file pushed, 0 skipped. 37.5 MB/s (8663601 bytes in 0.220s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-sa2.txt: 1 file pushed, 0 skipped. 1.2 MB/s (155 bytes in 0.000s)
+    startup_s=2.17 result=ok 
+22:48:30 round=3 game=crazy-taxi arm=fcr-leak temp=51250
+/Volumes/Storage/UMRK/tmp/dc-core-bench/rapad: 1 file pushed, 0 skipped. 1885.4 MB/s (528104 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-loop.sh: 1 file pushed, 0 skipped. 5.6 MB/s (441 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/core-options-fcrskip.cfg: 1 file pushed, 0 skipped. 3.8 MB/s (453 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/states/upstream-crazy-taxi.state: 1 file pushed, 0 skipped. 36.3 MB/s (10391763 bytes in 0.273s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-crazy-taxi.txt: 1 file pushed, 0 skipped. 3.7 MB/s (516 bytes in 0.000s)
+    startup_s=2.76 result=ok 
+22:49:35 round=3 game=crazy-taxi arm=fcr-b37 temp=51250
+/Volumes/Storage/UMRK/tmp/dc-core-bench/rapad: 1 file pushed, 0 skipped. 1926.6 MB/s (528104 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-loop.sh: 1 file pushed, 0 skipped. 4.4 MB/s (441 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/core-options-fcrskip.cfg: 1 file pushed, 0 skipped. 5.3 MB/s (453 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/states/upstream-crazy-taxi.state: 1 file pushed, 0 skipped. 35.5 MB/s (10391763 bytes in 0.279s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-crazy-taxi.txt: 1 file pushed, 0 skipped. 3.2 MB/s (516 bytes in 0.000s)
+    startup_s=3.58 result=ok 
+22:50:41 round=3 game=sa2 arm=fcr-leak temp=50000
+/Volumes/Storage/UMRK/tmp/dc-core-bench/rapad: 1 file pushed, 0 skipped. 1991.3 MB/s (528104 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-loop.sh: 1 file pushed, 0 skipped. 4.8 MB/s (441 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/core-options-fcrskip.cfg: 1 file pushed, 0 skipped. 5.4 MB/s (453 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/states/upstream-sa2.state: 1 file pushed, 0 skipped. 38.1 MB/s (8663601 bytes in 0.217s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-sa2.txt: 1 file pushed, 0 skipped. 1.1 MB/s (155 bytes in 0.000s)
+    startup_s=2.23 result=ok 
+22:51:48 round=3 game=sa2 arm=fcr-b37 temp=50625
+/Volumes/Storage/UMRK/tmp/dc-core-bench/rapad: 1 file pushed, 0 skipped. 2049.7 MB/s (528104 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-loop.sh: 1 file pushed, 0 skipped. 5.7 MB/s (441 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/core-options-fcrskip.cfg: 1 file pushed, 0 skipped. 4.2 MB/s (453 bytes in 0.000s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/states/upstream-sa2.state: 1 file pushed, 0 skipped. 36.2 MB/s (8663601 bytes in 0.228s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-sa2.txt: 1 file pushed, 0 skipped. 2.3 MB/s (155 bytes in 0.000s)
+    startup_s=2.23 result=ok 
+22:52:51 suite done

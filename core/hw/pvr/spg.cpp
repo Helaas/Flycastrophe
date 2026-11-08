@@ -346,6 +346,11 @@ static int spg_line_sched(int tag, int cycles, int jitter, void *arg)
 			// 50 ms (a load or pause is not lag to make up). Flycastrophe: down to -50 ms too, since RetroArch
 			// paces the SH4 in bursts (a frame ahead, then a wait for it); floored at 0, the waits alone
 			// added up to lag and skipped half the frames of a game at full speed.
+			// Flycastrophe: and no more than a frame of each interval counts. RetroArch runs the SH4 at real
+			// time, so a stall (a level's first load compiling its code and shaders, 0.2 s and more) can't
+			// be won back by running ahead: counted in full, Crazy Taxi's first level load held the lag at
+			// the cap and the skip dropped up to 2 frames in 3 for 10 s. A burst's wait (a frame) still
+			// counts in full, and so does steady slowness, a few ms every frame.
 			{
 				static std::chrono::steady_clock::time_point lastReal;
 				static u64 lastCycles;
@@ -355,7 +360,14 @@ static int spg_line_sched(int tag, int cycles, int jitter, void *arg)
 				{
 					const float realMs = std::chrono::duration<float, std::milli>(real - lastReal).count();
 					const float sh4Ms = (float)(cycles - lastCycles) / (SH4_MAIN_CLOCK / 1000);
-					emulationLagMs = std::clamp(emulationLagMs + realMs - sh4Ms, -50.f, 50.f);
+					const float late = std::min(realMs - sh4Ms, sh4Ms);
+					emulationLagMs = std::clamp(emulationLagMs + late, -50.f, 50.f);
+					// Flycastrophe: and lag fades, 2% a vblank. Deadcast's own loop works lag off by running
+					// ahead; under RetroArch audio sync holds the SH4 to real time, so lag left over the
+					// threshold stayed there and the skip with it (a third of the runs at 1.1 GHz showed
+					// 34 fps for 40 s, the others 60). Steady slowness of more than 1% still climbs over it.
+					if (emulationLagMs > 0.f)
+						emulationLagMs *= 0.98f;
 				}
 				else
 					emulationLagMs = 0.f;
