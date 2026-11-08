@@ -35,6 +35,10 @@ is in [evidence/](evidence/), the scripts in [bench/](bench/README.md).
 > Then from FlyCast Fast UMRK: Audio DSP and anisotropic filtering off by default (#18) and fewer GL
 > calls per frame (#19); the pak repinned to `b37fbb1` (Helaas/Flycastrophe-pak#4, core `f600a9b0…`)
 > and reinstalled on the card through Pak Rat (`evidence/phase3/20261108-pakrat-update2/`).
+> Then the frame skip's lag: a stall counts as at most a frame and leftover lag fades (#22; a fresh
+> boot's first Crazy Taxi level had dropped up to 2 frames in 3 for 10 s,
+> `evidence/phase3/20261108-first-load-lag/`); the pak repinned to `11edbf1`
+> (Helaas/Flycastrophe-pak#5, core `077a9b91…`, two clean builds and CI agree).
 > Release bar run 2026-11-08 ([phase3](evidence/phase3/README.md)): with audio on,
 > Flycastrophe holds 60 fps on both games with the lowest frame-time p95 (Leaf's Flycast 58.5/59.9,
 > FlyCast Fast UMRK 35.0/58.2); uncapped Crazy Taxi 71.6 vs 58.9 vs 48.5 (same scene), SA2 91.4 vs
