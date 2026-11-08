@@ -169,7 +169,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "enabled",  NULL },
          { NULL, NULL },
       },
-#ifdef LOW_END
+#if defined(LOW_END) || defined(FLYCASTROPHE)
       "disabled",
 #else
       "enabled",
@@ -568,7 +568,11 @@ struct retro_core_option_v2_definition option_defs_us[] = {
          { "16",  NULL },
          { NULL, NULL },
       },
+#ifdef FLYCASTROPHE
+      "off",
+#else
       "4",
+#endif
    },
    {
       CORE_OPTION_NAME "_texture_filtering",
