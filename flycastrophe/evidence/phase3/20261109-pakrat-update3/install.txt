@@ -1,0 +1,6 @@
+download: http://127.0.0.1:8765/pakrat/v1/artifacts/org.helaas.flycastrophe/0.1.0/Flycastrophe.mlp1.pak.zip
+rescan: games=2035 systems=28 apps=11
+rescan: games=2035 systems=28 apps=11
+daemon-scan: {"type":"ok","action":"scan-library started","message":"scan-library started","title_hints_accepted":0}
+installed: org.helaas.flycastrophe 0.1.0 -> Apps/mlp1/Flycastrophe.pak
+outcome: kind=app refusal=none themes_changed=0 theme_updated=0 selection_cleared=0 theme_dir=- reasons=- error=-

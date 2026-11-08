@@ -1,0 +1,22 @@
+/mnt/sdcard/Apps/mlp1/Flycastrophe.pak:
+total 256
+drwxr-xr-x  4 root root 32768 Nov  8 23:09 .
+drwxr-xr-x 16 root root 32768 Nov  8 23:09 ..
+-rwxr-xr-x  1 root root   195 Nov  8 23:09 .pakrat-commit
+-rwxr-xr-x  1 root root 18092 Nov  9  2026 LICENSE-CORE.txt
+-rwxr-xr-x  1 root root   912 Nov  9  2026 LICENSES.md
+drwxr-xr-x  2 root root 32768 Nov  8 23:09 cores
+drwxr-xr-x  2 root root 32768 Nov  8 23:09 info
+-rwxr-xr-x  1 root root   854 Nov  9  2026 pak.json
+
+/mnt/sdcard/Apps/mlp1/Flycastrophe.pak/cores:
+total 28960
+drwxr-xr-x 2 root root    32768 Nov  8 23:09 .
+drwxr-xr-x 4 root root    32768 Nov  8 23:09 ..
+-rwxr-xr-x 1 root root 29586728 Nov  9  2026 flycastrophe_libretro.so
+
+/mnt/sdcard/Apps/mlp1/Flycastrophe.pak/info:
+total 96
+drwxr-xr-x 2 root root 32768 Nov  8 23:09 .
+drwxr-xr-x 4 root root 32768 Nov  8 23:09 ..
+-rwxr-xr-x 1 root root  2029 Nov  9  2026 flycastrophe_libretro.info

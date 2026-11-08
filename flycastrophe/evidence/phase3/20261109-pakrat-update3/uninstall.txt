@@ -1,0 +1,4 @@
+rescan: games=2035 systems=28 apps=11
+daemon-scan: {"type":"ok","action":"scan-library started","message":"scan-library started","title_hints_accepted":0}
+uninstalled: org.helaas.flycastrophe (userdata preserved)
+outcome: kind=app refusal=none themes_changed=0 theme_updated=0 selection_cleared=0 theme_dir=- reasons=- error=-
