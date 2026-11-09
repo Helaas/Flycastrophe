@@ -10,6 +10,7 @@
 #include "hw/sh4/sh4_core.h"
 #include "hw/sh4/sh4_sched.h"
 #include "profiler/fc_profiler.h"
+#include "deadcast/profiler.h"
 #include "network/ggpo.h"
 
 #include <mutex>
@@ -46,6 +47,7 @@ static bool stopping;
 static void parseLoop()
 {
 	ThreadName _("deadcast-parse");
+	profilerStartThread("deadcast-parse");
 	std::unique_lock<std::mutex> lock(parsing::mutex);
 	while (true)
 	{
@@ -295,6 +297,13 @@ private:
 					getOutputFramebufferAspectRatio());
 #endif
 		const auto renderStart = perfNow();
+		// Deadcast's profiler (DEADCAST_PROF): the renderer's thread, RetroArch's main thread under libretro
+		static thread_local bool profiled;
+		if (!profiled)
+		{
+			profiled = true;
+			profilerStartThread("render");
+		}
 		const bool offThread = renderer->parsesOffThread();
 		if (offThread)
 			parseWait();

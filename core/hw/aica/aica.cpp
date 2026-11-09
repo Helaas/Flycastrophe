@@ -18,6 +18,7 @@
 #include <mutex>
 #include <algorithm>
 #include <thread>
+#include "deadcast/profiler.h"
 
 namespace aica
 {
@@ -208,6 +209,7 @@ static int AicaUpdate(int tag, int cycles, int jitter, void *arg)
 static void workerLoop()
 {
 	ThreadName _("deadcast-aica");
+	profilerStartThread("deadcast-aica");
 	perfAicaThread();
 	worker::onWorker = true;
 	std::unique_lock<std::mutex> lock(worker::mutex);

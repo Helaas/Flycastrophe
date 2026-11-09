@@ -8,11 +8,16 @@ class GLCache {
 public:
 	GLCache() { Reset(); }
 
+	// Flycastrophe: a render's GL work, for the perf line (FLYCASTROPHE_PERF): draw calls, and the
+	// program and texture binds that changed state
+	u32 draws = 0, programChanges = 0, textureChanges = 0;
+
 	void BindTexture(GLenum target,  GLuint texture) {
 		if (target == GL_TEXTURE_2D && !_disable_cache) {
 			if (texture != _texture) {
 				glBindTexture(target, texture);
 				_texture = texture;
+				textureChanges++;
 			}
 		}
 		else
@@ -80,6 +85,7 @@ public:
 		if (program != _program || _disable_cache) {
 			_program = program;
 			glUseProgram(program);
+			programChanges++;
 		}
 	}
 

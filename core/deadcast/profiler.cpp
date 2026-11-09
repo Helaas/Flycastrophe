@@ -127,11 +127,28 @@ void profilerStartThread(const char *name)
 		sigemptyset(&sa.sa_mask);
 		sigaction(SIGPROF, &sa, nullptr);
 	});
-	int index = threadCount.fetch_add(1);
-	if (index >= MaxThreads)
-		return;
-	ThreadSamples *t = new ThreadSamples();
-	strncpy(t->name, name, sizeof(t->name) - 1);
+	// Flycastrophe: a thread started again under the same name (the emulation and AICA threads are, on
+	// every state load) carries on in its slot, so the four slots still cover four threads
+	static std::mutex registering;
+	std::lock_guard<std::mutex> lock(registering);
+	ThreadSamples *t = nullptr;
+	int index = -1;
+	for (int i = 0; i < std::min(threadCount.load(), MaxThreads); i++)
+		if (threads[i] != nullptr && strncmp(threads[i]->name, name, sizeof(threads[i]->name) - 1) == 0)
+		{
+			t = threads[i];
+			index = i;
+			timer_delete(t->timer);
+			break;
+		}
+	if (t == nullptr)
+	{
+		index = threadCount.fetch_add(1);
+		if (index >= MaxThreads)
+			return;
+		t = new ThreadSamples();
+		strncpy(t->name, name, sizeof(t->name) - 1);
+	}
 	pthread_attr_t attr;
 	if (pthread_getattr_np(pthread_self(), &attr) == 0)
 	{
