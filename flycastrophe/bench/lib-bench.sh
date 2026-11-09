@@ -23,7 +23,13 @@ DEV_DIR="${DEV_DIR:-/userdata/dc-core-bench}"
 BENCH_PROFILE="${BENCH_PROFILE:-leaf}"
 CMD_PORT=55358
 PAD_PORT=55400
-PLATFORM_ROOT=/mnt/sdcard/.system/leaf/platforms/mlp1
+# Leaf's card: /mnt/sdcard and /media/sdcard1 can swap on a reboot, so find the one with the
+# platform's enabled marker (LEAF_SD overrides).
+if [ -z "${LEAF_SD:-}" ]; then
+  _pin="${ADB_SERIAL:-$(cat "$BENCH_HOST/.adb-serial" 2>/dev/null)}"
+  LEAF_SD="$(adb ${_pin:+-s "$_pin"} shell 'for d in /mnt/sdcard /media/sdcard1; do [ -f $d/.system/leaf/platforms/mlp1/enabled ] && { echo $d; break; }; done' 2>/dev/null | tr -d '\r')"
+fi
+PLATFORM_ROOT="${LEAF_SD:-/mnt/sdcard}/.system/leaf/platforms/mlp1"
 # RA_BIN may point at another RetroArch build (Flycastrophe Phase 0 runs the
 # pak's Vulkan RetroArch from /userdata with EXTRA_ENV).
 RA_BIN="${RA_BIN:-$PLATFORM_ROOT/bin/retroarch}"
