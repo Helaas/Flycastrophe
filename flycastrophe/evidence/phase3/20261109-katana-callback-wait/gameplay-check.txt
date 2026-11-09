@@ -1,0 +1,47 @@
+== spiderman-0 21:20:58
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Spider-Man (USA).state.auto", 28020951 bytes.
+[libretro INFO] [DYNAREC] Deadcast: wait loop at 8c016c9a (the Katana library's vblank wait): skipped while waiting
+vblank 59.69/s
+wait turns skipped 2043688
+== spiderman-1 21:21:53
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Spider-Man (USA).state.auto", 28158503 bytes.
+[libretro INFO] [DYNAREC] Deadcast: wait loop at 8c016c9a (the Katana library's vblank wait): skipped while waiting
+vblank 60.72/s
+wait turns skipped 2045271
+== spiderman-2 21:22:48
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Spider-Man (USA).state.auto", 28098199 bytes.
+[libretro INFO] [DYNAREC] Deadcast: wait loop at 8c016c9a (the Katana library's vblank wait): skipped while waiting
+vblank 61.28/s
+wait turns skipped 1882139
+== ecco 21:23:44
+[libretro INFO] [BOOT] Game ID is [MK-51033]
+[libretro INFO] [BOOT] Game ID is [MK-51033]
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Ecco the Dolphin - Defender of the Future (USA) (En,Fr,De,Es).state.auto", 28191580 bytes.
+vblank 61.79/s
+wait turns skipped 0
+== sonic 21:24:39
+[libretro INFO] [BOOT] Game ID is [MK-51000]
+[libretro INFO] [BOOT] Game ID is [MK-51000]
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Sonic Adventure (USA) (En,Ja,Fr,De,Es) (Rev A).state.auto", 36580088 bytes.
+[libretro INFO] [DYNAREC] Flycastrophe: wait loop at 8c642058 (the Katana library's callback wait): skipped while waiting
+vblank 59.15/s
+wait turns skipped 2925222
+== doa2-boot 21:25:35
+[libretro INFO] [BOOT] Game ID is [T3601N]
+[libretro INFO] [BOOT] Game ID is [T3601N]
+[libretro INFO] [DYNAREC] Deadcast: wait loop at 8c12f99a (the Katana library's vblank wait): skipped while waiting
+vblank 57.51/s
+wait turns skipped 3756937
+== powerstone-boot 21:26:34
+[libretro INFO] [BOOT] Game ID is [T1201N]
+[libretro INFO] [BOOT] Game ID is [T1201N]
+[libretro INFO] [DYNAREC] Flycastrophe: wait loop at 0c0f5dd8 (the Katana library's callback wait): skipped while waiting
+vblank 60.90/s
+wait turns skipped 5576432
+done 21:27:36
