@@ -30,7 +30,7 @@ done), **skipped** (will not be taken, with the reason).
 | 04 | 4 GB memory window + fault rewrite | `3e3b549579` addrspace, posix_vmem, virtmem, sh4_mmr | none | ported with 05, 06, 07, 13 as one dynarec unit (SA2 +23.2%, Crazy Taxi +2.0%) |
 | 05 | Pinned-register dynarec, thunks, inline IRQ, SQ to TA direct | `3e3b549579`, `d1be34d557`, `f42955105f` | none (Deadcast has no switch) | ported (dynarec unit, row 04) |
 | 06 | NEON fipr/ftrv | `3e3b549579` rec_arm64 | `reicast_fcr_fast_fipr` (on) | ported (dynarec unit, row 04); with row 07 worth ~3% on SA2 |
-| 07 | Idle-loop skips | `3e3b549579`, `b1b0cb1744` | `reicast_fcr_idle_loop_skip` (on) | ported (dynarec unit, row 04) |
+| 07 | Idle-loop skips | `3e3b549579`, `b1b0cb1744` | `reicast_fcr_idle_loop_skip` (on) | ported (dynarec unit, row 04); Flycastrophe adds the Katana library's callback wait (2026-11-09: Sonic Adventure 2, Crazy Taxi, Sonic Adventure, Power Stone; uncapped SA2 +8.5%, `flycastrophe/evidence/phase3/20261109-katana-callback-wait/`) |
 | 08 | 28-byte vertex, Naomi 2 normals in their own GL buffer | `3e3b549579` ta_ctx.h, ta_vtx.cpp, elan.cpp, sorter.cpp | none | adapted (Crazy Taxi +1.6%, SA2 +0.5%; VF4 lighting checked) |
 | 09 | TA parse thread (GL: textures fetched on RetroArch's thread) | `3e3b549579` Renderer_if.cpp, ta_ctx.cpp, ta_vtx.cpp | `reicast_fcr_parse_thread` (on) | ported (Crazy Taxi +10.1%, SA2 -2.6%) |
 | 10 | Unchanged textures not re-uploaded | `3e3b549579` TexCache, `ff68543516` (TexCache part) | none | ported; neutral on the bench (Crazy Taxi -0.2%, SA2 -1.4%, within noise), for games that rewrite textures unchanged |
