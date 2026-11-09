@@ -1,0 +1,17 @@
+# Generic play input for PGO training: moves, buttons and triggers, never START
+# (no pause menus). drive-loop.sh replays it until stopped.
+A 150
+sleep 0.4
+RIGHT 700
+B 150
+sleep 0.3
+UP 900
+RT 1500
+RT+LEFT 600
+X 150
+sleep 0.3
+DOWN 600
+Y 150
+LT 800
+A+RIGHT 500
+sleep 0.5

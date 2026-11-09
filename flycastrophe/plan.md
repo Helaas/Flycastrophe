@@ -40,6 +40,11 @@ is in [evidence/](evidence/), the scripts in [bench/](bench/README.md).
 > `evidence/phase3/20261108-first-load-lag/`); the pak repinned to `11edbf1`
 > (Helaas/Flycastrophe-pak#5, core `077a9b91…`, two clean builds and CI agree) and reinstalled on the
 > card through Pak Rat (`evidence/phase3/20261109-pakrat-update3/`).
+> PGO (2026-11-09): an instrumented build trained on upstream issues' savestates and attract demos,
+> the profile in Flycastrophe-pak `core/pgo/` (Helaas/Flycastrophe-pak#6, core `a5d0729b…`); on the
+> bench games, which training left out,
+> uncapped Crazy Taxi +3.4% and SA2 +2.1%, capped 60 fps with slightly less CPU
+> (`evidence/phase3/20261109-pgo/`). Each repin now needs a new profile.
 > Release bar run 2026-11-08 ([phase3](evidence/phase3/README.md)): with audio on,
 > Flycastrophe holds 60 fps on both games with the lowest frame-time p95 (Leaf's Flycast 58.5/59.9,
 > FlyCast Fast UMRK 35.0/58.2); uncapped Crazy Taxi 71.6 vs 58.9 vs 48.5 (same scene), SA2 91.4 vs

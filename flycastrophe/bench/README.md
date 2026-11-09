@@ -19,6 +19,7 @@ predates that).
 | `lib-bench.sh` | Shared helpers: device paths, arms to core files, savestate families, the RetroArch config, launcher pause and resume, screenshots. `core-options-arm-<arm>.cfg` gives one arm its own core options. |
 | `flycastrophe/bench.sh` | The bench: `ARMS="a b" [UNCAPPED=1] [REPLAY=1] [TAG=x] flycastrophe/bench.sh ROUNDS WARMUP SECONDS`. Interleaves the arms each round, cools the SoC between runs, writes a suite folder and its summary. `STATE_FAMILY` loads another generation's savestates. |
 | `flycastrophe/summarize.py` | The suite summary: fps median/p5/min from frame-counter deltas, frame-time p95, underruns, per-thread CPU, each arm against the first. |
+| `flycastrophe/pgo-train.sh` | PGO training: plays an instrumented core (Flycastrophe-pak `PGO=generate`) on upstream issues' savestates and attract demos, quits RetroArch cleanly after each so libgcov writes the counters, and pulls the `.gcda` files. Crazy Taxi and SA2 stay out of training. |
 | `flycastrophe/record-replay.sh` | Records a RetroArch input replay from a savestate. Replays diverge between cores under threaded rendering, so they're a secondary measure. |
 | `verify_state.py` | Refuses a truncated savestate before a run. |
 | `rapad.c`, `drive-loop.sh`, `drive-*.txt` | RetroArch's network gamepad (`rapad`, built static for aarch64) and the input scripts it loops for driving runs. |
