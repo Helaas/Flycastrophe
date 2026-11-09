@@ -752,7 +752,8 @@ void rglBindTexture(GLenum target, GLuint texture)
 #endif
    glsm_ctl(GLSM_CTL_IMM_VBO_DRAW, NULL);
    glBindTexture(target, texture);
-   gl_state.bind_textures.ids[gl_state.active_texture] = texture;
+   if (gl_state.active_texture < (GLuint)glsm_max_textures)
+      gl_state.bind_textures.ids[gl_state.active_texture] = texture;
 }
 
 /*
@@ -2783,6 +2784,13 @@ static void glsm_state_setup(void)
    }
 
    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &glsm_max_textures);
+#ifdef FLYCASTROPHE
+   /* Flycastrophe: the GLES renderer binds units 0-2 (textures, fog table, palette). Restoring and then
+    * clearing every unit the GPU has costs a glActiveTexture and a glBindTexture per unit, twice a
+    * frame; units past the core's are never touched, so the frontend's bindings there stay as they are. */
+   if (glsm_max_textures > 4)
+      glsm_max_textures = 4;
+#endif
 
    gl_state.bind_textures.ids           = (GLuint*)calloc(glsm_max_textures, sizeof(GLuint));
 

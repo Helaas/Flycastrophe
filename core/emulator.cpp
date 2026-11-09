@@ -42,6 +42,7 @@
 #include "serialize.h"
 #include "hw/pvr/pvr.h"
 #include "profiler/fc_profiler.h"
+#include "deadcast/profiler.h"
 #include "oslib/storage.h"
 #include "wsi/context.h"
 #include <chrono>
@@ -773,6 +774,8 @@ void Emulator::unloadGame()
 				&& !settings.naomi.multiboard && !config::GGPOEnable && !naomiNetworkSupported())
 			gui_saveState(false);
 #endif
+		// Deadcast: the profiler's samples (DEADCAST_PROF), while the translated blocks still exist
+		profilerDump();
 		// Deadcast: the blocks it ran, for the next state load (deadcast/codecache.h)
 		if (state == Loaded)
 			deadcast::codecache::save();
@@ -1035,6 +1038,7 @@ void Emulator::start()
 		getSh4Executor()->Start();
 		threadResult = std::async(std::launch::async, [this] {
 				ThreadName _("Flycast-emu");
+				profilerStartThread("Flycast-emu");
 				InitAudio();
 
 				try {

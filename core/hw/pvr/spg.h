@@ -30,3 +30,5 @@ void perfTextureUpdated(u32 size);
 void perfTextureRecurring();
 // the AICA thread's: its CPU clock, for its share of a core
 void perfAicaThread();
+// a render's GL work (renderer thread): draw calls, and the program and texture binds that changed state
+void perfGlWork(u32 draws, u32 programs, u32 textures);

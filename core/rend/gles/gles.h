@@ -159,6 +159,9 @@ public:
 		}
 		else
 		{
+			// Flycastrophe: orphan the old store first, so the driver hands back fresh memory instead of
+			// waiting for, or copying, the one the previous frame's draws may still be reading
+			glBufferData(type, this->size, nullptr, usage);
 			glBufferSubData(type, 0, size, data);
 		}
 	}

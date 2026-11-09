@@ -301,6 +301,7 @@ void DrawList(const std::vector<PolyParam>& gply, int first, int count)
 			// depthFunc = never
 			continue;
 		SetGPState<Type,SortingEnabled>(params);
+		glcache.draws++;
 		glDrawElements(GL_TRIANGLE_STRIP, params->count, gl.index_type,
 				(GLvoid*)(gl.get_index_size() * params->first)); glCheck();
 	}
@@ -319,6 +320,7 @@ static void drawSorted(int first, int count, bool multipass)
 	{
 		const PolyParam* params = &gl.rendContext->global_param_tr[gl.rendContext->sortedTriangles[p].polyIndex];
 		SetGPState<ListType_Translucent,true>(params);
+		glcache.draws++;
 		glDrawElements(GL_TRIANGLES, gl.rendContext->sortedTriangles[p].count, gl.index_type,
 				(GLvoid*)(gl.get_index_size() * gl.rendContext->sortedTriangles[p].first));
 	}
@@ -348,6 +350,7 @@ static void drawSorted(int first, int count, bool multipass)
 
 				SetCull(params->isp.CullMode ^ 1);
 
+				glcache.draws++;
 				glDrawElements(GL_TRIANGLES, gl.rendContext->sortedTriangles[p].count, gl.index_type,
 						(GLvoid*)(gl.get_index_size() * gl.rendContext->sortedTriangles[p].first));
 			}
@@ -560,12 +563,14 @@ void DrawModVols(int first, int count)
 		else
 			SetMVS_Mode(Xor, param.isp);	// XOR'ing (closed volume)
 
+		glcache.draws++;
 		glDrawArrays(GL_TRIANGLES, param.first * 3, param.count * 3);
 
 		if (mv_mode == 1 || mv_mode == 2)
 		{
 			// Sum the area
 			SetMVS_Mode(mv_mode == 1 ? Inclusion : Exclusion, param.isp);
+			glcache.draws++;
 			glDrawArrays(GL_TRIANGLES, mod_base * 3, (param.first + param.count - mod_base) * 3);
 			mod_base = -1;
 		}

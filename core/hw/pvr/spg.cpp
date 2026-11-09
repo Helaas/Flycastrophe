@@ -28,6 +28,7 @@
 static const bool perfEnabled = [] { const char *e = std::getenv("FLYCASTROPHE_PERF"); return e != nullptr && *e != '\0' && *e != '0'; }();
 static std::atomic<u64> perfWaitUs, perfRenderUs, perfRenderMaxUs;
 static std::atomic<u32> perfRenders, perfTextureRenders, perfTextureUpdates, perfTextureBytes, perfTextureAgain;
+static std::atomic<u32> perfGlDraws, perfGlPrograms, perfGlTextures;
 static std::atomic<bool> perfRenderClockSet, perfAicaClockSet;
 static clockid_t perfRenderClock, perfAicaClock;
 extern u32 bmStatCompiled, bmStatCacheResets;
@@ -93,6 +94,15 @@ void perfTextureRecurring()
 		perfTextureAgain.fetch_add(1, std::memory_order_relaxed);
 }
 
+void perfGlWork(u32 draws, u32 programs, u32 textures)
+{
+	if (!perfEnabled)
+		return;
+	perfGlDraws.fetch_add(draws, std::memory_order_relaxed);
+	perfGlPrograms.fetch_add(programs, std::memory_order_relaxed);
+	perfGlTextures.fetch_add(textures, std::memory_order_relaxed);
+}
+
 void perfAicaThread()
 {
 	if (!perfEnabled)
@@ -147,7 +157,7 @@ static void perfVblank()
 			" | emu cpu %3.0f%% waits %3.0f%% | render cpu %3.0f%% | aica cpu %3.0f%%"
 			" | renders %u (to textures %u) %.1f ms max %.1f | textures updated %u (%u KB, seen before %u)"
 			" | compiled %u in %.1f ms resets %u | wait turns skipped %u asleep %.1f%% | mmu flushes %u+%u misses %u"
-			" | emu frames late %u max %.1f ms",
+			" | emu frames late %u max %.1f ms | gl per render: draws %.0f programs %.0f textures %.0f",
 			(now - start) / 1e6, vblanks / secs, vblanks / secs / nominal * 100.0, emulationLagMs,
 			(FrameCount - frames) / secs, (fskip - skipped) / secs,
 			(emuNow - emuCpu) / window * 100.0, perfWaitUs.exchange(0) / window * 100.0,
@@ -159,7 +169,10 @@ static void perfVblank()
 			deadcast::waitLoopTurnsSkipped,
 			deadcast::sleepTimeslices * (double)SH4_TIMESLICE / ((double)vblanks * Frame_Cycles) * 100.0,
 			mmuStatFullFlushes, mmuStatPartialFlushes, mmuStatMisses,
-			framesOver, frameMaxUs / 1000.0);
+			framesOver, frameMaxUs / 1000.0,
+			perfGlDraws.exchange(0) / std::max(1.0, (double)renders),
+			perfGlPrograms.exchange(0) / std::max(1.0, (double)renders),
+			perfGlTextures.exchange(0) / std::max(1.0, (double)renders));
 	windowStart = now;
 	vblanks = 0;
 	frames = FrameCount;

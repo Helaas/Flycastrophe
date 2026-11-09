@@ -2,6 +2,7 @@
 #include "gles.h"
 #include "quad.h"
 #include "hw/pvr/ta.h"
+#include "hw/pvr/spg.h"
 #ifndef LIBRETRO
 #include "ui/gui.h"
 #else
@@ -1324,6 +1325,8 @@ bool OpenGLRenderer::renderFrame(int width, int height)
 #endif
 	}
 	GlVertexArray::unbind();
+	perfGlWork(glcache.draws, glcache.programChanges, glcache.textureChanges);
+	glcache.draws = glcache.programChanges = glcache.textureChanges = 0;
 
 	return !is_rtt;
 }
