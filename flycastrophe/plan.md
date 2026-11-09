@@ -45,6 +45,11 @@ is in [evidence/](evidence/), the scripts in [bench/](bench/README.md).
 > bench games, which training left out,
 > uncapped Crazy Taxi +3.4% and SA2 +2.1%, capped 60 fps with slightly less CPU
 > (`evidence/phase3/20261109-pgo/`). Each repin now needs a new profile.
+> Then from an outside review: the profiler wired up and per-frame GL overhead cut (#26, uncapped Crazy
+> Taxi +3.2%), and the Katana library's callback wait skipped (#27, uncapped SA2 +8.5%); the pak
+> repinned to `25a0dc17` with a retrained profile (Helaas/Flycastrophe-pak#8, core `b27868f5…`, PGO
+> +3.7% / +3.0% over the same code without it) and reinstalled on the card through Pak Rat
+> (`evidence/phase3/20261109-pakrat-update4/`).
 > Release bar run 2026-11-08 ([phase3](evidence/phase3/README.md)): with audio on,
 > Flycastrophe holds 60 fps on both games with the lowest frame-time p95 (Leaf's Flycast 58.5/59.9,
 > FlyCast Fast UMRK 35.0/58.2); uncapped Crazy Taxi 71.6 vs 58.9 vs 48.5 (same scene), SA2 91.4 vs
