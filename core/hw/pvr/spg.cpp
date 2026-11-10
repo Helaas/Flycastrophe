@@ -6,6 +6,7 @@
 #include "serialize.h"
 #include "network/ggpo.h"
 #include "hw/pvr/Renderer_if.h"
+extern u32 bmStatCodeWrites, bmStatCodeDropped, bmStatCodeStores;
 #include "stdclass.h"
 #include <algorithm>
 #include <array>
@@ -162,7 +163,8 @@ static void perfVblank()
 			" | emu cpu %3.0f%% waits %3.0f%% | render cpu %3.0f%% | aica cpu %3.0f%%"
 			" | renders %u (to textures %u) %.1f ms max %.1f | textures updated %u (%u KB, seen before %u)"
 			" | compiled %u in %.1f ms resets %u | wait turns skipped %u asleep %.1f%% | mmu flushes %u+%u misses %u"
-			" | emu frames late %u max %.1f ms | gl per render: draws %.0f programs %.0f textures %.0f",
+			" | emu frames late %u max %.1f ms | gl per render: draws %.0f programs %.0f textures %.0f"
+			" | code writes %u stores %u dropped %u",
 			(now - start) / 1e6, vblanks / secs, vblanks / secs / nominal * 100.0, emulationLagMs,
 			(FrameCount - frames) / secs, (fskip - skipped) / secs,
 			(emuNow - emuCpu) / window * 100.0, perfWaitUs.exchange(0) / window * 100.0,
@@ -177,7 +179,9 @@ static void perfVblank()
 			framesOver, frameMaxUs / 1000.0,
 			perfGlDraws.exchange(0) / std::max(1.0, (double)renders),
 			perfGlPrograms.exchange(0) / std::max(1.0, (double)renders),
-			perfGlTextures.exchange(0) / std::max(1.0, (double)renders));
+			perfGlTextures.exchange(0) / std::max(1.0, (double)renders),
+			bmStatCodeWrites, bmStatCodeStores, bmStatCodeDropped);
+	bmStatCodeWrites = bmStatCodeDropped = bmStatCodeStores = 0;
 	windowStart = now;
 	vblanks = 0;
 	frames = FrameCount;
