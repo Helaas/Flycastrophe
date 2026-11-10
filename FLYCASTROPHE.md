@@ -38,6 +38,8 @@ done), **skipped** (will not be taken, with the reason).
 | 12 | Sorting heuristics, Daytona exception, fast GD-ROM load default | `3e3b549579` ta_util, `564410027b`, `a7ed1b550b` | default change | ported; Flycastrophe also sorts the European Daytona disc (`MK-5103750`) per triangle, decals checked in its attract race; neutral on the bench |
 | 13 | MMU windows, versioned block cache (Windows CE) | `3e3b549579` mmuwindows, `a7ed1b550b` | none | ported (dynarec unit, row 04); Sega Rally 2 attract checked |
 | 14 | Code cache on disk | `9909d48688`, `f42955105f` | none | adapted: `<content>.blocks` in RetroArch's save directory (`Saves/Flycastrophe/` under Leaf), written on a normal quit; no warm-up within 2 s of the last (rewind, run-ahead); each recorded block's code checked before it is decoded (a list from another save of the game made RetroArch abort, found with an upstream issue's state); Crazy Taxi 5890 blocks in 313 ms, SA2 7741 in 433 ms. Since row 17, Deadcast's own checks (a versioned list, protected blocks only) |
+| 15 | Runs of one-triangle modifier volumes in one draw | `3e3b549579` Vulkan `drawer.cpp`, `pipeline.cpp` | none | adapted: Deadcast's is in its Vulkan renderer, this is the same rule in the GLES one. A volume of one triangle sets (or clears) the stencil's area bit where the triangle is in front, so a run of them with the same mode, culling and tile clip is one draw instead of two each. NFL 2K2 has about 1,000 such shadow volumes a frame: 2,585 to 815 draws a frame. With row 16, a saved play goes from 52% to 95% speed; frames identical (`flycastrophe/evidence/phase3/20261110-draw-calls/`) |
+| 16 | Vertex range with every indexed draw | none (Flycastrophe's) | none | done: the index buffer is new every frame, so Mali read each draw's indices to find the vertices it uses, about 5 us a draw. The parser records each polygon's range and the renderer draws with `glDrawRangeElements`. Uncapped Crazy Taxi +24.0%, SA2 +13.0% (then limited by the SH4 thread); frames identical in 25 games (same folder) |
 | 17 | Faster SH4 dynarec: writes next to code, store queue and timer accesses inline, FR0-FR15 pinned, on-chip RAM at `7E000000`, a code page unlocked when its last block goes | Deadcast PR #2: `84803c4`, `330b4d6`, `87e42bf`, `59fd4db`, `9910de3`, `3fd6b02`, `1fa00cb`, `c3e83b5`, `6084a68`, `d872c22`, `f28de39` | none (Deadcast has no switch) | ported; row 06's switch kept (with it off, the exact op is called through the full thunk, which keeps the pinned FR registers), Deadcast's code cache checks replace row 14's. It takes work off the emulation thread rather than adding frames where the renderer is the limit: NFL 2K2's saved play 43% to 35% of a core at the same speed (19% less SH4 time per emulated second); the BIOS boot animation 91% to 103% speed; DOA2 and Project Justice boots 11% and 26% less SH4 time per emulated second (`flycastrophe/evidence/phase3/20261110-deadcast-pr2/`) |
 
 Since `82b57f2571`: `52cfec5` (Threaded Audio on by default) ported with row 03; `9ffccd7c7f`
@@ -61,8 +63,8 @@ than GLES with the stock core:
 
 - GpuAllocator replacing VMA (`core/rend/vulkan/allocator.*`).
 - Precompiled SPIR-V and specialization constants (`core/rend/vulkan/shaders/`).
-- Descriptor cache, bind skipping, batched modifier volumes, lazy depth buffers, GPU timer
-  (`drawer`, `pipeline`, `commandpool`, `gputimer.h`).
+- Descriptor cache, bind skipping, lazy depth buffers, GPU timer (`drawer`, `pipeline`,
+  `commandpool`, `gputimer.h`). Its batched modifier volumes are row 15, done for GLES.
 - The texture upload worker's decode into Vulkan staging memory (`ff68543516`); GL reports the
   hook as unsupported and uploads as before.
 - Handing the Vulkan image straight to the frontend; Vulkan renderer perf counters.

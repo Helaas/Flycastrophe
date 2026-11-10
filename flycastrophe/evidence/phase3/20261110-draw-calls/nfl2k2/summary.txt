@@ -1,0 +1,8 @@
+# uncapped, 30 s from the saved play, two rounds (perfsum.py, EMU=2-14)
+nfl2k2       main     r1 speed   52.1% rendered  31.18/s emu  44% render  99% 30.62 ms draws  2578 | emulated 2-14 s  55.8%
+nfl2k2       main     r2 speed   52.6% rendered  31.51/s emu  44% render 100% 30.68 ms draws  2592 | emulated 2-14 s  55.8%
+nfl2k2       new      r1 speed   94.7% rendered  56.74/s emu  82% render  96% 15.59 ms draws   822 | emulated 2-14 s  97.2%
+nfl2k2       new      r2 speed   96.0% rendered  57.54/s emu  83% render  96% 15.25 ms draws   807 | emulated 2-14 s  97.7%
+# capped (vsync and audio sync on)
+nfl2k2       main     r1 speed   52.7% rendered  31.56/s emu  44% render  99% 30.52 ms draws  2600
+nfl2k2       new      r1 speed   92.0% rendered  55.14/s emu  79% render  94% 15.44 ms draws   797

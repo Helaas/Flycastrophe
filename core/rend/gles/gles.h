@@ -385,7 +385,8 @@ inline void GlVertexArray::term()
 	vertexArray = 0;
 }
 
-enum ModifierVolumeMode { Xor, Or, Inclusion, Exclusion, ModeCount };
+// IncludeTriangles, ExcludeTriangles: Deadcast's, for volumes of one triangle (gldraw.cpp)
+enum ModifierVolumeMode { Xor, Or, Inclusion, Exclusion, ModeCount, IncludeTriangles, ExcludeTriangles };
 
 void termGLCommon();
 void findGLVersion();

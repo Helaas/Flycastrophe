@@ -18,6 +18,8 @@ void rescheduleSPG();
 // Deadcast perf (row 01): with FLYCASTROPHE_PERF=1 a line every second in the log: emulated vblanks, renders,
 // the threads' CPU, the SH4's waits for the renderer, texture updates, compiles. Off, each hook is one test.
 bool perfOn();
+// frames are hashed (FLYCASTROPHE_GLHASH=1 with the perf line on; rend/gles/gles.cpp, hashFrame)
+bool perfFrameHash();
 // now, for perfWaited/perfRendered (0 when off)
 unsigned long long perfNow();
 // the emulation thread waited for the renderer, from start (perfNow()) until now

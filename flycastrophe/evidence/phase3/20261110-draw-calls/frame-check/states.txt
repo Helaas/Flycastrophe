@@ -1,0 +1,6 @@
+crazy-taxi per-strip: frames 895 and 1001, 895 different frames in both: 895 identical, 0 differ
+crazy-taxi per-triangle: frames 802 and 909, 802 different frames in both: 802 identical, 0 differ
+sa2 per-strip: frames 1162 and 1301, 1162 different frames in both: 1162 identical, 0 differ
+sa2 per-triangle: frames 1152 and 1301, 1152 different frames in both: 1152 identical, 0 differ
+nfl2k2 per-strip: frames 554 and 836, 96 different frames in both: 96 identical, 0 differ
+nfl2k2 per-triangle: frames 459 and 700, 90 different frames in both: 90 identical, 0 differ

@@ -281,6 +281,22 @@ void SetGPState(const PolyParam* gp,u32 cflip=0)
 		setN2Uniforms(gp, CurrentShader, *gl.rendContext);
 }
 
+// Flycastrophe: an indexed draw with the range of vertices its indices name. The index buffer is new every
+// frame, so a driver that needs the range (Mali does) reads the draw's indices to find it: about 5 us a
+// draw on the MLP1, more for long strips. The parser knows it (ta_util.cpp).
+static void drawElements(GLenum mode, u32 first, u32 count, u32 vtxMin, u32 vtxMax)
+{
+	glcache.draws++;
+#ifndef GLES2
+	if (gl.gl_major >= 3 && vtxMin <= vtxMax)
+	{
+		glDrawRangeElements(mode, vtxMin, vtxMax, count, gl.index_type, (GLvoid*)(gl.get_index_size() * first));
+		return;
+	}
+#endif
+	glDrawElements(mode, count, gl.index_type, (GLvoid*)(gl.get_index_size() * first));
+}
+
 template <u32 Type, bool SortingEnabled>
 void DrawList(const std::vector<PolyParam>& gply, int first, int count)
 {
@@ -301,9 +317,7 @@ void DrawList(const std::vector<PolyParam>& gply, int first, int count)
 			// depthFunc = never
 			continue;
 		SetGPState<Type,SortingEnabled>(params);
-		glcache.draws++;
-		glDrawElements(GL_TRIANGLE_STRIP, params->count, gl.index_type,
-				(GLvoid*)(gl.get_index_size() * params->first)); glCheck();
+		drawElements(GL_TRIANGLE_STRIP, params->first, params->count, params->vtxMin, params->vtxMax); glCheck();
 	}
 }
 
@@ -318,11 +332,10 @@ static void drawSorted(int first, int count, bool multipass)
 	int end = first + count;
 	for (int p = first; p < end; p++)
 	{
-		const PolyParam* params = &gl.rendContext->global_param_tr[gl.rendContext->sortedTriangles[p].polyIndex];
+		const SortedTriangle& group = gl.rendContext->sortedTriangles[p];
+		const PolyParam* params = &gl.rendContext->global_param_tr[group.polyIndex];
 		SetGPState<ListType_Translucent,true>(params);
-		glcache.draws++;
-		glDrawElements(GL_TRIANGLES, gl.rendContext->sortedTriangles[p].count, gl.index_type,
-				(GLvoid*)(gl.get_index_size() * gl.rendContext->sortedTriangles[p].first));
+		drawElements(GL_TRIANGLES, group.first, group.count, group.vtxMin, group.vtxMax);
 	}
 
 	if (multipass && config::TranslucentPolygonDepthMask)
@@ -350,9 +363,8 @@ static void drawSorted(int first, int count, bool multipass)
 
 				SetCull(params->isp.CullMode ^ 1);
 
-				glcache.draws++;
-				glDrawElements(GL_TRIANGLES, gl.rendContext->sortedTriangles[p].count, gl.index_type,
-						(GLvoid*)(gl.get_index_size() * gl.rendContext->sortedTriangles[p].first));
+				const SortedTriangle& group = gl.rendContext->sortedTriangles[p];
+				drawElements(GL_TRIANGLES, group.first, group.count, group.vtxMin, group.vtxMax);
 			}
 		}
 		glcache.StencilMask(0xFF);
@@ -411,6 +423,20 @@ void SetMVS_Mode(ModifierVolumeMode mv_mode, ISP_Modvol ispc)
 		glcache.StencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
 		// Cull mode needs to be set
+		SetCull(ispc.CullMode);
+	}
+	else if (mv_mode == IncludeTriangles || mv_mode == ExcludeTriangles)
+	{
+		// Deadcast (3e3b549579, its Vulkan pipeline): a volume of one triangle is Xor's then Inclusion's (or
+		// Exclusion's) for that triangle, which comes down to bit 0 set (cleared) where the triangle is in
+		// front, bit 1 left 0. Order doesn't matter, so a run of such volumes is one draw of their triangles.
+		glcache.Enable(GL_DEPTH_TEST);
+		// write only bit 0
+		glcache.StencilMask(1);
+		// no stencil testing
+		glcache.StencilFunc(GL_ALWAYS, 1, 1);
+		glcache.StencilOp(GL_KEEP, GL_KEEP, mv_mode == IncludeTriangles ? GL_REPLACE : GL_ZERO);
+
 		SetCull(ispc.CullMode);
 	}
 	else
@@ -525,12 +551,39 @@ void DrawModVols(int first, int count)
 	int curMVMat = -1;
 	int curProjMat = -1;
 
+	// Deadcast (3e3b549579, its Vulkan drawer): a volume of a single triangle, closed by it (inclusion or
+	// exclusion): one of a run. Not Naomi 2's, whose volumes have matrices of their own.
+	const auto oneTriangleVolume = [](const ModifierVolumeParam& param) {
+		return param.count == 1 && (param.isp.DepthMode == 1 || param.isp.DepthMode == 2) && !param.isNaomi2();
+	};
 	for (int cmv = 0; cmv < count; cmv++)
 	{
 		ModifierVolumeParam& param = params[cmv];
 
 		if (param.count == 0)
 			continue;
+		if (mod_base == -1 && oneTriangleVolume(param))
+		{
+			// the run of such volumes with the same mode, culling and tile clip, their triangles one after
+			// the other: one draw (NFL 2K2's shadows: about 1,000 volumes a frame, two draws each before)
+			int last = cmv;
+			while (last + 1 < count)
+			{
+				const ModifierVolumeParam& next = params[last + 1];
+				if (!oneTriangleVolume(next) || next.isp.DepthMode != param.isp.DepthMode || next.isp.CullMode != param.isp.CullMode
+						|| next.tileclip != param.tileclip || next.first != params[last].first + 1)
+					break;
+				last++;
+			}
+			glcache.UseProgram(gl.modvol_shader.program);
+			Rect clip_rect;
+			setTileClip(param.tileclip, clip_rect);
+			SetMVS_Mode(param.isp.DepthMode == 1 ? IncludeTriangles : ExcludeTriangles, param.isp);
+			glcache.draws++;
+			glDrawArrays(GL_TRIANGLES, param.first * 3, (last - cmv + 1) * 3);
+			cmv = last;
+			continue;
+		}
 		if (param.isNaomi2())
 		{
 			glcache.UseProgram(gl.n2ModVolShader.program);

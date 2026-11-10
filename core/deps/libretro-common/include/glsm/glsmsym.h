@@ -59,6 +59,7 @@ RETRO_BEGIN_DECLS
 #define glVertexAttrib4fv           rglVertexAttrib4fv
 #define glDrawArrays                rglDrawArrays
 #define glDrawElements              rglDrawElements
+#define glDrawRangeElements         rglDrawRangeElements
 #define glCompressedTexImage2D      rglCompressedTexImage2D
 #define glBindTexture               rglBindTexture
 #define glActiveTexture             rglActiveTexture
@@ -272,6 +273,8 @@ void rglReadBuffer(GLenum mode);
 void rglPixelStorei(GLenum pname, GLint param);
 void rglTexCoord2f(GLfloat s, GLfloat t);
 void rglDrawElements(GLenum mode, GLsizei count, GLenum type,
+                           const GLvoid * indices);
+void rglDrawRangeElements(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type,
                            const GLvoid * indices);
 void rglTexStorage2D(GLenum target, GLsizei levels, GLenum internalFormat,
       GLsizei width, GLsizei height);

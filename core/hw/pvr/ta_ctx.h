@@ -65,11 +65,16 @@ struct PolyParam
 	int lightModel;
 	bool envMapping[2];
 	bool constantColor[2];
+	// Flycastrophe: the lowest and highest vertex its indices name, merged neighbours included, set when
+	// the index is made (ta_util.cpp); min above max when it names none. For glDrawRangeElements.
+	u32 vtxMin, vtxMax;
 
 	void init()
 	{
 		first = 0;
 		count = 0;
+		vtxMin = 1;
+		vtxMax = 0;
 		texture = nullptr;
 		tsp.full = 0;
 		tcw.full = 0;
@@ -235,6 +240,9 @@ struct SortedTriangle
 	u32 polyIndex;
 	u32 first;
 	u32 count;
+	// Flycastrophe: the lowest and highest vertex its triangles name (min above max: none)
+	u32 vtxMin = 1;
+	u32 vtxMax = 0;
 };
 
 struct Rect

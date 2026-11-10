@@ -42,6 +42,9 @@ runs, frame times and audio underruns are in
 - Frame skipping when a game falls behind, so it keeps full speed and clean sound.
 - From Leaf's FlyCast Fast UMRK: fewer GL calls each frame (texture filters and anisotropy go through the
   GL cache, and only the shaders a frame uses get their constants updated).
+- Less work for the graphics driver on every draw: each draw says which vertices it uses, and a run
+  of one-triangle shadow volumes is a single draw, as in Deadcast's Vulkan renderer. NFL 2K2, with
+  about a thousand of those a frame, goes from half speed to nearly full speed.
 
 Left out: Deadcast's Vulkan renderer work (Flycastrophe renders with GLES, which measured faster
 here), and everything specific to Deadcast's own program and to the TrimUI Brick.
