@@ -446,6 +446,16 @@ BaseTextureCacheData::BaseTextureCacheData(TSP tsp, TCW tcw, int area)
 	}
 }
 
+// Flycastrophe frame check (perfFrameHash): a texture narrower or shorter than its power-of-two buffer (a
+// video's stride texture) leaves the rest as malloc returned it, and filtering shows a column or a row of
+// it at the picture's edge, different from run to run. Zeroed for the check, so two runs can be compared.
+template<typename Pixel>
+static void clearForFrameHash(Pixel *data, u32 width, u32 height, u32 stride, u32 rows)
+{
+	if (perfFrameHash() && (stride < width || rows < height))
+		memset(data, 0, (size_t)width * height * sizeof(Pixel));
+}
+
 // Deadcast: all the texture's data in VRAM (its VQ codebook and every mipmap level), its format, and its
 // palette unless the GPU applies it
 u64 BaseTextureCacheData::dataHash()
@@ -686,6 +696,7 @@ bool BaseTextureCacheData::Update()
 		else
 		{
 			pb32.init(width, height);
+			clearForFrameHash(pb32.data(), width, height, stride, heightLimit);
 			texconv32(&pb32, (u8*)&vram[mmStartAddress], stride, heightLimit);
 
 			// xBRZ scaling
@@ -725,6 +736,7 @@ bool BaseTextureCacheData::Update()
 		else
 		{
 			pb8.init(width, height);
+			clearForFrameHash(pb8.data(), width, height, stride, height);
 			texconv8(&pb8, &vram[mmStartAddress], stride, height);
 		}
 		temp_tex_buffer = pb8.data();
@@ -759,6 +771,7 @@ bool BaseTextureCacheData::Update()
 		else
 		{
 			pb16.init(width, height);
+			clearForFrameHash(pb16.data(), width, height, stride, heightLimit);
 			texconv(&pb16, (u8*)&vram[mmStartAddress], stride, heightLimit);
 		}
 		temp_tex_buffer = pb16.data();

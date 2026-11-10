@@ -51,6 +51,11 @@ bool perfOn() {
 	return perfEnabled;
 }
 
+bool perfFrameHash() {
+	static const bool on = [] { const char *e = std::getenv("FLYCASTROPHE_GLHASH"); return perfEnabled && e != nullptr && *e == '1'; }();
+	return on;
+}
+
 unsigned long long perfNow() {
 	return perfEnabled ? perfNowUs() : 0;
 }

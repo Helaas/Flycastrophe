@@ -19,6 +19,9 @@
 #endif
 
 #include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <memory>
 
 #ifdef GLES
@@ -1128,6 +1131,96 @@ static void upload_vertex_indices()
 	glCheck();
 }
 
+// Flycastrophe (FLYCASTROPHE_GLHASH=1, with FLYCASTROPHE_PERF=1): a check that a renderer change leaves
+// the picture alone. Every frame rendered to the screen logs a hash of what it was drawn from (vertices,
+// polygon and modifier volume parameters, the data of the textures used, palette, fog and clamp values)
+// beside a hash of its pixels, read back before anything else is drawn over them. Two builds that reach the same frame must log the same pair
+// (flycastrophe/bench/flycastrophe/hashcmp.py). In this mode a texture's decode buffer is zeroed where
+// the texture doesn't fill it (TexCache.cpp), so two runs draw the same picture there too. FLYCASTROPHE_GLDUMP=<input hash>:<file> also writes that
+// frame's pixels: "width height\n", then RGBA rows as read (raw2png.py).
+static void hashFrame(int width, int height)
+{
+	u64 h;
+	const auto start = [&h]() { h = 0xcbf29ce484222325ull; };
+	const auto mix = [&h](u64 v) { h = (h ^ v) * 0x100000001b3ull; h ^= h >> 29; };
+	const auto mixBytes = [&mix](const void *data, size_t size) {
+		const u8 *p = (const u8 *)data;
+		for (; size >= 8; size -= 8, p += 8)
+		{
+			u64 v;
+			memcpy(&v, p, 8);
+			mix(v);
+		}
+		u64 v = 0;
+		memcpy(&v, p, size);
+		mix(v ^ size);
+	};
+
+	const rend_context& ctx = *gl.rendContext;
+	start();
+	mixBytes(ctx.verts.data(), ctx.verts.size() * sizeof(Vertex));
+	mixBytes(ctx.modtrig.data(), ctx.modtrig.size() * sizeof(ModTriangle));
+	// not first and count: the index a renderer change may lay out differently
+	for (const std::vector<PolyParam> *list : { &ctx.global_param_op, &ctx.global_param_pt, &ctx.global_param_tr })
+	{
+		mix(list->size());
+		for (const PolyParam& pp : *list)
+		{
+			mix(pp.pcw.full);
+			mix(pp.isp.full);
+			mix(pp.tsp.full);
+			mix(pp.tcw.full);
+			mix(pp.tileclip);
+			// what the texture was last uploaded from: a video's frames share everything else
+			if (pp.texture != nullptr)
+			{
+				mix(pp.texture->uploadedHash);
+				mix(pp.texture->palette_hash);
+			}
+		}
+	}
+	for (const ModifierVolumeParam& mp : ctx.global_param_mvo)
+	{
+		mix(mp.isp.full);
+		mix(mp.tileclip);
+		mix(mp.first);
+		mix(mp.count);
+	}
+	mixBytes(PALETTE_RAM, PALETTE_RAM_END_addr + 4 - PALETTE_RAM_START_addr);
+	mixBytes(FOG_TABLE, FOG_TABLE_END_addr + 4 - FOG_TABLE_START_addr);
+	mixBytes(ShaderUniforms.depth_coefs, sizeof(ShaderUniforms.depth_coefs));
+	mixBytes(ShaderUniforms.ps_FOG_COL_RAM, sizeof(ShaderUniforms.ps_FOG_COL_RAM));
+	mixBytes(ShaderUniforms.ps_FOG_COL_VERT, sizeof(ShaderUniforms.ps_FOG_COL_VERT));
+	mixBytes(&ShaderUniforms.fog_den_float, sizeof(float));
+	mixBytes(&ShaderUniforms.PT_ALPHA, sizeof(float));
+	mixBytes(ShaderUniforms.fog_clamp_min, sizeof(ShaderUniforms.fog_clamp_min));
+	mixBytes(ShaderUniforms.fog_clamp_max, sizeof(ShaderUniforms.fog_clamp_max));
+	mix(ctx.framebufferWidth);
+	mix(ctx.framebufferHeight);
+	const u64 input = h;
+
+	static std::vector<u8> pixels;
+	pixels.resize((size_t)width * height * 4);
+	glPixelStorei(GL_PACK_ALIGNMENT, 1);
+	glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+	start();
+	mixBytes(pixels.data(), pixels.size());
+	NOTICE_LOG(RENDERER, "Flycastrophe glhash: in %016llx out %016llx", (unsigned long long)input, (unsigned long long)h);
+
+	static const char *dump = getenv("FLYCASTROPHE_GLDUMP");
+	if (dump != nullptr && strchr(dump, ':') != nullptr && strtoull(dump, nullptr, 16) == input)
+	{
+		FILE *f = fopen(strchr(dump, ':') + 1, "wb");
+		if (f != nullptr)
+		{
+			fprintf(f, "%d %d\n", width, height);
+			fwrite(pixels.data(), 1, pixels.size(), f);
+			fclose(f);
+		}
+		dump = nullptr;
+	}
+}
+
 bool OpenGLRenderer::renderFrame(int width, int height)
 {
 	if (!config::EmulateFramebuffer)
@@ -1308,6 +1401,8 @@ bool OpenGLRenderer::renderFrame(int width, int height)
 	}
 
 	DrawStrips();
+	if (perfFrameHash() && !is_rtt)
+		hashFrame(width, height);
 #ifdef LIBRETRO
 	if (!is_rtt && !config::EmulateFramebuffer)
 		postProcessor.render(glsm_get_current_framebuffer());

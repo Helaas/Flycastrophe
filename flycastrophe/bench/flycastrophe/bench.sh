@@ -60,7 +60,9 @@ arm_env() { # arm -> sets RA_BIN and EXTRA_ENV for lib-bench's launch.sh
     case "$1" in
         gles)   RA_BIN="$LEAF_RA_BIN"; EXTRA_ENV=""; CORE_ARM=stock ;;
         vk)     RA_BIN="$VK_DIR/bin/retroarch"; EXTRA_ENV=". $VK_DIR/env.sh"; CORE_ARM=stock ;;
-        fcr-*)  RA_BIN="$LEAF_RA_BIN"; EXTRA_ENV=""; CORE_ARM="$1" ;;
+        # arm-env-<arm>.sh, when there is one: shell lines for the arm's launch script, so one build can
+        # serve several arms that differ by environment
+        fcr-*)  RA_BIN="$LEAF_RA_BIN"; EXTRA_ENV="$(cat "$BENCH_HOST/arm-env-$1.sh" 2>/dev/null)"; CORE_ARM="$1" ;;
         fastumrk) RA_BIN="$LEAF_RA_BIN"; EXTRA_ENV=""; CORE_ARM=fastumrk ;;
         *) echo "unknown arm $1" >&2; return 1 ;;
     esac
