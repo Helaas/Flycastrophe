@@ -1,0 +1,18 @@
+# kcw/check.sh on this branch's build: upstream issue states with a generic input loop (40 s),
+# discs booted with Start/A pressed (50 s); emulated vblanks a second at the end, wait loop matched
+spiderman-0       59.81/s  the Katana library's vblank wait
+spiderman-1       57.81/s  the Katana library's vblank wait
+spiderman-2       59.80/s  the Katana library's vblank wait
+ecco              59.26/s  none
+sonic             60.98/s  the Katana library's callback wait
+doa2-boot         55.94/s  the Katana library's vblank wait
+powerstone-boot   59.99/s  the Katana library's callback wait
+segarally2-boot   60.19/s  none
+
+# No terminate, Fatal or verify in any log.
+
+# L.O.L. - Lack of Love (Japan), the two upstream states that made RetroArch abort through the code cache before #16 (tools/trystates.sh), each loaded after the other quit, twice
+lol-pass1 lol1610-ja: (quit cleanly)
+lol-pass1 lol1033-ja: Deadcast: 3909 blocks compiled ahead in 226 ms (133 not: changed, compiled already or no room) (quit cleanly)
+lol-pass2 lol1610-ja: Deadcast: 4445 blocks compiled ahead in 260 ms (173 not: changed, compiled already or no room) (quit cleanly)
+lol-pass2 lol1033-ja: Deadcast: 4445 blocks compiled ahead in 251 ms (133 not: changed, compiled already or no room) (quit cleanly)

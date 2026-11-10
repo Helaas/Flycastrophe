@@ -10,6 +10,8 @@
 #include <map>
 #include <deque>
 #include <unordered_map>
+#include <unordered_set>
+#include <memory>
 #include "blockmanager.h"
 #include "ngen.h"
 
@@ -44,6 +46,49 @@ static bm_Map blkmap;
 // Stats
 u32 protected_blocks;
 u32 unprotected_blocks;
+
+// Deadcast: without the MMU, a write to a protected page of code leaves the page protected (upstream unprotected it
+// for good, and every block compiled there checked its code on each entry).
+// - A store of translated code through the window goes to its slow path for good (Sh4Dynarec::storeToStub), which
+//   writes past the protection and throws away the blocks whose code or constants it changed (bm_CodeWrite).
+// - Any other write throws the page's blocks away and unlocks it; the next block compiled there locks it again.
+// - A word read into a constant (constReads) that is written is data from then on: never read into a constant again.
+namespace
+{
+std::unordered_set<u32> dataWords;		// RAM words written as data next to code
+// RAM page -> a bit for each byte a protected block was compiled from or read into a constant (bm_CodeWrite's test)
+std::vector<std::unique_ptr<u64[]>> codeBits;
+
+void markCodeBytes(u32 offset, u32 size)
+{
+	offset &= RAM_MASK;
+	while (size > 0)
+	{
+		const u32 page = offset / PAGE_SIZE;
+		const u32 from = offset % PAGE_SIZE;
+		const u32 n = std::min(size, (u32)PAGE_SIZE - from);
+		std::unique_ptr<u64[]>& bits = codeBits[page];
+		if (!bits)
+			bits.reset(new u64[PAGE_SIZE / 64]());
+		for (u32 i = from; i < from + n; i++)
+			bits[i / 64] |= 1ull << (i % 64);
+		offset += n;
+		size -= n;
+	}
+}
+
+// within one page
+bool codeBytes(u32 offset, u32 size)
+{
+	const std::unique_ptr<u64[]>& bits = codeBits[offset / PAGE_SIZE];
+	if (!bits)
+		return false;
+	for (u32 i = offset % PAGE_SIZE; i < offset % PAGE_SIZE + size; i++)
+		if ((bits[i / 64] >> (i % 64)) & 1)
+			return true;
+	return false;
+}
+}
 
 #define FPCA(x) ((DynarecCodeEntryPtr&)p_sh4rcb->fpcb[(x>>1)&FPCB_MASK])
 
@@ -235,6 +280,7 @@ std::vector<RuntimeBlockInfoPtr> bm_AllBlocks()
 }
 
 u32 bmStatCompiled, bmStatCacheResets;	// Deadcast: for the perf line (spg.cpp)
+u32 bmStatCodeWrites, bmStatCodeDropped, bmStatCodeStores;
 
 void bm_AddBlock(RuntimeBlockInfo* blk)
 {
@@ -251,6 +297,13 @@ void bm_AddBlock(RuntimeBlockInfo* blk)
 
 	verify((void*)bm_GetCode(block->addr) == (void*)ngen_FailedToFindBlock);
 	FPCA(block->addr) = (DynarecCodeEntryPtr)CC_RW2RX(block->code);
+	// Deadcast: what a write must not change without throwing it away (bm_CodeWrite)
+	if (block->read_only)
+	{
+		markCodeBytes(block->addr, block->sh4_code_size);
+		for (const auto& [offset, size] : block->constReads)
+			markCodeBytes(offset, size);
+	}
 
 #ifdef DYNA_OPROF
 	if (oprofHandle)
@@ -322,13 +375,12 @@ void bm_vmem_pagefill(void** ptr, u32 size_bytes)
 	}
 }
 
-void bm_Reset()
+// every page of RAM unlocked: no protected block left anywhere
+static void unlockAllPages()
 {
-	bm_CleanupDeletedBlocks();
 	mmuwin::unprotectAll();
-	protected_blocks = 0;
-	unprotected_blocks = 0;
-
+	if (bm_codeLocked != nullptr)
+		memset(bm_codeLocked, 0, pageCount);
 #ifndef __SWITCH__
 	if (addrspace::virtmemEnabled())
 	{
@@ -355,9 +407,24 @@ void bm_Reset()
 	}
 }
 
+void bm_Reset()
+{
+	bm_CleanupDeletedBlocks();
+	unlockAllPages();
+	protected_blocks = 0;
+	unprotected_blocks = 0;
+}
+
+u8 *bm_codeLocked;
+
 void bm_LockPage(u32 addr, u32 size)
 {
 	addr = addr & (RAM_MASK - PAGE_MASK);
+	// Deadcast: stores that reach it through addrspace::writet go past the lock (bm_CodeWrite), through the RAM's
+	// next view, which only virtmem has
+	if (addrspace::virtmemEnabled())
+		for (u32 offset = 0; offset < size; offset += PAGE_SIZE)
+			bm_codeLocked[(addr + offset) / PAGE_SIZE] = 1;
 	// Deadcast: the page's mappings in the MMU windows too (deadcast/mmuwindows.h)
 	for (u32 offset = 0; offset < size; offset += PAGE_SIZE)
 		mmuwin::protectRamPage(addr + offset, true);
@@ -373,6 +440,8 @@ void bm_LockPage(u32 addr, u32 size)
 void bm_UnlockPage(u32 addr, u32 size)
 {
 	addr = addr & (RAM_MASK - PAGE_MASK);
+	for (u32 offset = 0; offset < size; offset += PAGE_SIZE)
+		bm_codeLocked[(addr + offset) / PAGE_SIZE] = 0;
 	for (u32 offset = 0; offset < size; offset += PAGE_SIZE)
 		mmuwin::protectRamPage(addr + offset, false);
 	if (addrspace::virtmemEnabled())
@@ -481,6 +550,8 @@ void bm_ResetCache()
 #endif
 	sh4Dynarec->reset();
 	addrspace::bm_reset();
+	// Deadcast: no block left, so no page locked (Discard)
+	unlockAllPages();
 
 	for (const auto& it : blkmap)
 	{
@@ -505,8 +576,11 @@ void bm_ResetCache()
 
 	for (size_t i = 0; i < pageCount; i++)
 		blocks_per_page[i].clear();
+	for (auto& bits : codeBits)
+		bits.reset();
 
 	memset(unprotected_pages, 0, pageCount);
+	dataWords.clear();
 
 #ifdef DYNA_OPROF
 	if (oprofHandle)
@@ -544,6 +618,8 @@ void bm_Init()
 	pageCount = RAM_SIZE_MAX / PAGE_SIZE;
 	unprotected_pages = new bool[pageCount];
 	blocks_per_page = new std::set<RuntimeBlockInfo*>[pageCount];
+	bm_codeLocked = new u8[pageCount]();
+	codeBits.resize(pageCount);
 
 #ifdef DYNA_OPROF
 	oprofHandle=op_open_agent();
@@ -564,6 +640,8 @@ void bm_Term()
 	bm_Reset();
 	delete[] unprotected_pages;
 	delete[] blocks_per_page;
+	delete[] bm_codeLocked;
+	bm_codeLocked = nullptr;
 }
 
 void bm_WriteBlockMap(const std::string& file)
@@ -635,8 +713,17 @@ void RuntimeBlockInfo::Discard()
 		// Remove this block from the per-page block lists
 		for (u32 addr = this->addr & ~PAGE_MASK; addr < this->addr + this->sh4_code_size; addr += PAGE_SIZE)
 		{
-			auto& block_list = blocks_per_page[(addr & RAM_MASK) / PAGE_SIZE];
+			const u32 page = (addr & RAM_MASK) / PAGE_SIZE;
+			auto& block_list = blocks_per_page[page];
 			block_list.erase(this);
+			if (block_list.empty())
+			{
+				codeBits[page].reset();
+				// Deadcast: a page is locked while it holds a protected block, no longer: its stores go straight to
+				// RAM again (a page left locked sent every store to it through bm_CodeWrite for good)
+				if (!addrspace::virtmemEnabled() || bm_codeLocked[page] != 0)
+					bm_UnlockPage(addr);
+			}
 		}
 	}
 }
@@ -670,6 +757,49 @@ void RuntimeBlockInfo::SetProtectedFlags()
 	}
 }
 
+bool bm_IsDataWord(u32 offset)
+{
+	return !dataWords.empty() && dataWords.count((offset & RAM_MASK) & ~3u) != 0;
+}
+
+bool bm_StoreToSlowPath(void *p)
+{
+	if (mmu_enabled() || !addrspace::virtmemEnabled())
+		return false;
+	const u32 offset = bm_getRamOffset(p);
+	return offset != (u32)-1 && !unprotected_pages[offset / PAGE_SIZE];
+}
+
+void bm_CodeWrite(u32 offset, u32 size, u64 data)
+{
+	offset &= RAM_MASK;
+	bmStatCodeStores++;
+	if (memcmp(&mem_b[offset], &data, size) == 0)
+		return;
+	// through the RAM's next view (its first mirror), never locked
+	memcpy(&mem_b[RAM_SIZE + offset], &data, size);
+	if (!codeBytes(offset, size))
+		return;
+	std::set<RuntimeBlockInfo*>& block_list = blocks_per_page[offset / PAGE_SIZE];
+	const auto touched = [&](u32 addr, u32 bytes) { return addr < offset + size && addr + bytes > offset; };
+	std::vector<RuntimeBlockInfo*> stale;
+	for (RuntimeBlockInfo *block : block_list)
+	{
+		bool hit = touched(block->addr & RAM_MASK, block->sh4_code_size);
+		for (const auto& [addr, bytes] : block->constReads)
+			if (touched(addr, bytes))
+			{
+				dataWords.insert(addr & ~3u);
+				hit = true;
+			}
+		if (hit)
+			stale.push_back(block);
+	}
+	for (RuntimeBlockInfo *block : stale)
+		bm_DiscardBlock(block);
+	bmStatCodeDropped += stale.size();
+}
+
 void bm_RamWriteAccess(u32 addr)
 {
 	addr &= RAM_MASK;
@@ -679,8 +809,11 @@ void bm_RamWriteAccess(u32 addr)
 		addrspace::protectRamInWindow(addr & ~PAGE_MASK, PAGE_SIZE, false);
 		return;
 	}
-
-	unprotected_pages[addr / PAGE_SIZE] = true;
+	// Deadcast: without the MMU, the next block compiled there locks the page again (SetProtectedFlags)
+	if (mmu_enabled())
+		unprotected_pages[addr / PAGE_SIZE] = true;
+	else
+		bmStatCodeWrites++;
 	bm_UnlockPage(addr);
 	std::set<RuntimeBlockInfo*>& block_list = blocks_per_page[addr / PAGE_SIZE];
 	if (!block_list.empty())
@@ -689,6 +822,7 @@ void bm_RamWriteAccess(u32 addr)
 		list_copy.insert(list_copy.begin(), block_list.begin(), block_list.end());
 		if (!list_copy.empty())
 			DEBUG_LOG(DYNAREC, "bm_RamWriteAccess write access to %08x pc %08x", addr, Sh4cntx.pc);
+		bmStatCodeDropped += list_copy.size();
 		for (auto& block : list_copy)
 			bm_DiscardBlock(block);
 		verify(block_list.empty());

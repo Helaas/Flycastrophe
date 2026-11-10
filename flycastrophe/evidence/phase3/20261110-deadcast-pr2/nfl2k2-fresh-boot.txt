@@ -1,0 +1,49 @@
+# NFL 2K2 booted from the BIOS, capped, 200 s, 1 run each, 20 s windows (code writes: Deadcast's counters)
+== nfl2k2-combined-r1
+     0-20  s speed 103.3%  rendered  39.1/s  emu  67%  draws      7  stores/s      1275
+    20-40  s speed 100.4%  rendered  30.0/s  emu  87%  draws      2  stores/s      2536
+    40-60  s speed 100.5%  rendered  30.1/s  emu  84%  draws      2  stores/s      2534
+    60-80  s speed 100.3%  rendered  30.1/s  emu  82%  draws      2  stores/s      2532
+    80-100 s speed  98.5%  rendered  35.4/s  emu  72%  draws      8  stores/s     14198
+   100-120 s speed 100.2%  rendered  60.0/s  emu  41%  draws     21  stores/s     13714
+   120-140 s speed 102.3%  rendered  54.3/s  emu  58%  draws    326  stores/s     47703
+   140-160 s speed  99.4%  rendered  59.6/s  emu  59%  draws    530  stores/s     13556
+   160-180 s speed 100.1%  rendered  60.0/s  emu  52%  draws    289  stores/s     13702
+   180-200 s speed 100.2%  rendered  60.0/s  emu  54%  draws    482  stores/s     13725
+   200-220 s speed  98.2%  rendered  58.5/s  emu  62%  draws    701  stores/s     13384
+== nfl2k2-dcpr-r1
+     0-20  s speed 103.3%  rendered  39.1/s  emu  66%  draws      7  stores/s      1268
+    20-40  s speed 100.4%  rendered  30.1/s  emu  86%  draws      2  stores/s      2540
+    40-60  s speed 100.5%  rendered  30.1/s  emu  84%  draws      2  stores/s      2527
+    60-80  s speed 100.5%  rendered  30.1/s  emu  82%  draws      2  stores/s      2546
+    80-100 s speed  99.4%  rendered  36.0/s  emu  73%  draws      8  stores/s     14312
+   100-120 s speed 100.2%  rendered  60.0/s  emu  41%  draws     21  stores/s     13714
+   120-140 s speed  83.3%  rendered  44.3/s  emu  47%  draws   1210  stores/s     45173
+   140-160 s speed  65.0%  rendered  39.0/s  emu  39%  draws   1933  stores/s      8888
+   160-180 s speed  59.9%  rendered  35.9/s  emu  37%  draws   1883  stores/s      8190
+   180-200 s speed  91.0%  rendered  54.6/s  emu  56%  draws   1028  stores/s     12387
+   200-220 s speed  97.1%  rendered  58.2/s  emu  57%  draws    842  stores/s     13275
+== nfl2k2-main-r1
+     0-20  s speed  90.9%  rendered  35.5/s  emu  66%  draws      6
+    20-40  s speed 100.4%  rendered  30.0/s  emu  87%  draws      2
+    40-60  s speed 100.4%  rendered  30.1/s  emu  83%  draws      2
+    60-80  s speed 100.4%  rendered  30.1/s  emu  82%  draws      2
+    80-100 s speed 101.2%  rendered  33.9/s  emu  77%  draws      6
+   100-120 s speed 100.2%  rendered  60.0/s  emu  47%  draws     21
+   120-140 s speed  90.2%  rendered  47.9/s  emu  53%  draws    982
+   140-160 s speed  63.5%  rendered  38.1/s  emu  46%  draws   2063
+   160-180 s speed  79.6%  rendered  47.7/s  emu  55%  draws   1312
+   180-200 s speed  93.8%  rendered  56.2/s  emu  64%  draws    916
+   200-220 s speed  97.2%  rendered  58.3/s  emu  65%  draws    926
+== nfl2k2-pr29-r1
+     0-20  s speed  91.5%  rendered  35.6/s  emu  67%  draws      7
+    20-40  s speed 100.5%  rendered  30.1/s  emu  87%  draws      2
+    40-60  s speed 100.4%  rendered  30.1/s  emu  83%  draws      2
+    60-80  s speed 100.5%  rendered  30.1/s  emu  82%  draws      2
+    80-100 s speed 101.1%  rendered  34.0/s  emu  77%  draws      7
+   100-120 s speed 100.2%  rendered  60.0/s  emu  46%  draws     21
+   120-140 s speed 100.8%  rendered  54.4/s  emu  61%  draws    333
+   140-160 s speed  94.5%  rendered  56.6/s  emu  71%  draws    744
+   160-180 s speed 100.2%  rendered  60.1/s  emu  65%  draws    425
+   180-200 s speed 100.2%  rendered  60.0/s  emu  67%  draws    498
+   200-220 s speed  95.0%  rendered  57.0/s  emu  65%  draws    582

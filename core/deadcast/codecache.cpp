@@ -19,6 +19,9 @@ namespace deadcast::codecache
 namespace
 {
 
+// a list's first line; one without it, from an older version, can list blocks whose code changed and is not used
+constexpr char Header[] = "deadcast blocks 2\n";
+
 struct Entry
 {
 	u32 vaddr;
@@ -70,7 +73,8 @@ void save()
 		return;
 	std::vector<Entry> list;
 	bm_ForEachBlock([&list](const RuntimeBlockInfo& block) {
-		if (block.temp_block || !inMainRam(block.addr) || block.sh4_code_size == 0)
+		// protected: its code is still what it was compiled from
+		if (!block.read_only || block.temp_block || !inMainRam(block.addr) || block.sh4_code_size == 0)
 			return;
 		const u64 hash = hashOf(block.addr, block.sh4_code_size);
 		if (hash != 0)
@@ -83,6 +87,7 @@ void save()
 	FILE *f = std::fopen(temp.c_str(), "w");
 	if (f == nullptr)
 		return;
+	std::fputs(Header, f);
 	for (const Entry& e : list)
 		std::fprintf(f, "%08x %08x %x %016llx\n", e.vaddr, e.fpscr, e.size, (unsigned long long)e.hash);
 	const bool written = std::fflush(f) == 0;
@@ -97,9 +102,17 @@ void warm()
 {
 	if (!usable())
 		return;
-	FILE *f = std::fopen(file().c_str(), "r");
+	const std::string path = file();
+	FILE *f = std::fopen(path.c_str(), "r");
 	if (f == nullptr)
 		return;
+	char header[sizeof(Header)] = "";
+	if (std::fgets(header, sizeof(header), f) == nullptr || std::string(header) != Header)
+	{
+		std::fclose(f);
+		NOTICE_LOG(DYNAREC, "Deadcast: %s is from an older version, not used", path.c_str());
+		return;
+	}
 	const auto start = std::chrono::steady_clock::now();
 	// compiled as while the SH4 runs: with the CPU stopped (as at a state load) a block's exits go back to
 	// the main loop for good instead of to the stubs that link them on first use (RelinkBlock)
@@ -110,17 +123,8 @@ void warm()
 	unsigned long long hash;
 	while (std::fscanf(f, "%x %x %x %llx", &vaddr, &fpscr, &size, &hash) == 4)
 	{
-		// Flycastrophe: the recorded code checked before it is decoded. Another save of the same game can
-		// hold other code or data there, and decoding that can throw (a branch in a delay slot), which
-		// nothing catches on the way out of a state load: RetroArch aborted.
-		if (hashOf(vaddr, size) != hash)
-		{
-			skipped++;
-			continue;
-		}
-		const bool done = rdv_Precompile(vaddr, fpscr, [size, hash](u32 addr, u32 codeSize) {
-			return codeSize == size && hashOf(addr, codeSize) == hash;
-		});
+		// the code it was compiled from, else not decoded (a state from elsewhere in the game holds other code or data)
+		const bool done = hashOf(vaddr, size) == hash && rdv_Precompile(vaddr, fpscr);
 		(done ? compiled : skipped)++;
 	}
 	std::fclose(f);

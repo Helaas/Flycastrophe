@@ -1,0 +1,66 @@
+# This branch's build (fcr-dcpr2b, core 2c6e7566) vs main (fcr-dcbase), dev builds without PGO
+# flycastrophe/bench.sh, Crazy Taxi and SA2 still scenes (DRIVE=0), 10 s warmup, 30 s window
+
+## Uncapped, 3 rounds
+| RetroArch | reps ok | fps median | fps p5 | fps min | rep medians | frame p95 ms | underrun % | dropped | GPU load % | startup s | RSS MB | max °C |
+| --- | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| fcr-dcbase | 3/3 | 73.99 | 71.75 | 71.10 | 73.4, 74.5, 74.3 | 14.4 | 0.1 | 0 | 66 | 1.09 | 237 | 71.1 |
+| fcr-dcpr2b | 3/3 | 72.62 | 69.90 | 69.04 | 71.0, 74.2, 73.4 | 14.6 | 0.3 | 0 | 65 | 1.41 | 238 | 70.6 |
+
+CPU over the window, percent of one core (mean of reps):
+
+| RetroArch | RetroArch total | busiest threads | Weston | SoC busy (of 4 cores) |
+| --- | ---: | --- | ---: | ---: |
+| fcr-dcbase | 206 | retroarch 98, Flycast-emu 65, deadcast-aica 16, deadcast-parse 12, mali-cmar-backe 12 | 18 | 61 |
+| fcr-dcpr2b | 204 | retroarch 98, Flycast-emu 65, deadcast-aica 16, deadcast-parse 12, mali-cmar-backe 12 | 18 | 61 |
+
+### sa2
+
+| RetroArch | reps ok | fps median | fps p5 | fps min | rep medians | frame p95 ms | underrun % | dropped | GPU load % | startup s | RSS MB | max °C |
+| --- | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| fcr-dcbase | 3/3 | 101.63 | 100.30 | 99.81 | 102.1, 102.5, 100.9 | 10.8 | 0.1 | 0 | 68 | 1.10 | 226 | 73.3 |
+| fcr-dcpr2b | 3/3 | 101.63 | 99.91 | 99.42 | 101.7, 101.2, 101.9 | 10.9 | 0.2 | 0 | 68 | 1.13 | 228 | 72.2 |
+
+CPU over the window, percent of one core (mean of reps):
+
+| RetroArch | RetroArch total | busiest threads | Weston | SoC busy (of 4 cores) |
+| --- | ---: | --- | ---: | ---: |
+| fcr-dcbase | 237 | retroarch 98, Flycast-emu 89, deadcast-aica 18, mali-cmar-backe 15, deadcast-parse 15 | 19 | 69 |
+| fcr-dcpr2b | 235 | retroarch 98, Flycast-emu 87, deadcast-aica 18, mali-cmar-backe 15, deadcast-parse 15 | 19 | 69 |
+
+### Uncapped: each arm relative to fcr-dcbase
+
+- crazy-taxi fcr-dcpr2b: median fps 72.62 vs 73.99 (-1.9%), p5 69.90 vs 71.75 (-2.6%), frame p95 14.6 vs 14.4 ms
+- sa2 fcr-dcpr2b: median fps 101.63 vs 101.63 (-0.0%), p5 99.91 vs 100.30 (-0.4%), frame p95 10.9 vs 10.8 ms
+
+## Capped (vsync and audio sync on), 2 rounds
+| RetroArch | reps ok | fps median | fps p5 | fps min | rep medians | frame p95 ms | underrun % | dropped | GPU load % | startup s | RSS MB | max °C |
+| --- | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| fcr-dcbase | 2/2 | 60.06 | 59.88 | 59.88 | 60.1, 60.1 | 17.3 | 0.3 | 0 | 53 | 1.42 | 236 | 68.1 |
+| fcr-dcpr2b | 2/2 | 60.06 | 59.90 | 59.77 | 60.0, 60.1 | 17.4 | 0.4 | 0 | 54 | 2.04 | 235 | 68.8 |
+
+CPU over the window, percent of one core (mean of reps):
+
+| RetroArch | RetroArch total | busiest threads | Weston | SoC busy (of 4 cores) |
+| --- | ---: | --- | ---: | ---: |
+| fcr-dcbase | 164 | retroarch 78, Flycast-emu 52, deadcast-aica 13, deadcast-parse 10, mali-cmar-backe 10 | 15 | 49 |
+| fcr-dcpr2b | 164 | retroarch 79, Flycast-emu 52, deadcast-aica 13, deadcast-parse 10, mali-cmar-backe 10 | 15 | 49 |
+
+### sa2
+
+| RetroArch | reps ok | fps median | fps p5 | fps min | rep medians | frame p95 ms | underrun % | dropped | GPU load % | startup s | RSS MB | max °C |
+| --- | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| fcr-dcbase | 2/2 | 60.04 | 59.87 | 59.81 | 60.0, 60.0 | 17.5 | 0.4 | 0 | 41 | 1.40 | 224 | 65.6 |
+| fcr-dcpr2b | 2/2 | 60.06 | 59.89 | 59.81 | 60.1, 60.0 | 17.5 | 0.4 | 0 | 41 | 1.60 | 224 | 65.6 |
+
+CPU over the window, percent of one core (mean of reps):
+
+| RetroArch | RetroArch total | busiest threads | Weston | SoC busy (of 4 cores) |
+| --- | ---: | --- | ---: | ---: |
+| fcr-dcbase | 134 | retroarch 56, Flycast-emu 48, deadcast-aica 11, mali-cmar-backe 9, deadcast-parse 8 | 15 | 41 |
+| fcr-dcpr2b | 133 | retroarch 57, Flycast-emu 47, deadcast-aica 11, mali-cmar-backe 9, deadcast-parse 8 | 15 | 41 |
+
+### Each arm against fcr-dcbase (no worse = pass)
+
+- crazy-taxi fcr-dcpr2b: median fps pass (60.06 vs 60.06); frame p95 FAIL (17.4 vs 17.3 ms); underruns FAIL (0.4 vs 0.3 %); startup pass (2.04 vs 1.42 s)
+- sa2 fcr-dcpr2b: median fps pass (60.06 vs 60.04); frame p95 FAIL (17.5 vs 17.5 ms); underruns FAIL (0.4 vs 0.4 %); startup pass (1.60 vs 1.40 s)
