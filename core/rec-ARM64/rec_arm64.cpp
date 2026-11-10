@@ -26,6 +26,7 @@
 #endif
 #include <list>
 #include <map>
+#include <unordered_set>
 
 #include <aarch64/macro-assembler-aarch64.h>
 using namespace vixl::aarch64;
@@ -93,6 +94,25 @@ static DynaCode *lightThunk;
 // Deadcast: a store queue's flush (pref) while R0-R15 and T are pinned: the TA's polygon FIFO fed right
 // there, the rest through the handler (GenMainloop)
 static DynaCode *sqFlush;
+// Deadcast: the SH4 addresses of stores seen writing to the store queues: compiled inline, straight to sq_buffer
+static std::unordered_set<u32> sqStoreSites;
+// Deadcast: the SH4 addresses of loads seen reading a timer's count, and the address read: compiled inline
+static std::unordered_map<u32, u32> tmuReadSites;
+extern s64 *const tmuChBase;
+extern u64 *const tmuMask;
+extern u32 *const tmuShift;
+
+// Deadcast: the TMU channel whose count (TCNT0-2) the address is, else -1
+static int tmuChannel(u32 addr)
+{
+	switch (addr & 0x1FFFFFFF)
+	{
+	case TMU_TCNT0_addr: return 0;
+	case TMU_TCNT1_addr: return 1;
+	case TMU_TCNT2_addr: return 2;
+	default: return -1;
+	}
+}
 // the TA's, for it (ta.cpp): its state machine (the state at [2048]), the transitions to handle, its
 // data's write pointer and the data's start (that many bytes after it), its context, the data's size
 extern u8 ta_fsm[2049];
@@ -226,6 +246,9 @@ public:
 	Arm64Assembler(Sh4Context& sh4ctx, Sh4CodeBuffer& codeBuffer, void *buffer)
 	: MacroAssembler((u8 *)buffer, codeBuffer.getFreeSpace()), regalloc(this), sh4ctx(sh4ctx), codeBuffer(codeBuffer)
 	{
+		// Deadcast: the macro assembler's FP scratch d15, not d31 (FR15 when pinned)
+		GetScratchVRegisterList()->Remove(d31);
+		GetScratchVRegisterList()->Combine(d15);
 		call_regs.push_back((const WRegister*)&w0);
 		call_regs.push_back((const WRegister*)&w1);
 		call_regs.push_back((const WRegister*)&w2);
@@ -354,6 +377,8 @@ public:
 		jitWriteProtect(codeBuffer, false);
 		this->block = block;
 		block->mmuStubs.clear();
+		block->mmuSites.clear();
+		block->exitTestsT = false;
 		CheckBlock(force_checks, block);
 		
 		// run register allocator
@@ -1040,14 +1065,12 @@ public:
 					shil_chf[op.op](&op);	// Flycastrophe: the exact canonical version
 					break;
 				}
-				Add(x2, x28, op.rs1.reg_offset());
-				Ld1(v0.V4S(), MemOperand(x2));
-				Add(x2, x28, op.rs2.reg_offset());
-				Ld1(v1.V4S(), MemOperand(x2));
-				Fmul(v20.V4S(), v0.V4S(), v1.V4S());
-				Faddp(v21.V4S(), v20.V4S(), v20.V4S());
-				Faddp(s22, v21.V2S());
-				host_reg_to_shil_param(op.rd, s22);
+				genLoadVector(v0, op.rs1);
+				genLoadVector(v1, op.rs2);
+				Fmul(v5.V4S(), v0.V4S(), v1.V4S());
+				Faddp(v6.V4S(), v5.V4S(), v5.V4S());
+				Faddp(s7, v6.V2S());
+				host_reg_to_shil_param(op.rd, s7);
 				break;
 
 			case shop_ftrv:
@@ -1057,25 +1080,28 @@ public:
 					break;
 				}
 				// fd[i] = sum over j of fn[j] * fm[j * 4 + i]: the lanes are the four results
-				Add(x2, x28, op.rs1.reg_offset());
-				Ld1(v0.V4S(), MemOperand(x2));
+				genLoadVector(v0, op.rs1);
 				Add(x2, x28, op.rs2.reg_offset());
 				Ld1(v1.V4S(), v2.V4S(), v3.V4S(), v4.V4S(), MemOperand(x2));
-				Fmul(v22.V4S(), v1.V4S(), v0.S(), 0);
-				Fmla(v22.V4S(), v2.V4S(), v0.S(), 1);
-				Fmla(v22.V4S(), v3.V4S(), v0.S(), 2);
-				Fmla(v22.V4S(), v4.V4S(), v0.S(), 3);
-				Add(x2, x28, op.rd.reg_offset());
-				St1(v22.V4S(), MemOperand(x2));
+				Fmul(v5.V4S(), v1.V4S(), v0.S(), 0);
+				Fmla(v5.V4S(), v2.V4S(), v0.S(), 1);
+				Fmla(v5.V4S(), v3.V4S(), v0.S(), 2);
+				Fmla(v5.V4S(), v4.V4S(), v0.S(), 3);
+				genStoreVector(op.rd, v5);
 				break;
 
 			case shop_frswap:
+				// Deadcast: swapped in the context, pinned FR0-FR15 stored first and loaded after
+				if (pinnedRegs)
+					genPinnedFrStore();
 				Add(x2, x28, op.rs1.reg_offset());
 				Add(x3, x28, op.rd.reg_offset());
 				Ld4(v0.V2D(), v1.V2D(), v2.V2D(), v3.V2D(), MemOperand(x2));
 				Ld4(v4.V2D(), v5.V2D(), v6.V2D(), v7.V2D(), MemOperand(x3));
 				St4(v4.V2D(), v5.V2D(), v6.V2D(), v7.V2D(), MemOperand(x2));
 				St4(v0.V2D(), v1.V2D(), v2.V2D(), v3.V2D(), MemOperand(x3));
+				if (pinnedRegs)
+					genPinnedFrLoad();
 				break;
 
 			case shop_cvt_f2i_t:
@@ -1107,12 +1133,16 @@ public:
 		if (BET_GET_CLS(block->BlockType) == BET_CLS_COND && !block->has_jcond)
 		{
 			// Deadcast: the condition of the exit in w29, as jcond leaves it (RelinkBlock): T, from its
-			// register if it is in one
+			// register if it is in one. Pinned in w18, the exit tests it there (cbz/cbnz)
 			const shil_param t(reg_sr_T);
-			if (regalloc.IsAllocg(t))
-				Mov(w29, regalloc.MapRegister(t));
-			else
-				Ldr(w29, sh4_context_mem_operand(&sh4ctx.sr.T));
+			block->exitTestsT = pinnedRegs && regalloc.IsAllocg(t) && regalloc.MapRegister(t).Is(w18);
+			if (!block->exitTestsT)
+			{
+				if (regalloc.IsAllocg(t))
+					Mov(w29, regalloc.MapRegister(t));
+				else
+					Ldr(w29, sh4_context_mem_operand(&sh4ctx.sr.T));
+			}
 		}
 		regalloc.Cleanup();
 		genMmuAccessStubs();
@@ -1381,12 +1411,21 @@ public:
 				// if (*jdyn == 0)
 				//   next_pc = branch_pc_value;
 
-				// Deadcast: the condition is in w29, from jcond or the block's end (compileBlock)
-				Cmp(w29, block->BlockType & 1);
-
+				// Deadcast: the condition is in w29, from jcond or the block's end (compileBlock), or T in w18
+				// (exitTestsT)
 				Label branch_not_taken;
-
-				B(ne, &branch_not_taken);
+				if (block->exitTestsT)
+				{
+					if (block->BlockType & 1)
+						Cbz(w18, &branch_not_taken);
+					else
+						Cbnz(w18, &branch_not_taken);
+				}
+				else
+				{
+					Cmp(w29, block->BlockType & 1);
+					B(ne, &branch_not_taken);
+				}
 				if (mmu_enabled())
 				{
 					GenMmuStaticExit(block, block->BranchBlock, block->pBranchBlock, linkBlockBranchStub);
@@ -1953,11 +1992,11 @@ public:
 			// handle. Anything else, or the TA's data at its start or full, through the handler.
 			Bind(&sqFlushLabel);
 			{
-				Label slow, handle;
+				Label slow, handle, ram;
 				Ubfx(w1, w0, 20, 6);
 				Add(x2, x28, SqTaRegionsOffset);
 				Ldrb(w2, MemOperand(x2, x1));
-				Cbz(w2, &slow);
+				Cbz(w2, &ram);
 				Mov(x2, reinterpret_cast<uintptr_t>(taContext));
 				Ldr(x2, MemOperand(x2));
 				Cbz(x2, &slow);
@@ -1994,6 +2033,18 @@ public:
 				Mov(w0, w3);
 				Mov(x16, reinterpret_cast<uintptr_t>(ta_vtx_handle));
 				B(&lightThunkLabel);
+				// Deadcast: a store queue area remapped to main RAM (sqRamRegions): the 32 bytes straight there
+				Bind(&ram);
+				Mov(x2, reinterpret_cast<uintptr_t>(sqRamRegions));
+				Ldr(x2, MemOperand(x2, x1, LSL, 3));
+				Cbz(x2, &slow);
+				And(w3, w0, 0xFFFE0);
+				Add(x2, x2, x3);
+				Ubfx(w1, w0, 5, 1);
+				Add(x1, x28, Operand(x1, LSL, 5));
+				Ldp(q0, q1, MemOperand(x1));
+				Stp(q0, q1, MemOperand(x2));
+				Ret();
 				Bind(&slow);
 				Mov(x1, x28);
 				Ldr(x16, sh4_context_mem_operand(&sh4ctx.doSqWrite));
@@ -2240,37 +2291,84 @@ private:
 		for (int i = 0; i < 16; i += 2)
 			Stp(Register(pinned_gregs[i], 32), Register(pinned_gregs[i + 1], 32), sh4_context_mem_operand((Sh4RegType)(reg_r0 + i)));
 		Str(Register(pinned_T, 32), sh4_context_mem_operand(reg_sr_T));
+		genPinnedFrStore();
 	}
 	void genPinnedLoad()
 	{
 		for (int i = 0; i < 16; i += 2)
 			Ldp(Register(pinned_gregs[i], 32), Register(pinned_gregs[i + 1], 32), sh4_context_mem_operand((Sh4RegType)(reg_r0 + i)));
 		Ldr(Register(pinned_T, 32), sh4_context_mem_operand(reg_sr_T));
+		genPinnedFrLoad();
+	}
+	// Deadcast: whether a vector's (FVn) four registers are pinned (s16-s31)
+	bool pinnedVector(const shil_param& param) const {
+		return pinnedRegs && param._reg >= reg_fr_0 && param._reg + 3 <= reg_fr_15;
+	}
+	// a vector (FVn, four registers) into v: from its pinned registers, else the context
+	void genLoadVector(const VRegister& v, const shil_param& param)
+	{
+		if (pinnedVector(param))
+			for (int i = 0; i < 4; i++)
+				Mov(v.V4S(), i, VRegister(16 + (param._reg - reg_fr_0) + i, 128).V4S(), 0);
+		else
+		{
+			Add(x2, x28, param.reg_offset());
+			Ld1(v.V4S(), MemOperand(x2));
+		}
+	}
+	// v's four lanes to a vector (FVn): its pinned registers, else the context
+	void genStoreVector(const shil_param& param, const VRegister& v)
+	{
+		if (pinnedVector(param))
+			for (int i = 0; i < 4; i++)
+				Mov(VRegister(16 + (param._reg - reg_fr_0) + i, 32), v.V4S(), i);
+		else
+		{
+			Add(x2, x28, param.reg_offset());
+			St1(v.V4S(), MemOperand(x2));
+		}
+	}
+
+	// FR0-FR15, pinned in s16-s31
+	void genPinnedFrStore()
+	{
+		for (int i = 0; i < 16; i += 2)
+			Stp(VRegister(16 + i, 32), VRegister(17 + i, 32), sh4_context_mem_operand((Sh4RegType)(reg_fr_0 + i)));
+	}
+	void genPinnedFrLoad()
+	{
+		for (int i = 0; i < 16; i += 2)
+			Ldp(VRegister(16 + i, 32), VRegister(17 + i, 32), sh4_context_mem_operand((Sh4RegType)(reg_fr_0 + i)));
 	}
 
 	// a light thunk: function's, else lightThunk, which calls x16. It keeps the host registers C may
-	// change (the pinned R8-R15 and T, w4-w7), on the stack; R0-R7 are in registers C keeps.
+	// change (the pinned R8-R15, T and FR0-FR15, w4-w7), on the stack; R0-R7 are in registers C keeps.
 	void genLightThunk(uintptr_t function)
 	{
 		inThunk = true;
-		Stp(x4, x5, MemOperand(sp, -112, PreIndex));
+		Stp(x4, x5, MemOperand(sp, -240, PreIndex));
 		Stp(x6, x7, MemOperand(sp, 16));
 		Stp(x8, x9, MemOperand(sp, 32));
 		Stp(x10, x11, MemOperand(sp, 48));
 		Stp(x12, x13, MemOperand(sp, 64));
 		Stp(x14, x15, MemOperand(sp, 80));
 		Stp(x18, x30, MemOperand(sp, 96));
+		// Deadcast: and FR0-FR15 (s16-s31)
+		for (int i = 0; i < 16; i += 2)
+			Stp(VRegister(16 + i, 64), VRegister(17 + i, 64), MemOperand(sp, 112 + i * 8));
 		if (function == 0)
 			Blr(x16);
 		else
 			GenCallRuntime((void (*)())function);
+		for (int i = 0; i < 16; i += 2)
+			Ldp(VRegister(16 + i, 64), VRegister(17 + i, 64), MemOperand(sp, 112 + i * 8));
 		Ldp(x18, x30, MemOperand(sp, 96));
 		Ldp(x14, x15, MemOperand(sp, 80));
 		Ldp(x12, x13, MemOperand(sp, 64));
 		Ldp(x10, x11, MemOperand(sp, 48));
 		Ldp(x8, x9, MemOperand(sp, 32));
 		Ldp(x6, x7, MemOperand(sp, 16));
-		Ldp(x4, x5, MemOperand(sp, 112, PostIndex));
+		Ldp(x4, x5, MemOperand(sp, 240, PostIndex));
 		Ret();
 		inThunk = false;
 	}
@@ -2357,6 +2455,7 @@ private:
 		Register vaddr;
 		u32 write;
 		u32 pc;
+		u32 site;		// its instruction's SH4 address
 		std::vector<Arm64RegAlloc::DirtyReg> dirty;	// to write back first (regalloc.mmuDirty)
 		u32 size = 0;
 		CPURegister data;
@@ -2376,6 +2475,7 @@ private:
 		access.vaddr = vaddr;
 		access.write = write;
 		access.pc = block->vaddr + op.guest_offs - (op.delay_slot ? 2 : 0);
+		access.site = block->vaddr + op.guest_offs;
 		access.dirty = regalloc.mmuDirty;
 		return access;
 	}
@@ -2472,6 +2572,7 @@ private:
 				}
 				B(&access.next);
 				block->mmuStubs.emplace_back(access.accessOffset, (u32)access.stub.GetLocation());
+				block->mmuSites.push_back(access.site);
 				continue;
 			}
 			genWriteBackDirty(access.dirty);
@@ -2531,6 +2632,7 @@ private:
 			}
 			B(&access.next);
 			block->mmuStubs.emplace_back(access.accessOffset, (u32)access.stub.GetLocation());
+			block->mmuSites.push_back(access.site);
 		}
 		Bind(&done);
 		mmuAccesses.clear();
@@ -2595,6 +2697,29 @@ private:
 		return true;
 	}
 
+	// Deadcast: a timer's count into w3, as read_TMU_TCNTch computes it; run out (read_TMU_TCNT reloads it), to slow.
+	// x2, x3 and x16 scratch.
+	void genTmuCount(int ch, Label *slow)
+	{
+		Mov(x2, reinterpret_cast<uintptr_t>(sh4SchedFfb));
+		Ldr(x2, MemOperand(x2));
+		Ldrsw(x3, sh4_context_mem_operand(&sh4ctx.sh4_sched_next));
+		Sub(x2, x2, x3);
+		Ldrsw(x3, sh4_context_mem_operand(&sh4ctx.cycle_counter));
+		Sub(x2, x2, x3);
+		Add(x2, x2, SH4_TIMESLICE);
+		Mov(x16, reinterpret_cast<uintptr_t>(&tmuShift[ch]));
+		Ldr(w3, MemOperand(x16));
+		Lsr(x2, x2, x3);
+		Mov(x16, reinterpret_cast<uintptr_t>(&tmuMask[ch]));
+		Ldr(x3, MemOperand(x16));
+		And(x2, x2, x3);
+		Mov(x16, reinterpret_cast<uintptr_t>(&tmuChBase[ch]));
+		Ldr(x3, MemOperand(x16));
+		Subs(x3, x3, x2);
+		B(slow, mi);
+	}
+
 	void GenReadMemory(const shil_opcode& op, size_t opid, bool optimise)
 	{
 		if (GenReadMemoryImmediate(op))
@@ -2612,6 +2737,25 @@ private:
 				dest = regalloc.MapRegister(op.rd);
 			else if (op.size == 4 && regalloc.IsAllocf(op.rd))
 				dest = regalloc.MapVRegister(op.rd);
+			auto tmuSite = tmuReadSites.end();
+			if (mmu != nullptr && op.size == 4 && !dest.IsVRegister() && !mmu_enabled())
+				tmuSite = tmuReadSites.find(block->vaddr + op.guest_offs);
+			if (tmuSite != tmuReadSites.end())
+			{
+				// Deadcast: a timer's count (genTmuCount); another address, or the count run out, through the stub
+				Mov(w3, tmuSite->second);
+				Cmp(raddr, w3);
+				B(&mmu->stub, ne);
+				genTmuCount(tmuChannel(tmuSite->second), &mmu->stub);
+				mmu->accessOffset = (u32)GetBuffer()->GetCursorOffset();
+				Mov(dest.W(), w3);
+				Bind(&mmu->next);
+				mmu->size = op.size;
+				mmu->data = dest;
+				if (dest.Is(w0))
+					host_reg_to_shil_param(op.rd, dest);
+				return;
+			}
 			if (mmu != nullptr)
 			{
 				const MemOperand addr(x27, raddr, UXTW);
@@ -2788,7 +2932,19 @@ private:
 					break;
 
 				case 4:
-					GenCallRuntime((void (*)())ptr);
+					if (!mmu_enabled() && tmuChannel(op.rs1._imm) >= 0)
+					{
+						// Deadcast: a timer's count inline; run out, the handler
+						Label slow, done;
+						genTmuCount(tmuChannel(op.rs1._imm), &slow);
+						Mov(w0, w3);
+						B(&done);
+						Bind(&slow);
+						GenCallRuntime((void (*)())ptr);
+						Bind(&done);
+					}
+					else
+						GenCallRuntime((void (*)())ptr);
 					break;
 
 				default:
@@ -2847,7 +3003,7 @@ private:
 
 	void GenWriteMemory(const shil_opcode& op, size_t opid, bool optimise)
 	{
-		if (GenWriteMemoryImmediate(op))
+		if (GenWriteMemoryImmediate(op, optimise))
 			return;
 
 		if (compactMemAccess(op, optimise))
@@ -2867,6 +3023,26 @@ private:
 				data = regalloc.MapVRegister(op.rs2);
 			else
 				shil_param_to_host_reg(op.rs2, w1);
+			if (mmu != nullptr && op.size >= 4 && !mmu_enabled() && sqStoreSites.count(block->vaddr + op.guest_offs) != 0)
+			{
+				// Deadcast: a store seen writing to the store queues: straight to sq_buffer (the context's start);
+				// another address through its stub
+				Lsr(w3, raddr, 26);
+				Cmp(w3, 0x38);
+				B(&mmu->stub, ne);
+				And(x3, raddr.X(), 0x3f);
+				mmu->accessOffset = (u32)GetBuffer()->GetCursorOffset();
+				if (op.size == 8)
+					Str(x1, MemOperand(x28, x3));
+				else if (data.IsVRegister())
+					Str(data.S(), MemOperand(x28, x3));
+				else
+					Str(data.W(), MemOperand(x28, x3));
+				Bind(&mmu->next);
+				mmu->size = op.size;
+				mmu->data = data;
+				return;
+			}
 			if (mmu != nullptr)
 			{
 				const MemOperand addr(x27, raddr, UXTW);
@@ -2934,7 +3110,7 @@ private:
 			genReloadWindow();
 	}
 
-	bool GenWriteMemoryImmediate(const shil_opcode& op)
+	bool GenWriteMemoryImmediate(const shil_opcode& op, bool optimise)
 	{
 		if (!op.rs1.is_imm())
 			return false;
@@ -2943,6 +3119,10 @@ private:
 		bool isram;
 		u32 addr;
 		if (!rdv_writeMemImmediate(op.rs1._imm, op.size, ptr, isram, addr, block))
+			return false;
+		// Deadcast: to RAM through the window, with a stub to go to when it writes next to protected code
+		if (isram && (addr & 0x1C000000) == 0x0C000000 && !mmu_enabled() && windowAccesses()
+				&& compactMemAccess(op, optimise))
 			return false;
 
 		if (isram)
@@ -3372,6 +3552,60 @@ public:
 		context.pc = (uintptr_t)::handleException;
 	}
 
+	// Deadcast: ldr/str [x27, wN, uxtw], an access through the window (genMmuAccess)
+	static bool isWindowAccess(u32 op) {
+		return (op & 0x3B200C00) == 0x38200800 && ((op >> 13) & 7) == 2 && ((op >> 5) & 31) == 27;
+	}
+
+	bool inCodeBuffer(const u32 *code_ptr) const {
+		return (u8 *)code_ptr >= (u8 *)codeBuffer->getBase() && (u8 *)code_ptr < (u8 *)codeBuffer->getBase() + codeBuffer->getSize();
+	}
+
+	// Deadcast: without the MMU, an access through the window to what it does not map, or a store there to protected
+	// code: to its stub, for good. A store to the store queues or a read of a timer's count is learnt, and its block
+	// compiled again with it inline (sqStoreSites, tmuReadSites).
+	void windowAccessToStub(host_context_t &context, void *faultAddress, u32 *code_ptr)
+	{
+		const u32 armv8_op = *code_ptr;
+		RuntimeBlockInfoPtr block = bm_GetBlock((void *)context.pc);
+		// a block thrown away to be compiled again still runs to its end
+		const bool live = block != nullptr;
+		if (!live)
+			block = bm_GetStaleBlock((void *)context.pc);
+		verify(block != nullptr);
+		const u32 offset = (u32)((u8 *)code_ptr - (u8 *)block->code);
+		u32 *stub = nullptr;
+		u32 site = 0;
+		for (size_t i = 0; i < block->mmuStubs.size(); i++)
+			if (block->mmuStubs[i].first == offset)
+			{
+				stub = (u32 *)((u8 *)block->code + block->mmuStubs[i].second);
+				site = block->mmuSites[i];
+			}
+		verify(stub != nullptr);
+		*code_ptr = 0x14000000 | ((u32)(stub - code_ptr) & 0x3FFFFFF);
+		virtmem::flush_cache(CC_RW2RX(code_ptr), CC_RW2RX(code_ptr + 1), code_ptr, code_ptr + 1);
+		context.pc = (uintptr_t)CC_RW2RX(stub);
+		const u32 guest = (u32)((u8 *)faultAddress - addrspace::window);
+		if (((armv8_op >> 22) & 3) == 0 && (guest >> 26) == 0x38 && sqStoreSites.insert(site).second && live)
+			bm_DiscardBlock(block.get());
+		if ((armv8_op & 0xFFE00C00) == 0xB8600800 && tmuChannel(guest) >= 0 && tmuReadSites.emplace(site, guest).second && live)
+			bm_DiscardBlock(block.get());
+	}
+
+	bool storeToStub(host_context_t &context, void *faultAddress) override
+	{
+		if (codeBuffer == nullptr || mmu_enabled() || addrspace::windowToMap(faultAddress) == nullptr)
+			return false;
+		u32 *code_ptr = (u32 *)CC_RX2RW(context.pc);
+		if (!inCodeBuffer(code_ptr) || !isWindowAccess(*code_ptr) || ((*code_ptr >> 22) & 3) != 0)
+			return false;
+		jitWriteProtect(*codeBuffer, false);
+		windowAccessToStub(context, faultAddress, code_ptr);
+		jitWriteProtect(*codeBuffer, true);
+		return true;
+	}
+
 	bool rewrite(host_context_t &context, void *faultAddress) override
 	{
 		constexpr u32 STR_LDR_MASK = 0xFFE0EC00;
@@ -3418,8 +3652,7 @@ public:
 			return false;
 		//LOGI("Sh4Dynarec::rewrite pc %zx\n", context.pc);
 		u32 *code_ptr = (u32 *)CC_RX2RW(context.pc);
-		if ((u8 *)code_ptr < (u8 *)codeBuffer->getBase()
-				|| (u8 *)code_ptr >= (u8 *)codeBuffer->getBase() + codeBuffer->getSize())
+		if (!inCodeBuffer(code_ptr))
 			return false;
 		jitWriteProtect(*codeBuffer, false);
 		u32 armv8_op = *code_ptr;
@@ -3428,28 +3661,13 @@ public:
 		// else goes to the access's stub, for good if it is not RAM (the patched access branches
 		// there), this once if translating raises an exception (the stub then raises it).
 		u32 vaddr;
-		if ((armv8_op & 0x3B200C00) == 0x38200800 && ((armv8_op >> 13) & 7) == 2 && ((armv8_op >> 5) & 31) == 27
-				&& !mmu_enabled() && addrspace::windowToMap(faultAddress) != nullptr)
+		if (isWindowAccess(armv8_op) && !mmu_enabled() && addrspace::windowToMap(faultAddress) != nullptr)
 		{
-			// Deadcast: without the MMU, an access through the dynarec's window (addrspace.h) to what it does
-			// not map (a write to protected RAM or VRAM is let through by the fault handler first):
-			// its stub, for good
-			RuntimeBlockInfoPtr block = bm_GetBlock((void *)context.pc);
-			verify(block != nullptr);
-			const u32 offset = (u32)((u8 *)code_ptr - (u8 *)block->code);
-			u32 *stub = nullptr;
-			for (const auto& [access, stubOffset] : block->mmuStubs)
-				if (access == offset)
-					stub = (u32 *)((u8 *)block->code + stubOffset);
-			verify(stub != nullptr);
-			*code_ptr = 0x14000000 | ((u32)(stub - code_ptr) & 0x3FFFFFF);
-			virtmem::flush_cache(CC_RW2RX(code_ptr), CC_RW2RX(code_ptr + 1), code_ptr, code_ptr + 1);
-			context.pc = (uintptr_t)CC_RW2RX(stub);
+			windowAccessToStub(context, faultAddress, code_ptr);
 			jitWriteProtect(*codeBuffer, true);
 			return true;
 		}
-		if ((armv8_op & 0x3B200C00) == 0x38200800 && ((armv8_op >> 13) & 7) == 2 && ((armv8_op >> 5) & 31) == 27
-				&& mmu_enabled() && mmuwin::inWindow(faultAddress, vaddr))
+		if (isWindowAccess(armv8_op) && mmu_enabled() && mmuwin::inWindow(faultAddress, vaddr))
 		{
 			const bool write = ((armv8_op >> 22) & 3) == 0;
 			u32 paddr;

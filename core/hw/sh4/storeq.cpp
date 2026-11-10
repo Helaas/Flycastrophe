@@ -105,6 +105,10 @@ static void DYNACALL sqWriteTA(u32 dest, Sh4Context *ctx)
 	TAWriteSQ(dest, ctx->sq_buffer);
 }
 
+// Deadcast: where in main RAM each store queue area's 1 MB is remapped (sqWriteRemap), else nullptr: the dynarec's
+// flush writes there itself (rec_arm64.cpp)
+u8 *sqRamRegions[64];
+
 void sqTaRegionsUpdate()
 {
 	Sh4Context& ctx = p_sh4rcb->cntx;
@@ -112,11 +116,15 @@ void sqTaRegionsUpdate()
 	for (u32 k = 0; k < 64; k++)
 	{
 		bool ta = false;
+		sqRamRegions[k] = nullptr;
 		if (ctx.doSqWrite == &sqWriteRemap)
 		{
 			// the address: sq_remap[k] | (dest & 0xFFFE0), area 4 and below the YUV converter's
 			const u32 a = sq_remap[k];
 			ta = ((a >> 26) & 7) == 4 && ((a & 0x01FFFFE0) | 0xFFFE0) < 0x800000;
+			// the whole 1 MB in main RAM
+			if (((a >> 29) & 7) != 7 && ((a >> 26) & 7) == 3 && (a & 0xFFFE0) == 0 && (a & RAM_MASK) + 0x100000 <= RAM_SIZE)
+				sqRamRegions[k] = &mem_b[a & RAM_MASK];
 		}
 		else if (ctx.doSqWrite == &sqWriteTA)
 			// TAWriteSQ(dest): dest's bits 23-24 clear

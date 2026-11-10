@@ -238,27 +238,18 @@ static DynarecCodeEntryPtr compilePCTimed(u32 blockcheck_failures)
 	return rbi->code;
 }
 
-bool rdv_Precompile(u32 vaddr, u32 fpscr, const std::function<bool(u32, u32)>& sameCode)
+bool rdv_Precompile(u32 vaddr, u32 fpscr)
 {
-	// where decoding cannot fault (no exception may be raised here) and a block is not there already
-	if ((vaddr & 1) != 0 || mmu_enabled() || (vaddr & 0x1C000000) != 0x0C000000 || bm_HasBlock(vaddr)
-			|| smc_hotspots.count(vaddr) != 0 || codeBuffer.getFreeSpace() < 1_MB)
+	// where decoding cannot raise an SH4 exception on the CPU as just loaded (an address error, an MMU miss, an FPU
+	// op with the FPU disabled) and a block is not there already
+	if ((vaddr & 1) != 0 || mmu_enabled() || Sh4cntx.sr.FD == 1 || (vaddr & 0x1C000000) != 0x0C000000
+			|| bm_HasBlock(vaddr) || smc_hotspots.count(vaddr) != 0 || codeBuffer.getFreeSpace() < 1_MB)
 		return false;
 	RuntimeBlockInfo* rbi = sh4Dynarec->allocateBlock();
 	fpscr_t fpu;
 	fpu.full = fpscr;
-	bool decoded;
-	try {
-		decoded = rbi->Setup(vaddr, fpu);
-	} catch (const FlycastException&) {
-		// Flycastrophe: code that can't be decoded is skipped (deadcast/codecache.cpp checks it first)
-		decoded = false;
-	}
-	if (!decoded || !sameCode(rbi->addr, rbi->sh4_code_size))
-	{
-		delete rbi;
-		return false;
-	}
+	const bool decoded = rbi->Setup(vaddr, fpu);
+	verify(decoded);
 	rbi->blockcheck_failures = 0;
 	sh4Dynarec->compile(rbi, !rbi->read_only, true);
 	verify(rbi->code != nullptr);

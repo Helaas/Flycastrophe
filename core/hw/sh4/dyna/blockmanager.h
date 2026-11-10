@@ -46,6 +46,8 @@ struct RuntimeBlockInfo
 	u32 pcCheckSize = 0;
 	// Deadcast: under the MMU, each access through the window (offset in the code) and its stub's
 	std::vector<std::pair<u32, u32>> mmuStubs;
+	// Deadcast: the SH4 address of each of mmuStubs' accesses
+	std::vector<u32> mmuSites;
 	bool mmuNoLink = false;
 	// Deadcast: the code it was compiled from, when the code at its address keeps being rewritten (bm_ParkBlock)
 	std::vector<u8> smcCode;	// Deadcast: rdv_LinkBlock found an exit could not be linked under the MMU
@@ -53,6 +55,10 @@ struct RuntimeBlockInfo
 	BlockEndType BlockType;
 	bool has_jcond;
 	bool read_only;
+	// Deadcast: a conditional exit tests T where it is pinned (w18), not a copy of it in w29 (rec_arm64.cpp)
+	bool exitTestsT = false;
+	// Deadcast: the RAM it read into constants (ssa.cpp), offset and size: a write there throws it away too
+	std::vector<std::pair<u32, u32>> constReads;
 
 	std::vector<shil_opcode> oplist;
 	//predecessors references
@@ -116,6 +122,17 @@ static inline bool bm_IsRamPageProtected(u32 addr)
 
 bool bm_RamWriteAccess(void *p);
 void bm_RamWriteAccess(u32 addr);
+// Deadcast: whether a store of translated code faulting on protected code at p goes to its slow path for good
+// (Sh4Dynarec::storeToStub)
+bool bm_StoreToSlowPath(void *p);
+// Deadcast: a store past the protection of a page of code; the blocks whose code or constants it changes go
+void bm_CodeWrite(u32 offset, u32 size, u64 data);
+// Deadcast: a word written as data next to code: never read into a constant (ssa.cpp)
+bool bm_IsDataWord(u32 offset);
+extern u8 *bm_codeLocked;
+static inline bool bm_IsCodeLocked(u32 offset) {
+	return bm_codeLocked != nullptr && bm_codeLocked[(offset & RAM_MASK) / PAGE_SIZE] != 0;
+}
 void bm_LockPage(u32 addr, u32 size = PAGE_SIZE);
 void bm_UnlockPage(u32 addr, u32 size = PAGE_SIZE);
 u32 bm_getRamOffset(void *p);
@@ -126,6 +143,10 @@ inline static bool bm_RamWriteAccess(void *p) {
 	return false;
 }
 inline static void bm_RamWriteAccess(u32 addr) {}
+inline static bool bm_StoreToSlowPath(void *p) { return false; }
+inline static void bm_CodeWrite(u32 offset, u32 size, u64 data) {}
+inline static bool bm_IsDataWord(u32 offset) { return false; }
+static inline bool bm_IsCodeLocked(u32 offset) { return false; }
 inline static void bm_LockPage(u32 addr, u32 size = PAGE_SIZE) {}
 inline static void bm_UnlockPage(u32 addr, u32 size = PAGE_SIZE) {}
 inline static u32 bm_getRamOffset(void *p) {
