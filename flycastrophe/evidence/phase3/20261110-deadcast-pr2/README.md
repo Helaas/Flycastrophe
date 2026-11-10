@@ -47,8 +47,14 @@ runs used the pull request as of `d872c22d` (`fcr-dcpr2`, before the page unlock
 **Frame rates where the renderer is the limit don't move.** NFL 2K2's saved play renders about
 2,800 draws a frame in 32 ms: 56.2% speed on `main`, 56.6% here (3 rounds uncapped). Its attract
 demo after a fresh boot is the same story (`nfl2k2-fresh-boot.txt`; the scenes differ run to run).
-Crazy Taxi and SA2 still scenes, uncapped, 3 rounds (`bench-d872c22d.txt`): -2.0% and +1.3%,
-inside the rounds' spread; capped both hold 60 fps with the same frame times and underruns.
+Crazy Taxi and SA2 still scenes on this branch's build, uncapped, 3 rounds (`bench-final.txt`):
+72.62 vs 73.99 fps (-1.9%, rounds 71.0-74.2 vs 73.4-74.5) and 101.63 vs 101.63 fps. Capped, both
+hold 60 fps with the same frame times, underruns and CPU. The `d872c22d` build measured the same
+(-2.0% and +1.3%, `bench-d872c22d.txt`).
+
+Startup (RetroArch's start to its first answer, with the state load) is longer in all four bench
+runs: Crazy Taxi 1.09 to 1.41 s uncapped and 1.42 to 2.04 s capped, SA2 1.10 to 1.13 s and 1.40
+to 1.60 s. Not looked into; the bench's limit is 1 s.
 
 **With the draw-call change (#29)** the renderer stops being the limit for NFL 2K2, and the two
 add up: the saved play at 97.4% speed with both (98.0% with #29 alone), the emulation thread at
@@ -57,8 +63,13 @@ this change (85 of 85 compared, against a control run).
 
 ## Games
 
-The earlier build (`d872c22d`) played Spider-Man (three states), Ecco, Sonic Adventure, Dead or
-Alive 2 and Power Stone (boots) and Sega Rally 2 (Windows CE, MMU) at 57-61 emulated vblanks a
-second with no errors, reaching the same points as `main`. Sega Rally 2's black frames during its
-fades are on `main` too. NFL 2K2 plays on this branch's build (saved play and a fresh boot to the
-attract demo).
+This branch's build (`games-final.txt`) plays Spider-Man (three states), Ecco and Sonic Adventure
+(states), and Dead or Alive 2, Power Stone and Sega Rally 2 (Windows CE, MMU; boots) at 56-61
+emulated vblanks a second, with no errors in any log. The `d872c22d` build reached the same points
+as `main`; Sega Rally 2's frame at 50 s falls in a fade to black on both. NFL 2K2 plays (saved play,
+and a fresh boot to the attract demo).
+
+The code cache: the two L.O.L. states from upstream issues that made RetroArch abort before #16
+(a block list saved from one, decoded at the other's load), each loaded after the other quit, twice.
+Deadcast's checks compiled 3,909 to 4,445 listed blocks ahead and left 133 to 173, and every run
+quit cleanly.
