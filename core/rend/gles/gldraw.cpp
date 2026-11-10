@@ -281,6 +281,22 @@ void SetGPState(const PolyParam* gp,u32 cflip=0)
 		setN2Uniforms(gp, CurrentShader, *gl.rendContext);
 }
 
+// Flycastrophe: an indexed draw with the range of vertices its indices name. The index buffer is new every
+// frame, so a driver that needs the range (Mali does) reads the draw's indices to find it: about 5 us a
+// draw on the MLP1, more for long strips. The parser knows it (ta_util.cpp).
+static void drawElements(GLenum mode, u32 first, u32 count, u32 vtxMin, u32 vtxMax)
+{
+	glcache.draws++;
+#ifndef GLES2
+	if (gl.gl_major >= 3 && vtxMin <= vtxMax)
+	{
+		glDrawRangeElements(mode, vtxMin, vtxMax, count, gl.index_type, (GLvoid*)(gl.get_index_size() * first));
+		return;
+	}
+#endif
+	glDrawElements(mode, count, gl.index_type, (GLvoid*)(gl.get_index_size() * first));
+}
+
 template <u32 Type, bool SortingEnabled>
 void DrawList(const std::vector<PolyParam>& gply, int first, int count)
 {
@@ -301,9 +317,7 @@ void DrawList(const std::vector<PolyParam>& gply, int first, int count)
 			// depthFunc = never
 			continue;
 		SetGPState<Type,SortingEnabled>(params);
-		glcache.draws++;
-		glDrawElements(GL_TRIANGLE_STRIP, params->count, gl.index_type,
-				(GLvoid*)(gl.get_index_size() * params->first)); glCheck();
+		drawElements(GL_TRIANGLE_STRIP, params->first, params->count, params->vtxMin, params->vtxMax); glCheck();
 	}
 }
 
@@ -318,11 +332,10 @@ static void drawSorted(int first, int count, bool multipass)
 	int end = first + count;
 	for (int p = first; p < end; p++)
 	{
-		const PolyParam* params = &gl.rendContext->global_param_tr[gl.rendContext->sortedTriangles[p].polyIndex];
+		const SortedTriangle& group = gl.rendContext->sortedTriangles[p];
+		const PolyParam* params = &gl.rendContext->global_param_tr[group.polyIndex];
 		SetGPState<ListType_Translucent,true>(params);
-		glcache.draws++;
-		glDrawElements(GL_TRIANGLES, gl.rendContext->sortedTriangles[p].count, gl.index_type,
-				(GLvoid*)(gl.get_index_size() * gl.rendContext->sortedTriangles[p].first));
+		drawElements(GL_TRIANGLES, group.first, group.count, group.vtxMin, group.vtxMax);
 	}
 
 	if (multipass && config::TranslucentPolygonDepthMask)
@@ -350,9 +363,8 @@ static void drawSorted(int first, int count, bool multipass)
 
 				SetCull(params->isp.CullMode ^ 1);
 
-				glcache.draws++;
-				glDrawElements(GL_TRIANGLES, gl.rendContext->sortedTriangles[p].count, gl.index_type,
-						(GLvoid*)(gl.get_index_size() * gl.rendContext->sortedTriangles[p].first));
+				const SortedTriangle& group = gl.rendContext->sortedTriangles[p];
+				drawElements(GL_TRIANGLES, group.first, group.count, group.vtxMin, group.vtxMax);
 			}
 		}
 		glcache.StencilMask(0xFF);

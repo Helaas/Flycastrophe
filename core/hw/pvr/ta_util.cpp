@@ -171,6 +171,10 @@ void sortTriangles(rend_context& ctx, RenderPass& pass, const RenderPass& previo
 			ctx.sortedTriangles.push_back(cur);
 			idx = pid;
 		}
+		SortedTriangle& group = ctx.sortedTriangles.back();
+		group.vtxMin = group.vtxMin > group.vtxMax ? std::min({ midx[0], midx[1], midx[2] })
+				: std::min({ group.vtxMin, midx[0], midx[1], midx[2] });
+		group.vtxMax = std::max({ group.vtxMax, midx[0], midx[1], midx[2] });
 	}
 
 	if (!triangleList.empty())
@@ -519,6 +523,7 @@ void makePrimRestartIndex(std::vector<PolyParam>& polys, int first, int end, boo
 			first_index = ctx.idx.size();
 		}
 		int last_good_vtx = -1;
+		u32 vtxMin = ~0u, vtxMax = 0;
 		for (u32 i = 0; i < poly->count; i++)
 		{
 			const Vertex& vtx = ctx.verts[poly->first + i];
@@ -551,6 +556,8 @@ void makePrimRestartIndex(std::vector<PolyParam>& polys, int first, int end, boo
 			else
 			{
 				last_good_vtx = poly->first + i;
+				vtxMin = std::min(vtxMin, (u32)last_good_vtx);
+				vtxMax = std::max(vtxMax, (u32)last_good_vtx);
 				if (dupe_next_vtx)
 				{
 					ctx.idx.push_back(last_good_vtx);
@@ -563,10 +570,14 @@ void makePrimRestartIndex(std::vector<PolyParam>& polys, int first, int end, boo
 		{
 			poly->first = first_index;
 			poly->count = ctx.idx.size() - first_index;
+			poly->vtxMin = vtxMin;
+			poly->vtxMax = vtxMax;
 		}
 		else
 		{
 			last_poly->count = ctx.idx.size() - last_poly->first;
+			last_poly->vtxMin = std::min(last_poly->vtxMin, vtxMin);
+			last_poly->vtxMax = std::max(last_poly->vtxMax, vtxMax);
 			poly->count = 0;
 		}
 	}
@@ -616,6 +627,7 @@ void makeIndex(std::vector<PolyParam>& polys, int first, int end, bool merge, re
 			cullingReversed = false;
 		}
 		int last_good_vtx = -1;
+		u32 vtxMin = ~0u, vtxMax = 0;
 		for (u32 i = 0; i < poly->count; i++)
 		{
 			const Vertex& vtx = ctx.verts[poly->first + i];
@@ -641,6 +653,8 @@ void makeIndex(std::vector<PolyParam>& polys, int first, int end, bool merge, re
 			else
 			{
 				last_good_vtx = poly->first + i;
+				vtxMin = std::min(vtxMin, (u32)last_good_vtx);
+				vtxMax = std::max(vtxMax, (u32)last_good_vtx);
 				if (dupe_next_vtx)
 				{
 					ctx.idx.push_back(last_good_vtx);
@@ -656,10 +670,14 @@ void makeIndex(std::vector<PolyParam>& polys, int first, int end, bool merge, re
 		{
 			poly->first = first_index;
 			poly->count = ctx.idx.size() - first_index;
+			poly->vtxMin = vtxMin;
+			poly->vtxMax = vtxMax;
 		}
 		else
 		{
 			last_poly->count = ctx.idx.size() - last_poly->first;
+			last_poly->vtxMin = std::min(last_poly->vtxMin, vtxMin);
+			last_poly->vtxMax = std::max(last_poly->vtxMax, vtxMax);
 			poly->count = 0;
 		}
 	}

@@ -952,6 +952,23 @@ void rglDrawElements(GLenum mode, GLsizei count, GLenum type,
    glDrawElements(mode, count, type, indices);
 }
 
+/*
+ * Flycastrophe: not in libretro-common's glsm
+ *
+ * Core in:
+ * OpenGL    : 1.2
+ * OpenGLES  : 3.0
+ */
+void rglDrawRangeElements(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type,
+                           const GLvoid * indices)
+{
+#if defined(HAVE_OPENGL) || defined(HAVE_OPENGLES) && defined(HAVE_OPENGLES3)
+   glDrawRangeElements(mode, start, end, count, type, indices);
+#else
+   glDrawElements(mode, count, type, indices);
+#endif
+}
+
 void rglCompressedTexImage2D(GLenum target, GLint level,
       GLenum internalformat, GLsizei width, GLsizei height,
       GLint border, GLsizei imageSize, const GLvoid *data)
