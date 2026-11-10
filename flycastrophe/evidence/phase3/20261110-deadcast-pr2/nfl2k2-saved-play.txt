@@ -1,0 +1,20 @@
+# NFL 2K2 from the saved play (CPU vs CPU Exhibition), 30 s, perf-run.sh; speed = emulated vblanks over nominal
+# main = fork main c7ab46c1 (fcr-dcbase), dcpr = this branch (fcr-dcpr2b); pr29 and combined = #29 alone and #29 + this; no PGO
+## uncapped, 3 rounds (EMU=2-14: the same 12 emulated seconds)
+nfl2k2       combined r1 speed   93.8% rendered  56.22/s emu  67% render  97% 15.87 ms draws   822 | emulated 2-14 s  97.4%
+nfl2k2       combined r2 speed   93.7% rendered  56.17/s emu  67% render  97% 15.86 ms draws   828 | emulated 2-14 s  98.1%
+nfl2k2       combined r3 speed   93.6% rendered  56.13/s emu  67% render  97% 15.91 ms draws   824 | emulated 2-14 s  96.7%
+nfl2k2       dcpr     r1 speed   51.5% rendered  30.84/s emu  35% render  99% 31.56 ms draws  2760 | emulated 2-14 s  56.7%
+nfl2k2       dcpr     r2 speed   50.4% rendered  30.20/s emu  35% render  98% 31.88 ms draws  2796 | emulated 2-14 s  56.1%
+nfl2k2       dcpr     r3 speed   51.7% rendered  30.99/s emu  35% render  99% 31.40 ms draws  2807 | emulated 2-14 s  56.9%
+nfl2k2       main     r1 speed   51.1% rendered  30.60/s emu  43% render  99% 31.91 ms draws  2790 | emulated 2-14 s  56.4%
+nfl2k2       main     r2 speed   50.7% rendered  30.39/s emu  43% render  99% 32.10 ms draws  2785 | emulated 2-14 s  55.9%
+nfl2k2       main     r3 speed   51.2% rendered  30.71/s emu  43% render  99% 31.75 ms draws  2791 | emulated 2-14 s  56.4%
+nfl2k2       pr29     r1 speed   95.6% rendered  57.33/s emu  82% render  94% 15.17 ms draws   784 | emulated 2-14 s  97.0%
+nfl2k2       pr29     r2 speed   96.1% rendered  57.60/s emu  82% render  95% 15.09 ms draws   803 | emulated 2-14 s  99.2%
+nfl2k2       pr29     r3 speed   93.5% rendered  56.05/s emu  81% render  96% 15.78 ms draws   826 | emulated 2-14 s  97.9%
+## capped (vsync and audio sync on), 1 round
+nfl2k2       combined r1 speed   94.4% rendered  56.60/s emu  68% render  95% 15.22 ms draws   803 | emulated 2-14 s  96.0%
+nfl2k2       dcpr     r1 speed   53.0% rendered  31.76/s emu  36% render  98% 30.39 ms draws  2616 | emulated 2-14 s  56.6%
+nfl2k2       main     r1 speed   52.9% rendered  31.70/s emu  44% render 100% 30.46 ms draws  2610 | emulated 2-14 s  56.2%
+nfl2k2       pr29     r1 speed   91.4% rendered  54.72/s emu  78% render  95% 15.79 ms draws   822 | emulated 2-14 s  95.8%

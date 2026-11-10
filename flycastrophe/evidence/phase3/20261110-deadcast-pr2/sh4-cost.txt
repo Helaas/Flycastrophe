@@ -1,0 +1,17 @@
+# Boots from the BIOS (kcw/boot-compare.sh), d872c22d build fcr-dcpr2 vs main 25a0dc17 fcr-rel25, 2 rounds, 45 s
+disc  arm         run   0-10s  10-20s  20-30s  30-45s   emulated s   emu cpu per emulated s
+doa2  fcr-dcpr2   r1    99.2%  104.9%   98.8%  100.1%       44.3   0.433
+doa2  fcr-dcpr2   r2    99.4%  104.9%   98.7%  100.1%       44.3   0.433
+doa2  fcr-rel25   r1   100.7%   82.6%   97.9%   99.1%       42.0   0.490
+doa2  fcr-rel25   r2   100.6%   82.9%   98.3%   99.2%       42.1   0.488
+pj    fcr-dcpr2   r1    99.1%  107.0%  100.2%  100.2%       44.7   0.284
+pj    fcr-dcpr2   r2    99.3%  106.8%  100.2%  100.2%       44.7   0.283
+pj    fcr-rel25   r1    99.3%   82.2%  100.2%  100.2%       42.2   0.386
+pj    fcr-rel25   r2    99.3%   82.8%  100.2%  100.2%       42.3   0.385
+
+# NFL 2K2 saved play, same builds (kcw/state-compare.sh)
+disc  arm         run   0-10s  10-20s  20-30s  30-45s   emulated s   emu cpu per emulated s
+nfl2k2 fcr-dcpr2   r1    55.5%   57.6%   47.7%   39.7%       29.5   0.684
+nfl2k2 fcr-dcpr2   r2    55.6%   58.0%   48.0%   39.7%       29.6   0.685
+nfl2k2 fcr-rel25   r1    57.2%   58.1%   47.0%   39.3%       29.4   0.844
+nfl2k2 fcr-rel25   r2    56.8%   57.8%   47.1%   39.7%       30.6   0.844
