@@ -1,0 +1,27 @@
+nfl2k2     M          r1 speed   63.5% fps  38.08 emu  54% render  99% 24.48 ms | emulated 2-14s  66.9%
+    gl: draws 1023 merged 0 indices 35088 programs 132 textures 818 uniforms 100 texparams 63 blend 234 depth 184 cull 258 stencil 548 scissor 0 modvols 1069 modvol_draws 177
+nfl2k2     M          r2 speed   63.5% fps  38.06 emu  55% render  98% 24.51 ms | emulated 2-14s  67.2%
+    gl: draws 1018 merged 0 indices 35080 programs 132 textures 818 uniforms 101 texparams 62 blend 235 depth 180 cull 258 stencil 536 scissor 0 modvols 1071 modvol_draws 173
+nfl2k2     R          r1 speed   56.5% fps  33.89 emu  49% render  99% 29.05 ms | emulated 2-14s  66.0%
+    gl: draws 3045 merged 0 indices 35200 programs 135 textures 826 uniforms 101 texparams 61 blend 236 depth 2199 cull 259 stencil 6594 scissor 0 modvols 1096 modvol_draws 2192
+nfl2k2     R          r2 speed   55.4% fps  33.16 emu  47% render  97% 28.77 ms | emulated 2-14s  62.8%
+    gl: draws 2977 merged 0 indices 35080 programs 123 textures 813 uniforms 103 texparams 60 blend 236 depth 2145 cull 250 stencil 6432 scissor 0 modvols 1069 modvol_draws 2138
+nfl2k2     RM         r1 speed   79.9% fps  47.91 emu  69% render  98% 18.98 ms | emulated 2-14s  84.5%
+    gl: draws 1067 merged 0 indices 34848 programs 135 textures 814 uniforms 99 texparams 66 blend 239 depth 231 cull 259 stencil 689 scissor 0 modvols 1013 modvol_draws 224
+nfl2k2     RM         r2 speed   78.3% fps  46.92 emu  67% render  98% 19.39 ms | emulated 2-14s  82.2%
+    gl: draws 1021 merged 0 indices 34424 programs 132 textures 802 uniforms 99 texparams 62 blend 232 depth 199 cull 252 stencil 594 scissor 0 modvols 1026 modvol_draws 192
+nfl2k2     RMI        r1 speed   79.7% fps  47.79 emu  69% render  95% 19.94 ms | emulated 2-14s  74.4%
+    gl: draws 1030 merged 0 indices 34654 programs 134 textures 812 uniforms 100 texparams 64 blend 234 depth 196 cull 256 stencil 586 scissor 0 modvols 1031 modvol_draws 189
+nfl2k2     RMI        r2 speed   80.2% fps  48.02 emu  69% render  98% 18.91 ms | emulated 2-14s  84.1%
+    gl: draws 1025 merged 0 indices 34382 programs 131 textures 802 uniforms 99 texparams 63 blend 231 depth 202 cull 252 stencil 604 scissor 0 modvols 1024 modvol_draws 195
+nfl2k2     base       r1 speed   50.2% fps  30.06 emu  42% render  98% 32.31 ms | emulated 2-14s  54.8%
+nfl2k2     base       r2 speed   50.7% fps  30.41 emu  43% render  99% 32.02 ms | emulated 2-14s  55.6%
+nfl2k2     dc0        r1 speed   49.9% fps  29.93 emu  42% render  99% 32.84 ms | emulated 2-14s  55.0%
+    gl: draws 2809 merged 0 indices 34327 programs 124 textures 805 uniforms 98 texparams 65 blend 233 depth 1982 cull 261 stencil 5945 scissor 0 modvols 988 modvol_draws 1975
+nfl2k2     dc0        r2 speed   49.3% fps  29.53 emu  41% render  99% 33.07 ms | emulated 2-14s  53.8%
+    gl: draws 2743 merged 0 indices 34064 programs 121 textures 799 uniforms 97 texparams 67 blend 231 depth 1922 cull 260 stencil 5762 scissor 0 modvols 957 modvol_draws 1915
+
+# capped (vsync and audio sync on)
+nfl2k2     RM         r1 speed   79.7% fps  47.79 emu  69% render  97% 18.87 ms
+    gl: draws 1048 merged 0 indices 34749 programs 134 textures 811 uniforms 99 texparams 65 blend 235 depth 215 cull 257 stencil 641 scissor 0 modvols 1024 modvol_draws 208
+nfl2k2     base       r1 speed   50.7% fps  30.38 emu  42% render  99% 32.00 ms

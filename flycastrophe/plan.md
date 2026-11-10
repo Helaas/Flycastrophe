@@ -50,6 +50,11 @@ is in [evidence/](evidence/), the scripts in [bench/](bench/README.md).
 > repinned to `25a0dc17` with a retrained profile (Helaas/Flycastrophe-pak#8, core `b27868f5…`, PGO
 > +3.7% / +3.0% over the same code without it) and reinstalled on the card through Pak Rat
 > (`evidence/phase3/20261109-pakrat-update4/`).
+> Then the draw calls (2026-11-10): each indexed draw names its vertex range, so Mali no longer reads
+> the indices to find it, and a run of one-triangle modifier volumes is one draw, as in Deadcast's
+> Vulkan renderer; uncapped Crazy Taxi +24.0%, SA2 +13.0% (now limited by the SH4 thread), an NFL 2K2
+> play from 52% to 95% speed, frames identical in 25 games by a new frame-hash check
+> (`evidence/phase3/20261110-draw-calls/`). Not in the pak yet.
 > Release bar run 2026-11-08 ([phase3](evidence/phase3/README.md)): with audio on,
 > Flycastrophe holds 60 fps on both games with the lowest frame-time p95 (Leaf's Flycast 58.5/59.9,
 > FlyCast Fast UMRK 35.0/58.2); uncapped Crazy Taxi 71.6 vs 58.9 vs 48.5 (same scene), SA2 91.4 vs
