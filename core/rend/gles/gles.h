@@ -260,6 +260,9 @@ struct gl_ctx
 	} n2ModVolShader;
 
 	std::unordered_map<u32, PipelineShader> shaders;
+	// the last program GetProgram returned and its key
+	u32 lastShaderKey = 0;
+	PipelineShader *lastShader = nullptr;
 
 	struct
 	{
