@@ -310,6 +310,20 @@ void DrawList(const std::vector<PolyParam>& gply, int first, int count)
 
 	for (; count > 0; count--, params++)
 	{
+		// Flycastrophe: the next polygons and the next one's texture, fetched while the driver has this
+		// one's draw. A draw leaves little of them in the cache, and each was a wait at the top of the loop.
+		if (count > 1)
+		{
+			__builtin_prefetch(params + 2);
+			__builtin_prefetch((const char *)(params + 2) + 64);
+			const BaseTextureCacheData *next = params[1].texture;
+			if (next != nullptr)
+			{
+				__builtin_prefetch(next);
+				__builtin_prefetch((const char *)next + 64);
+				__builtin_prefetch((const char *)next + 128);
+			}
+		}
 		if (params->count < 3)
 			continue;
 		if ((Type == ListType_Opaque || (Type == ListType_Translucent && !SortingEnabled))
