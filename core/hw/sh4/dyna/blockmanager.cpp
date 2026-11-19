@@ -282,9 +282,12 @@ std::vector<RuntimeBlockInfoPtr> bm_AllBlocks()
 u32 bmStatCompiled, bmStatCacheResets;	// Deadcast: for the perf line (spg.cpp)
 u32 bmStatCodeWrites, bmStatCodeDropped, bmStatCodeStores;
 
+u32 bmStatCompiledTotal;
+
 void bm_AddBlock(RuntimeBlockInfo* blk)
 {
 	bmStatCompiled++;
+	bmStatCompiledTotal++;
 	RuntimeBlockInfoPtr block(blk);
 	if (block->temp_block)
 		all_temp_blocks.insert(block);
