@@ -122,6 +122,10 @@ static bool pend_rend;
 static bool rendererEnabled = true;
 
 static bool presented;
+// Flycastrophe diagnostics (rend_start_render, rend_swap_frame; the perf line, spg.cpp)
+u32 perfUnflippedRenders;
+static bool perfScreenRenderPending, perfScreenRenderFlipped;
+static u32 perfScreenRenderAddr;
 static u32 fbAddrHistory[2] { 1, 1 };
 
 class PvrMessageQueue
@@ -688,6 +692,16 @@ void rend_start_render()
 
 	if (QueueRender(ctx))
 	{
+		if (!ctx->rend.isRTT)
+		{
+			// Flycastrophe diagnostics: a frame drawn to the screen's framebuffer that the game drew over, or
+			// stopped drawing, before it flipped the display to it. Without Delay Frame Swapping it was shown.
+			if (perfScreenRenderPending && !perfScreenRenderFlipped)
+				perfUnflippedRenders++;
+			perfScreenRenderPending = true;
+			perfScreenRenderFlipped = false;
+			perfScreenRenderAddr = fb_w_cur;
+		}
 		palette_update();
 		pend_rend = true;
 		parseQueued(ctx);
@@ -774,6 +788,8 @@ void rend_set_fb_write_addr(u32 fb_w_sof1)
 
 void rend_swap_frame(u32 fb_r_sof)
 {
+	if (perfScreenRenderPending && fb_r_sof == perfScreenRenderAddr)
+		perfScreenRenderFlipped = true;
 	if (!config::EmulateFramebuffer && fb_r_sof == fb_w_cur && rend_is_enabled())
 		pvrQueue.enqueue(PvrMessageQueue::Present);
 }
