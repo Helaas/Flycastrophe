@@ -495,6 +495,96 @@ void fix_texture_bleeding(const std::vector<PolyParam>& polys, int first, int en
 }
 
 //
+// Flycastrophe translucent regroup (TranslucentRegroup): before the translucent index is made, a polygon moves
+// back to join an earlier one drawn with the same state when it shares no pixel with any polygon it passes,
+// so the index builder merges them into one draw. Every pixel still gets its polygons in the original order,
+// so the picture is the same. What a polygon covers is bounded by the screen box of the vertices the index
+// will use (a pixel is drawn when its centre is inside a triangle, so inside the box); boxes count as apart
+// only with a pixel between them. Naomi 2 polygons, whose vertices are transformed later, are never passed.
+// A group's box is the union of its polygons', so passing it is checked against all of them at once.
+//
+void regroupTranslucent(std::vector<PolyParam>& polys, int first, int end, const rend_context& ctx)
+{
+	if (end - first < 3)
+		return;
+	struct Group {
+		float x0, y0, x1, y1;
+		u32 head;		// the first polygon, for the state
+		bool barrier;
+	};
+	constexpr int MaxLookBack = 64;
+	constexpr float Margin = 1.f;
+	static std::vector<Group> groups;
+	static std::vector<std::pair<u32, u32>> order;	// group, polygon
+	static std::vector<PolyParam> moved;
+	groups.clear();
+	order.clear();
+	bool movedAny = false;
+	for (int i = first; i < end; i++)
+	{
+		const PolyParam& pp = polys[i];
+		if (pp.isNaomi2())
+		{
+			groups.push_back({ 0.f, 0.f, -1.f, -1.f, (u32)i, true });
+			order.emplace_back((u32)groups.size() - 1, (u32)i);
+			continue;
+		}
+		float x0 = 1e38f, y0 = 1e38f, x1 = -1e38f, y1 = -1e38f;
+		if (pp.count >= 3)
+			for (u32 v = pp.first; v < pp.first + pp.count; v++)
+			{
+				const Vertex& vtx = ctx.verts[v];
+				if (is_vertex_inf(vtx))
+					continue;
+				x0 = std::min(x0, vtx.x);
+				x1 = std::max(x1, vtx.x);
+				y0 = std::min(y0, vtx.y);
+				y1 = std::max(y1, vtx.y);
+			}
+		// an empty box (x0 > x1) draws nothing and overlaps nothing
+		int target = -1;
+		for (int g = (int)groups.size() - 1, n = 0; g >= 0 && n < MaxLookBack; g--, n++)
+		{
+			const Group& gr = groups[g];
+			if (gr.barrier)
+				break;
+			if (polys[gr.head].equivalentIgnoreCullingDirection(pp))
+			{
+				target = g;
+				break;
+			}
+			if (x0 <= x1 && gr.x0 <= gr.x1
+					&& x0 <= gr.x1 + Margin && gr.x0 <= x1 + Margin
+					&& y0 <= gr.y1 + Margin && gr.y0 <= y1 + Margin)
+				break;
+		}
+		if (target == -1)
+		{
+			groups.push_back({ x0, y0, x1, y1, (u32)i, false });
+			target = (int)groups.size() - 1;
+		}
+		else
+		{
+			Group& gr = groups[target];
+			if (target != (int)groups.size() - 1)
+				movedAny = true;
+			gr.x0 = std::min(gr.x0, x0);
+			gr.y0 = std::min(gr.y0, y0);
+			gr.x1 = std::max(gr.x1, x1);
+			gr.y1 = std::max(gr.y1, y1);
+		}
+		order.emplace_back((u32)target, (u32)i);
+	}
+	if (!movedAny)
+		return;
+	std::stable_sort(order.begin(), order.end(), [](const auto& a, const auto& b) { return a.first < b.first; });
+	moved.clear();
+	for (const auto& o : order)
+		moved.push_back(polys[o.second]);
+	std::copy(moved.begin(), moved.end(), polys.begin() + first);
+}
+
+//
 // Create the vertex index, eliminating invalid vertices and merging strips when possible.
 // Use primitive restart when merging strips.
 //

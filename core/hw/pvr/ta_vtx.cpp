@@ -1164,10 +1164,14 @@ static void parseRenderPass(RenderPass& pass, const RenderPass& previousPass, re
 	// sortTriangles already created the index
 	if (!pass.autosort || perPixel || config::PerStripSorting)
 	{
+		// Flycastrophe: translucent polygons that share no pixel grouped by state, then merged (exact)
+		const bool regroup = config::TranslucentRegroup && !perPixel;
+		if (regroup)
+			regroupTranslucent(ctx.global_param_tr, previousPass.tr_count, pass.tr_count, ctx);
 		if (primRestart)
-			makePrimRestartIndex(ctx.global_param_tr, previousPass.tr_count, pass.tr_count, mergeTranslucent, ctx);
+			makePrimRestartIndex(ctx.global_param_tr, previousPass.tr_count, pass.tr_count, mergeTranslucent || regroup, ctx);
 		else
-			makeIndex(ctx.global_param_tr, previousPass.tr_count, pass.tr_count, mergeTranslucent, ctx);
+			makeIndex(ctx.global_param_tr, previousPass.tr_count, pass.tr_count, mergeTranslucent || regroup, ctx);
 	}
 }
 

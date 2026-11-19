@@ -103,8 +103,11 @@ Option<bool> ThreadedRendering(CORE_OPTION_NAME "_threaded_rendering", true);
 #ifdef FLYCASTROPHE
 // Deadcast's TA parse thread (Renderer_if.cpp), on by default
 Option<bool> ParseThread(CORE_OPTION_NAME "_fcr_parse_thread", true);
+// Flycastrophe: translucent polygons that share no pixel grouped by state (ta_util.cpp); the same picture
+Option<bool> TranslucentRegroup(CORE_OPTION_NAME "_fcr_translucent_regroup", false);
 #else
 Option<bool> ParseThread("", false);
+Option<bool> TranslucentRegroup("", false);
 #endif
 Option<bool> VblankPacing(CORE_OPTION_NAME "_vblank_pacing");
 // Flycastrophe: by value ("4" is 4x), not by its position in the list (which made "4" 2x and "2" off)
