@@ -1143,6 +1143,11 @@ static void parseRenderPass(RenderPass& pass, const RenderPass& previousPass, re
 		fix_texture_bleeding(ctx.global_param_pt, previousPass.pt_count, pass.pt_count, ctx);
 		fix_texture_bleeding(ctx.global_param_tr, previousPass.tr_count, pass.tr_count, ctx);
 	}
+	// Flycastrophe: grouped by state where the order can't matter but at equal depths, so the index merges them
+	if (config::OpaqueStateSort)
+		sortByState(ctx.global_param_op, previousPass.op_count, pass.op_count, false);
+	if (config::PunchThroughStateSort)
+		sortByState(ctx.global_param_pt, previousPass.pt_count, pass.pt_count, true);
 	if (primRestart)
 	{
 		makePrimRestartIndex(ctx.global_param_op, previousPass.op_count, pass.op_count, true, ctx);

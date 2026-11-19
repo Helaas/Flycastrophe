@@ -118,6 +118,9 @@ Option<int> TextureFiltering("rend.TextureFiltering", 0); // Default
 Option<bool> ThreadedRendering("rend.ThreadedRendering", true);
 // Deadcast's TA parse thread. Off here: only the Flycastrophe libretro core turns it on.
 Option<bool> ParseThread("rend.ParseThread", false);
+// Flycastrophe's state sort (ta_util.cpp). Off: not exact where two surfaces share a depth.
+Option<bool> OpaqueStateSort("rend.OpaqueStateSort", false);
+Option<bool> PunchThroughStateSort("rend.PunchThroughStateSort", false);
 Option<bool> VblankPacing("");
 Option<bool> DupeFrames("rend.DupeFrames", false);
 Option<int> PerPixelLayers("rend.PerPixelLayers", 32);

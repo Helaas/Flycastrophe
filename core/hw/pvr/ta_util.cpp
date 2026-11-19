@@ -495,6 +495,79 @@ void fix_texture_bleeding(const std::vector<PolyParam>& polys, int first, int en
 }
 
 //
+// Flycastrophe state sort (OpaqueStateSort, PunchThroughStateSort): before the index is made, the polygons of
+// a run that can change places are grouped by what they are drawn with, so the index builder below merges
+// each group into one draw. Movable: polygons depth tested greater or greater-or-equal that write depth and
+// don't blend (punch-through polygons always test greater-or-equal and write depth), not Naomi 2, and only
+// within an unbroken run of them in one render pass. Among those the nearest surface wins whatever the
+// order, except at a pixel where two of them have the same depth: not exact there. Polygons that draw
+// nothing (under three vertices, depth test never) don't break a run.
+// The key: what picks the shader first (a program change costs a draw the most), then the texture, tsp,
+// isp, tile clip. tcw stands for the texture: with the parse thread the textures aren't fetched yet.
+//
+static bool stateSortDrawsNothing(const PolyParam& pp, bool punchThrough)
+{
+	return pp.count < 3 || (!punchThrough && pp.isp.DepthMode == 0);
+}
+
+static bool stateSortMovable(const PolyParam& pp, bool punchThrough)
+{
+	if (pp.isNaomi2() || pp.tsp.SrcInstr != 1 || pp.tsp.DstInstr != 0)
+		return false;
+	return punchThrough || ((pp.isp.DepthMode == 4 || pp.isp.DepthMode == 6) && !pp.isp.ZWriteDis);
+}
+
+void sortByState(std::vector<PolyParam>& polys, int first, int end, bool punchThrough)
+{
+	struct Key {
+		u32 prog, tcw, tsp, isp, clip, pcw;
+		u32 index;
+	};
+	static std::vector<Key> keys;
+	static std::vector<PolyParam> moved;
+	int i = first;
+	while (i < end)
+	{
+		if (!stateSortMovable(polys[i], punchThrough) && !stateSortDrawsNothing(polys[i], punchThrough))
+		{
+			i++;
+			continue;
+		}
+		const int runStart = i;
+		keys.clear();
+		for (; i < end; i++)
+		{
+			const PolyParam& pp = polys[i];
+			if (!stateSortMovable(pp, punchThrough) && !stateSortDrawsNothing(pp, punchThrough))
+				break;
+			const u32 prog = (u32)pp.pcw.Texture | (u32)pp.pcw.Offset << 1 | (u32)pp.pcw.Gouraud << 2
+					| (u32)pp.tsp.UseAlpha << 3 | (u32)pp.tsp.IgnoreTexA << 4 | (u32)pp.tsp.ShadInstr << 5
+					| (u32)pp.tsp.FogCtrl << 7 | (u32)pp.tsp.ColorClamp << 9
+					| (pp.pcw.Texture ? (u32)pp.tcw.PixelFmt << 10 : 0)
+					| (pp.pcw.Texture && pp.tsp.FilterMode > 1 && pp.tcw.MipMapped ? 1u << 13 : 0)
+					| (pp.tileclip >> 28) << 14 | (u32)pp.pcw.Shadow << 18;
+			// the cull direction (isp bit 27) left out: the index builder merges across it
+			keys.push_back({ prog, pp.pcw.Texture ? pp.tcw.full : 0, pp.tsp.full, pp.isp.full & 0xF4000000, pp.tileclip,
+					pp.pcw.full & 0x300CE, (u32)i });
+		}
+		if (keys.size() < 2)
+			continue;
+		std::stable_sort(keys.begin(), keys.end(), [](const Key& a, const Key& b) {
+			if (a.prog != b.prog) return a.prog < b.prog;
+			if (a.tcw != b.tcw) return a.tcw < b.tcw;
+			if (a.tsp != b.tsp) return a.tsp < b.tsp;
+			if (a.isp != b.isp) return a.isp < b.isp;
+			if (a.clip != b.clip) return a.clip < b.clip;
+			return a.pcw < b.pcw;
+		});
+		moved.clear();
+		for (const Key& k : keys)
+			moved.push_back(polys[k.index]);
+		std::copy(moved.begin(), moved.end(), polys.begin() + runStart);
+	}
+}
+
+//
 // Create the vertex index, eliminating invalid vertices and merging strips when possible.
 // Use primitive restart when merging strips.
 //
