@@ -1,0 +1,18 @@
+nfl-base-round1              speed   95.6% fps  57.3 skip  0.0 emu  65% render  97% 15.31 ms draws   789 progs   94 binds   753 | compiled 4355 resets 0 mmu 0+0/s miss 0/s
+nfl-tr3-round1               speed  107.1% fps  63.8 skip  0.0 emu  75% render  94% 13.20 ms draws   555 progs   64 binds   524 | compiled 5807 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-base-round1       speed  150.3% fps  90.1 skip  0.0 emu  80% render  97%  8.99 ms draws   555 progs  222 binds   412 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-tr3-round1        speed  155.6% fps  93.2 skip  0.0 emu  85% render  97%  8.42 ms draws   503 progs  193 binds   370 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+nfl-base-round2              speed   94.8% fps  56.9 skip  0.0 emu  65% render  97% 15.49 ms draws   787 progs   92 binds   751 | compiled 4368 resets 0 mmu 0+0/s miss 0/s
+nfl-tr3-round2               speed  107.4% fps  63.9 skip  0.0 emu  76% render  94% 13.16 ms draws   555 progs   63 binds   524 | compiled 5857 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-base-round2       speed  151.9% fps  90.9 skip  0.0 emu  82% render  97%  8.84 ms draws   555 progs  222 binds   411 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-tr3-round2        speed  159.8% fps  95.7 skip  0.0 emu  88% render  97%  8.05 ms draws   503 progs  193 binds   370 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+
+first version (ae437faa, not exact):
+ceu-base-round1              speed  121.2% fps  72.8 skip  0.0 emu  74% render  99% 11.74 ms draws   868 progs   40 binds   767 | compiled 2192 resets 0 mmu 0+0/s miss 0/s
+ceu-tr-round1                speed  121.7% fps  72.9 skip  0.0 emu  74% render  98% 11.68 ms draws   832 progs   39 binds   733 | compiled 2288 resets 0 mmu 0+0/s miss 0/s
+sa2-base-round1              speed  185.5% fps 111.1 skip  0.0 emu  99% render  82%  6.54 ms draws   415 progs   22 binds   362 | compiled 1344 resets 0 mmu 0+0/s miss 0/s
+sa2-tr-round1                speed  189.2% fps 113.3 skip  0.0 emu  99% render  82%  6.33 ms draws   375 progs   22 binds   322 | compiled 1350 resets 0 mmu 0+0/s miss 0/s
+ceu-base-round2              speed  123.4% fps  73.9 skip  0.0 emu  77% render  97% 11.45 ms draws   860 progs   39 binds   761 | compiled 2891 resets 0 mmu 0+0/s miss 0/s
+ceu-tr-round2                speed  124.3% fps  74.6 skip  0.0 emu  77% render  98% 11.37 ms draws   828 progs   39 binds   730 | compiled 2953 resets 0 mmu 0+0/s miss 0/s
+sa2-base-round2              speed  189.2% fps 113.1 skip  0.0 emu  98% render  86%  6.37 ms draws   415 progs   22 binds   362 | compiled 1349 resets 0 mmu 0+0/s miss 0/s
+sa2-tr-round2                speed  189.6% fps 113.4 skip  0.0 emu  98% render  81%  6.33 ms draws   375 progs   22 binds   322 | compiled 1350 resets 0 mmu 0+0/s miss 0/s

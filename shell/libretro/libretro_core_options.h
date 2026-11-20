@@ -191,6 +191,20 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "enabled",
    },
    {
+      CORE_OPTION_NAME "_fcr_translucent_regroup",
+      "Group Translucent Polygons",
+      NULL,
+      "Lets see-through polygons that cover no pixel in common change places, so those drawn the same way go to the graphics chip as one draw. Every pixel still gets its polygons in the game's order, so the picture is the same. Faster in games limited by drawing. Applies to Per-Strip sorting and to the lists a game sorts itself, not to Per-Triangle sorting.",
+      NULL,
+      "video",
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
+   },
+   {
       CORE_OPTION_NAME "_fcr_fast_fipr",
       "Fast Vector Math",
       NULL,

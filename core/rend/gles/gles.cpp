@@ -1166,12 +1166,16 @@ static void hashFrame(int width, int height)
 	start();
 	mixBytes(ctx.verts.data(), ctx.verts.size() * sizeof(Vertex));
 	mixBytes(ctx.modtrig.data(), ctx.modtrig.size() * sizeof(ModTriangle));
-	// not first and count: the index a renderer change may lay out differently
+	// not first and count: the index a renderer change may lay out differently. Each list as a set of polygons
+	// (a sum of their hashes), so a change that reorders a list (the state sort) still pairs with the base.
 	for (const std::vector<PolyParam> *list : { &ctx.global_param_op, &ctx.global_param_pt, &ctx.global_param_tr })
 	{
 		mix(list->size());
+		const u64 listHash = h;
+		u64 sum = 0;
 		for (const PolyParam& pp : *list)
 		{
+			h = listHash;
 			mix(pp.pcw.full);
 			mix(pp.isp.full);
 			mix(pp.tsp.full);
@@ -1183,7 +1187,10 @@ static void hashFrame(int width, int height)
 				mix(pp.texture->uploadedHash);
 				mix(pp.texture->palette_hash);
 			}
+			sum += h;
 		}
+		h = listHash;
+		mix(sum);
 	}
 	for (const ModifierVolumeParam& mp : ctx.global_param_mvo)
 	{

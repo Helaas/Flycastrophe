@@ -1164,8 +1164,13 @@ static void parseRenderPass(RenderPass& pass, const RenderPass& previousPass, re
 	// sortTriangles already created the index
 	if (!pass.autosort || perPixel || config::PerStripSorting)
 	{
+		// Flycastrophe: translucent polygons that share no pixel grouped by state, then merged along the groups (exact;
+		// with primitive restart only, which GLES 3 has). Exactness assumes a polygon draws inside the screen box of its
+		// vertices, which fails when Native Depth Interpolation is on, so it stays off then
+		const u8 *joins = config::TranslucentRegroup && !perPixel && primRestart && !config::NativeDepthInterpolation
+				? regroupTranslucent(ctx.global_param_tr, previousPass.tr_count, pass.tr_count, mergeTranslucent, ctx) : nullptr;
 		if (primRestart)
-			makePrimRestartIndex(ctx.global_param_tr, previousPass.tr_count, pass.tr_count, mergeTranslucent, ctx);
+			makePrimRestartIndex(ctx.global_param_tr, previousPass.tr_count, pass.tr_count, mergeTranslucent, ctx, joins);
 		else
 			makeIndex(ctx.global_param_tr, previousPass.tr_count, pass.tr_count, mergeTranslucent, ctx);
 	}
