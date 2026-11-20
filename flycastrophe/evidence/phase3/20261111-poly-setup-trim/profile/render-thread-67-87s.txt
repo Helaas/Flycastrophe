@@ -1,0 +1,68 @@
+render: 4880 samples in 67000-87000 ms
+  lib 81.9%, core 18.1%
+   44.6%  <libmali.so.1.9.0> from DrawStrips()
+   10.1%  <libmali.so.1.9.0> from OpenGLRenderer::Render()
+    9.6%  void DrawList<0u, false>(std::vector<PolyParam, std::allocator<PolyParam>> const&, int, int)
+    5.4%  <libmali.so.1.9.0> from retro_run
+    3.1%  SetTextureRepeatMode(unsigned int, unsigned int, unsigned int) (.lto_priv.0)
+    2.9%  <libc.so.6> from Emulator::render() (.constprop.0)
+    2.7%  <libc.so.6> from DrawStrips()
+    2.6%  <retroarch> from retro_run
+    1.8%  <libc.so.6> from ?
+    1.8%  <libmali.so.1.9.0> from ?
+    1.6%  <libc.so.6> from retro_run
+    1.3%  <retroarch> from ?
+    1.1%  GetProgram(bool, bool, bool, bool, bool, unsigned int, bool, unsigned int, bool, bool, bool, bool...
+    1.1%  OpenGLRenderer::Process(TA_context*)
+    1.0%  <libmali.so.1.9.0> from void DrawList<0u, false>(std::vector<PolyParam, std::allocator<PolyParam>> const&, int, int)
+    1.0%  <libmali.so.1.9.0> from Emulator::render() (.constprop.0)
+    1.0%  <libc.so.6> from OpenGLRenderer::Render()
+    0.8%  <libSDL2-2.0.so.0> from ?
+    0.6%  BaseTextureCache<TextureCacheData>::getTextureCacheData(TSP, TCW, int) (.constprop.0)
+    0.6%  <libwayland-client.so.0.22.0> from retro_run
+    0.5%  std::map<unsigned int, GLCache::TextureParameters, std::less<unsigned int>, std::allocator<std::p...
+    0.5%  <libwayland-client.so.0.22.0> from ?
+    0.4%  OpenGLRenderer::GetTexture(TSP, TCW, int)
+    0.3%  DrawStrips()
+    0.3%  void SetGPState<2u, true>(PolyParam const*, unsigned int) (.constprop.0)
+hottest 16-byte spots inside *DrawList*:
+   3.77%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x1a0
+   0.92%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x250
+   0.59%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x810
+   0.59%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x2b0
+   0.49%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x220
+   0.25%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x5c0
+   0.23%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x1b0
+   0.23%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0xac0
+   0.20%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x9b0
+   0.16%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0xa80
+   0.12%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x930
+   0.10%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0xad0
+   0.08%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x3b0
+   0.08%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0xb60
+   0.08%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0xc10
+   0.06%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x420
+   0.06%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x520
+   0.06%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x8a0
+   0.06%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0xa90
+   0.06%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x690
+   0.06%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0xb30
+   0.06%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0xbf0
+   0.06%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x4e0
+   0.06%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0xb00
+   0.06%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x5b0
+   0.06%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x6a0
+   0.04%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x990
+   0.04%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x400
+   0.04%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x9a0
+   0.04%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x3f0
+   0.04%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x970
+   0.04%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x880
+   0.04%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0xa60
+   0.04%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x2d0
+   0.04%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0xae0
+   0.04%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x410
+   0.04%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x550
+   0.04%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x210
+   0.02%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0x480
+   0.02%  void DrawList<0u, false>(std::vector<PolyParam, std::allocat +0xa30

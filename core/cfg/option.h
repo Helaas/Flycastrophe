@@ -477,6 +477,7 @@ extern Option<int> AnisotropicFiltering;
 extern Option<int> TextureFiltering; // 0: default, 1: force nearest, 2: force linear
 extern Option<bool> ThreadedRendering;
 extern Option<bool> ParseThread;	// Deadcast's TA parse thread (Renderer_if.cpp)
+extern Option<bool> TranslucentRegroup;	// Flycastrophe: translucent polygons apart on screen grouped by state (ta_util.cpp)
 extern Option<bool> VblankPacing;
 extern Option<bool> DupeFrames;
 extern Option<bool> NativeDepthInterpolation;

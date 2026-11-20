@@ -55,6 +55,11 @@ is in [evidence/](evidence/), the scripts in [bench/](bench/README.md).
 > Vulkan renderer; uncapped Crazy Taxi +24.0%, SA2 +13.0% (now limited by the SH4 thread), an NFL 2K2
 > play from 52% to 95% speed, frames identical in 25 games by a new frame-hash check
 > (`evidence/phase3/20261110-draw-calls/`). Not in the pak yet.
+> Then the renderer's own per-polygon setup (2026-11-11): about 0.4 ms off a render in SA2's City
+> Escape and in Crazy Taxi, frames identical in 28 scenes (`evidence/phase3/20261111-poly-setup-trim/`).
+> Then translucent polygons apart on screen grouped (2026-11-19, #32, option off by default): NFL 2K2's
+> saved play 95% to 107% speed, uncapped Crazy Taxi +4%, frames identical in 28 scenes
+> (`evidence/phase3/20261119-translucent-regroup/`).
 > SA2's one-second stall mid-level (2026-11-19) was the 10 MB code cache filling with dropped blocks
 > and being emptied; the cache is now 32 MB, and the same 340 s run has no reset
 > (`evidence/phase3/20261119-sa2-code-cache/`).
