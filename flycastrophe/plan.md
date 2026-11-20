@@ -55,6 +55,8 @@ is in [evidence/](evidence/), the scripts in [bench/](bench/README.md).
 > Vulkan renderer; uncapped Crazy Taxi +24.0%, SA2 +13.0% (now limited by the SH4 thread), an NFL 2K2
 > play from 52% to 95% speed, frames identical in 25 games by a new frame-hash check
 > (`evidence/phase3/20261110-draw-calls/`). Not in the pak yet.
+> Then the renderer's own per-polygon setup (2026-11-11): about 0.4 ms off a render in SA2's City
+> Escape and in Crazy Taxi, frames identical in 28 scenes (`evidence/phase3/20261111-poly-setup-trim/`).
 > Release bar run 2026-11-08 ([phase3](evidence/phase3/README.md)): with audio on,
 > Flycastrophe holds 60 fps on both games with the lowest frame-time p95 (Leaf's Flycast 58.5/59.9,
 > FlyCast Fast UMRK 35.0/58.2); uncapped Crazy Taxi 71.6 vs 58.9 vs 48.5 (same scene), SA2 91.4 vs

@@ -1,0 +1,12 @@
+City Escape capped (renders-weighted ms per render)
+  base r1: >=1000 draws: 10 s, 12.81 ms, render cpu 88%, speed 98.6% | >=700 draws: 30 s, 11.32 ms
+  base r2: >=1000 draws: 10 s, 13.24 ms, render cpu 89%, speed 97.8% | >=700 draws: 30 s, 11.55 ms
+  base both: >=1000: 13.03 ms, render cpu 88.6%, speed 98.2% | >=700: 11.44 ms
+  trim r1: >=1000 draws: 11 s, 12.82 ms, render cpu 88%, speed 98.5% | >=700 draws: 31 s, 11.17 ms
+  trim r2: >=1000 draws: 10 s, 12.40 ms, render cpu 86%, speed 99.2% | >=700 draws: 30 s, 11.00 ms
+  trim both: >=1000: 12.62 ms, render cpu 87.0%, speed 98.8% | >=700: 11.08 ms
+Uncapped still scenes (seconds 3 on)
+  crazy-taxi base: fps 91.1, 89.7, 89.7 mean 90.1 | 8.96 ms per render, render cpu 98%
+  crazy-taxi trim: fps 91.9, 93.1, 89.1 mean 91.4 | 8.58 ms per render, render cpu 96%
+  sa2 base: fps 111.4, 111.0, 112.7 mean 111.7 | 6.51 ms per render, render cpu 83%
+  sa2 trim: fps 110.6, 112.8, 113.1 mean 112.2 | 6.39 ms per render, render cpu 81%
