@@ -503,7 +503,8 @@ void fix_texture_bleeding(const std::vector<PolyParam>& polys, int first, int en
 // order, except at a pixel where two of them have the same depth: not exact there. Polygons that draw
 // nothing (under three vertices, depth test never) don't break a run.
 // The key: what picks the shader first (a program change costs a draw the most), then the texture, tsp,
-// isp, tile clip. tcw stands for the texture: with the parse thread the textures aren't fetched yet.
+// isp, tile clip; within a program the groups then go in the order the game first draws each. tcw stands
+// for the texture: with the parse thread the textures aren't fetched yet.
 //
 static bool stateSortDrawsNothing(const PolyParam& pp)
 {
@@ -516,61 +517,134 @@ static bool stateSortMovable(const PolyParam& pp)
 			&& (pp.isp.DepthMode == 4 || pp.isp.DepthMode == 6) && !pp.isp.ZWriteDis;
 }
 
-void sortByState(std::vector<PolyParam>& polys, int first, int end)
+// whether makePrimRestartIndex would put an index down for the polygon (its loop, without the indices)
+static bool pushesIndex(const PolyParam& pp, const rend_context& ctx)
 {
-	struct Key {
-		u32 prog, tcw, tsp, isp, clip, pcw;
-		u32 index;
-	};
-	static std::vector<Key> keys;
-	static std::vector<PolyParam> moved;
-	int i = first;
-	while (i < end)
+	for (u32 i = 0; i < pp.count; i++)
 	{
-		if (!stateSortMovable(polys[i]) && !stateSortDrawsNothing(polys[i]))
+		if (pp.isNaomi2() || !is_vertex_inf(ctx.verts[pp.first + i]))
+			return true;
+		while (i < pp.count - 1)
 		{
-			i++;
-			continue;
-		}
-		const int runStart = i;
-		keys.clear();
-		for (; i < end; i++)
-		{
-			const PolyParam& pp = polys[i];
-			if (!stateSortMovable(pp) && !stateSortDrawsNothing(pp))
+			if (!is_vertex_inf(ctx.verts[pp.first + i + 1]))
+			{
+				if (pp.count - (i + 1) < 3)
+					i = pp.count - 1;
 				break;
-			const u32 prog = (u32)pp.pcw.Texture | (u32)pp.pcw.Offset << 1 | (u32)pp.pcw.Gouraud << 2
-					| (u32)pp.tsp.UseAlpha << 3 | (u32)pp.tsp.IgnoreTexA << 4 | (u32)pp.tsp.ShadInstr << 5
-					| (u32)pp.tsp.FogCtrl << 7 | (u32)pp.tsp.ColorClamp << 9
-					| (pp.pcw.Texture ? (u32)pp.tcw.PixelFmt << 10 : 0)
-					| (pp.pcw.Texture && pp.tsp.FilterMode > 1 && pp.tcw.MipMapped ? 1u << 13 : 0)
-					| (pp.tileclip >> 28) << 14 | (u32)pp.pcw.Shadow << 18;
-			// the cull direction (isp bit 27) left out: the index builder merges across it
-			keys.push_back({ prog, pp.pcw.Texture ? pp.tcw.full : 0, pp.tsp.full, pp.isp.full & 0xF4000000, pp.tileclip,
-					pp.pcw.full & 0x300CE, (u32)i });
+			}
+			i++;
 		}
-		if (keys.size() < 2)
-			continue;
-		std::stable_sort(keys.begin(), keys.end(), [](const Key& a, const Key& b) {
-			if (a.prog != b.prog) return a.prog < b.prog;
-			if (a.tcw != b.tcw) return a.tcw < b.tcw;
-			if (a.tsp != b.tsp) return a.tsp < b.tsp;
-			if (a.isp != b.isp) return a.isp < b.isp;
-			if (a.clip != b.clip) return a.clip < b.clip;
-			return a.pcw < b.pcw;
-		});
-		moved.clear();
-		for (const Key& k : keys)
-			moved.push_back(polys[k.index]);
-		std::copy(moved.begin(), moved.end(), polys.begin() + runStart);
 	}
+	return false;
+}
+
+static std::vector<u8> stateSortJoins;	// for each polygon from first: merged into the polygon before it
+
+// What moves is a run of polygons the index builder would have merged in the game's order (a unit), and a group
+// is units of one state, cull direction included; the index builder then merges within the groups only
+// (stateSortJoins). Merging a culled polygon into one of the other cull direction turns its strip around, which
+// changes its depth in the last bit here and there: two surfaces at the same depth then fight over those pixels
+// (Crazy Taxi's road: 1.3% of the pixels of a frame). This way every polygon keeps its strip as it was.
+const u8 *sortByState(std::vector<PolyParam>& polys, int first, int end, const rend_context& ctx)
+{
+	if (end - first < 2)
+		return nullptr;
+	struct Unit {
+		u32 begin, end;
+		u32 prog, tcw, tsp, isp, clip, pcw;
+		u32 groupFirst;	// the first unit of its state in the run, in the game's order
+		bool fixed;
+	};
+	static std::vector<Unit> units;
+	static std::vector<u32> order;
+	static std::vector<PolyParam> moved;
+	units.clear();
+	for (int i = first; i < end; i++)
+	{
+		const PolyParam& pp = polys[i];
+		if (!units.empty() && pp.equivalentIgnoreCullingDirection(polys[units.back().begin]) && pushesIndex(polys[units.back().begin], ctx))
+		{
+			units.back().end = i + 1;
+			// a unit stays where it is if any of it draws and can't move
+			if (!stateSortMovable(pp) && !stateSortDrawsNothing(pp))
+				units.back().fixed = true;
+			continue;
+		}
+		const u32 prog = (u32)pp.pcw.Texture | (u32)pp.pcw.Offset << 1 | (u32)pp.pcw.Gouraud << 2
+				| (u32)pp.tsp.UseAlpha << 3 | (u32)pp.tsp.IgnoreTexA << 4 | (u32)pp.tsp.ShadInstr << 5
+				| (u32)pp.tsp.FogCtrl << 7 | (u32)pp.tsp.ColorClamp << 9
+				| (pp.pcw.Texture ? (u32)pp.tcw.PixelFmt << 10 : 0)
+				| (pp.pcw.Texture && pp.tsp.FilterMode > 1 && pp.tcw.MipMapped ? 1u << 13 : 0)
+				| (pp.tileclip >> 28) << 14 | (u32)pp.pcw.Shadow << 18;
+		units.push_back({ (u32)i, (u32)i + 1, prog, pp.pcw.Texture ? pp.tcw.full : 0, pp.tsp.full, pp.isp.full & 0xFC000000,
+				pp.tileclip, pp.pcw.full & 0x300CE, 0, !stateSortMovable(pp) && !stateSortDrawsNothing(pp) });
+	}
+	const auto sameState = [](const Unit& a, const Unit& b) {
+		return a.prog == b.prog && a.tcw == b.tcw && a.tsp == b.tsp && a.isp == b.isp && a.clip == b.clip && a.pcw == b.pcw;
+	};
+	order.clear();
+	bool movedAny = false;
+	for (u32 u = 0; u < units.size();)
+	{
+		if (units[u].fixed)
+		{
+			order.push_back(u++);
+			continue;
+		}
+		const u32 runStart = order.size();
+		for (; u < units.size() && !units[u].fixed; u++)
+			order.push_back(u);
+		const auto run = order.begin() + runStart;
+		if (order.end() - run < 2)
+			continue;
+		std::stable_sort(run, order.end(), [&](u32 a, u32 b) {
+			const Unit& x = units[a];
+			const Unit& y = units[b];
+			if (x.prog != y.prog) return x.prog < y.prog;
+			if (x.tcw != y.tcw) return x.tcw < y.tcw;
+			if (x.tsp != y.tsp) return x.tsp < y.tsp;
+			if (x.isp != y.isp) return x.isp < y.isp;
+			if (x.clip != y.clip) return x.clip < y.clip;
+			return x.pcw < y.pcw;
+		});
+		// within a program, the groups in the order the game first draws each: two surfaces at the same depth
+		// keep their order unless their states interleave (the texture's address would order them by luck)
+		for (auto k = run, g = run; k != order.end(); ++k)
+		{
+			if (k != run && !sameState(units[*k], units[*(k - 1)]))
+				g = k;
+			units[*k].groupFirst = *g;
+		}
+		std::stable_sort(run, order.end(), [&](u32 a, u32 b) {
+			if (units[a].prog != units[b].prog) return units[a].prog < units[b].prog;
+			return units[a].groupFirst < units[b].groupFirst;
+		});
+		for (auto k = run; k != order.end(); ++k)
+			if (*k != (u32)(k - order.begin()))
+				movedAny = true;
+	}
+	stateSortJoins.clear();
+	moved.clear();
+	for (size_t k = 0; k < order.size(); k++)
+	{
+		const Unit& unit = units[order[k]];
+		const bool joinsPrevious = k > 0 && !unit.fixed && !units[order[k - 1]].fixed && sameState(unit, units[order[k - 1]]);
+		for (u32 i = unit.begin; i < unit.end; i++)
+		{
+			stateSortJoins.push_back(i == unit.begin ? joinsPrevious : 1);
+			moved.push_back(polys[i]);
+		}
+	}
+	if (movedAny)
+		std::copy(moved.begin(), moved.end(), polys.begin() + first);
+	return stateSortJoins.data();
 }
 
 //
 // Create the vertex index, eliminating invalid vertices and merging strips when possible.
 // Use primitive restart when merging strips.
 //
-void makePrimRestartIndex(std::vector<PolyParam>& polys, int first, int end, bool merge, rend_context& ctx)
+void makePrimRestartIndex(std::vector<PolyParam>& polys, int first, int end, bool merge, rend_context& ctx, const u8 *joins)
 {
 	if (first >= (int)polys.size())
 		return;
@@ -580,10 +654,10 @@ void makePrimRestartIndex(std::vector<PolyParam>& polys, int first, int end, boo
 	{
 		int first_index;
 		bool dupe_next_vtx = false;
-		if (merge
-				&& last_poly != nullptr
+		// Flycastrophe: with joins (sortByState), merged where it says, not by adjacency
+		if (last_poly != nullptr
 				&& last_poly->count != 0
-				&& poly->equivalentIgnoreCullingDirection(*last_poly))
+				&& (joins != nullptr ? joins[poly - &polys[first]] != 0 : merge && poly->equivalentIgnoreCullingDirection(*last_poly)))
 		{
 			ctx.idx.push_back(~0);
 			dupe_next_vtx = poly->isp.CullMode >= 2 && poly->isp.CullMode != last_poly->isp.CullMode;

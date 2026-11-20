@@ -447,8 +447,8 @@ void sortTriangles(rend_context& ctx, RenderPass& pass, const RenderPass& previo
 void sortPolyParams(std::vector<PolyParam>& polys, int first, int end, rend_context& ctx);
 void fix_texture_bleeding(const std::vector<PolyParam>& polys, int first, int end, rend_context& ctx);
 void makeIndex(std::vector<PolyParam>& polys, int first, int end, bool merge, rend_context& ctx);
-void makePrimRestartIndex(std::vector<PolyParam>& polys, int first, int end, bool merge, rend_context& ctx);
-void sortByState(std::vector<PolyParam>& polys, int first, int end);
+void makePrimRestartIndex(std::vector<PolyParam>& polys, int first, int end, bool merge, rend_context& ctx, const u8 *joins = nullptr);
+const u8 *sortByState(std::vector<PolyParam>& polys, int first, int end, const rend_context& ctx);
 
 class TAParserException : public FlycastException
 {
