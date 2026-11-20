@@ -17,6 +17,7 @@ public:
 			if (texture != _texture) {
 				glBindTexture(target, texture);
 				_texture = texture;
+				_current_params = nullptr;
 				textureChanges++;
 			}
 		}
@@ -56,6 +57,7 @@ public:
 			if (textures[i] == _texture)
 				_texture = 0;
 		}
+		_current_params = nullptr;
 		glDeleteTextures(n, textures);
 	}
 
@@ -132,7 +134,7 @@ public:
 	{
 		if (target == GL_TEXTURE_2D && !_disable_cache)
 		{
-			TextureParameters &cur_params = _texture_params[_texture];
+			TextureParameters &cur_params = currentParams();
 			switch (pname) {
 			case GL_TEXTURE_MIN_FILTER:
 				if (cur_params._min_filter == (GLenum)param)
@@ -165,7 +167,7 @@ public:
 	{
 		if (target == GL_TEXTURE_2D && !_disable_cache && pname == 0x84FE)
 		{
-			TextureParameters &cur_params = _texture_params[_texture];
+			TextureParameters &cur_params = currentParams();
 			if (cur_params._max_anisotropy == param)
 				return;
 			cur_params._max_anisotropy = param;
@@ -193,6 +195,7 @@ public:
 	void Reset() {
 		_texture = 0xFFFFFFFFu;
 		_texture_params.clear();
+		_current_params = nullptr;
 		_src_blend_factor = 0xFFFFFFFFu;
 		_dst_blend_factor = 0xFFFFFFFFu;
 		_clear_r = -1.f;
@@ -248,6 +251,14 @@ private:
 		GLenum _wrap_t;
 		GLfloat _max_anisotropy;
 	};
+
+	// Flycastrophe: the bound texture's cached parameters, looked up once per bind. A textured polygon
+	// sets four or five of them, each of which searched the map.
+	TextureParameters& currentParams() {
+		if (_current_params == nullptr)
+			_current_params = &_texture_params[_texture];
+		return *_current_params;
+	}
 
 	void setCapability(GLenum cap, GLboolean value) {
 		GLboolean *pCap = NULL;
@@ -339,6 +350,7 @@ private:
 	GLuint _texture_ids[TEXTURE_ID_CACHE_SIZE];
 	GLsizei _texture_cache_size = 0;
 	std::map<GLuint, TextureParameters> _texture_params;
+	TextureParameters *_current_params = nullptr;
 	bool _disable_cache;
 };
 

@@ -1,0 +1,15 @@
+doa2: frames 2257 and 2256, 1671 different frames in both: 1671 identical, 0 differ
+powerstone: frames 3950 and 3947, 3251 different frames in both: 3251 identical, 0 differ
+segarally2: frames 2411 and 2412, 599 different frames in both: 599 identical, 0 differ
+daytona: frames 4461 and 4475, 443 different frames in both: 443 identical, 0 differ
+spiderman: frames 1833 and 1842, 877 different frames in both: 877 identical, 0 differ
+ecco: frames 2769 and 2774, 838 different frames in both: 838 identical, 0 differ
+armada: frames 1990 and 1999, 1139 different frames in both: 1139 identical, 0 differ
+sonicadventure: frames 1742 and 1748, 1463 different frames in both: 1463 identical, 0 differ
+headhunter: frames 2177 and 2177, 1614 different frames in both: 1614 identical, 0 differ
+capsnk: frames 2817 and 2766, 1582 different frames in both: 1582 identical, 0 differ
+ggxx: frames 3746 and 3740, 5 different frames in both: 5 identical, 0 differ
+dolphin: frames 2481 and 2429, 2265 different frames in both: 2265 identical, 0 differ
+fotns: frames 2937 and 2944, 1571 different frames in both: 1571 identical, 0 differ
+mslug6: frames 2141 and 2147, 684 different frames in both: 684 identical, 0 differ
+vf4: frames 1472 and 1486, 722 different frames in both: 722 identical, 0 differ
