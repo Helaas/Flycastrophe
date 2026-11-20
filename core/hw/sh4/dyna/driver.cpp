@@ -15,7 +15,7 @@
 
 #if FEAT_SHREC != DYNAREC_NONE
 
-constexpr u32 CODE_SIZE = 10_MB;
+constexpr u32 CODE_SIZE = 32_MB;	// Flycastrophe: 10 MB filled in five minutes of SA2 (dead and live code), and emptying it stalled the game for 0.8 s
 constexpr u32 TEMP_CODE_SIZE = 1_MB;
 constexpr u32 FULL_SIZE = CODE_SIZE + TEMP_CODE_SIZE;
 DECLARE_CODE_CACHE(SH4_TCB, FULL_SIZE)
