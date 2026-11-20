@@ -1,0 +1,52 @@
+update: device <serial>, card /media/sdcard1
+prior dev-catalog-url: <none>
+ok   feed reachable from device
+/Volumes/Storage/UMRK/.worktrees/jawaka-pakrat-smoke/build/mlp1/bin/jawaka-pakrat-smoke: 1 file pushed, 0 skipped. 348.3 MB/s (392392 bytes in 0.001s)
+=== before ===
+installed 0.3.0, core 3ae7f022805fdc26, opt md5 0ec7af9658efe14503243753cb58b2f1, DC choice <default>, per-game flycastrophe rows 10
+ok   baseline: 0.3.0 installed
+=== update ===
+Content catalog: published gen-2223688d3f2d67c23dfbf251e89241e30d941277c4a1ae4a87d4ff1083e9296b (scan)
+RetroArch discovery: scanning with 46 systems / 80 cores
+RetroArch discovery: skipping unsupported ROM folder COLECO (COLECO has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VB (VB has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VECTREX (VECTREX has no packaged launch target)
+RetroArch discovery: skipping unknown ROM folder SCUMMVM
+Content catalog: reused gen-2223688d3f2d67c23dfbf251e89241e30d941277c4a1ae4a87d4ff1083e9296b (scan)
+RetroArch discovery: scanning with 46 systems / 80 cores
+RetroArch discovery: skipping unsupported ROM folder COLECO (COLECO has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VB (VB has no packaged launch target)
+RetroArch discovery: skipping unsupported ROM folder VECTREX (VECTREX has no packaged launch target)
+RetroArch discovery: skipping unknown ROM folder SCUMMVM
+download: http://127.0.0.1:8765/pakrat/v1/artifacts/org.helaas.flycastrophe/0.3.0/Flycastrophe.mlp1.pak.zip
+rescan: games=2053 systems=28 apps=13
+rescan: games=2053 systems=28 apps=13
+daemon-scan: {"type":"ok","action":"scan-library started","message":"scan-library started","title_hints_accepted":0}
+installed: org.helaas.flycastrophe 0.3.0 -> Apps/mlp1/Flycastrophe.pak
+outcome: kind=app refusal=none themes_changed=0 theme_updated=0 selection_cleared=0 theme_dir=- reasons=- error=-
+/media/sdcard1/Apps/mlp1/Flycastrophe.pak:
+total 256
+drwxr-xr-x  4 root root 32768 Nov 20 21:13 .
+drwxr-xr-x 18 root root 32768 Nov 20 21:13 ..
+drwxr-xr-x  2 root root 32768 Nov 20 21:13 cores
+drwxr-xr-x  2 root root 32768 Nov 20 21:13 info
+-rwxr-xr-x  1 root root 18092 Nov 20 21:12 LICENSE-CORE.txt
+-rwxr-xr-x  1 root root   912 Nov 20 21:12 LICENSES.md
+-rwxr-xr-x  1 root root   854 Nov 20 21:12 pak.json
+-rwxr-xr-x  1 root root   195 Nov 20 21:13 .pakrat-commit
+
+/media/sdcard1/Apps/mlp1/Flycastrophe.pak/cores:
+total 52192
+drwxr-xr-x 2 root root    32768 Nov 20 21:13 .
+drwxr-xr-x 4 root root    32768 Nov 20 21:13 ..
+-rwxr-xr-x 1 root root 53374392 Nov 20 21:12 flycastrophe_libretro.so
+
+/media/sdcard1/Apps/mlp1/Flycastrophe.pak/info:
+total 96
+drwxr-xr-x 2 root root 32768 Nov 20 21:13 .
+drwxr-xr-x 4 root root 32768 Nov 20 21:13 ..
+-rwxr-xr-x 1 root root  2029 Nov 20 21:12 flycastrophe_libretro.info
+ok   update: 0.3.0 -> 0.3.0, core 958562b3054072df0552f09f20f8556fe3d3fc72f96b625a20a336bd72ebf117, still in the catalog
+=== user data ===
+ok   core options, DC choice and per-game core rows unchanged
+=== done ===

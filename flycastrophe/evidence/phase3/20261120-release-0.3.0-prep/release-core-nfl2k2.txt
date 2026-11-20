@@ -1,0 +1,1 @@
+fcr-rel030f                  speed   98.3% fps  56.0 skip  2.9 emu  67% render  90% 14.36 ms draws   792 progs   94 binds   756 | compiled 4770 resets 0 mmu 0+0/s miss 0/s

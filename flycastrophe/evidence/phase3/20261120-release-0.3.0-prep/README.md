@@ -19,3 +19,16 @@ dynarec). The code is what `main` holds after those merges.
 
 Not done here: a frame-exact comparison of the trained core against 0.2.0 (see
 `../20261120-nfl2k2-gray-field/` for why the frame check cannot do it).
+
+## Release (2026-11-20)
+
+- **Pin:** Flycastrophe-pak `7afeaabe` (Helaas/Flycastrophe-pak#11) pins `main` at `aa6b3800`, whose code is the
+  trained branch's. Two clean builds agree on the core: sha256 `958562b3054072df0552f09f20f8556fe3d3fc72f96b625a20a336bd72ebf117`,
+  53,374,392 bytes. `make check` passes and CI rebuilt the same core.
+- **Release core on the device** (`release-core-nfl2k2.txt`): the NFL 2K2 saved play with the default options,
+  98.3% speed, 14.4 ms a render, 2.9 frames a second skipped.
+- **Published:** [v0.3.0](https://github.com/Helaas/Flycastrophe-pak/releases/tag/v0.3.0), the unchanged zip
+  from CI's run on the pak's `main` (`SHA256SUMS`), every packaged file identical to the local package. It was
+  installed on the test card through Pak Rat before publishing (`pakrat-release-install/run.log`): core options,
+  the DC core choice and per-game core rows unchanged.
+- **Catalog:** leaf-docs#82, live with versions 0.3.0, 0.2.0 and 0.1.0, all gated on Leaf 0.14.0.
