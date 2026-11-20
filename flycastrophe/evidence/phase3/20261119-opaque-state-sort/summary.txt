@@ -1,0 +1,47 @@
+final build (bf9e4d53, on4):
+ceu-base-round1              speed  123.8% fps  74.2 skip  0.0 emu  77% render  98% 11.40 ms draws   861 progs   39 binds   761 | compiled 2952 resets 0 mmu 0+0/s miss 0/s
+ceu-on4-round1               speed  149.4% fps  89.8 skip  0.0 emu  96% render  79%  7.36 ms draws   311 progs   20 binds   255 | compiled 2225 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-base-round1       speed  149.8% fps  89.8 skip  0.0 emu  80% render  98%  9.02 ms draws   555 progs  222 binds   411 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-on4-round1        speed  163.5% fps  98.0 skip  0.0 emu  90% render  96%  7.64 ms draws   452 progs  112 binds   342 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+nfl-base-round1              speed   97.9% fps  58.4 skip  0.0 emu  68% render  97% 14.96 ms draws   792 progs   95 binds   757 | compiled 4595 resets 0 mmu 0+0/s miss 0/s
+nfl-on4-round1               speed  104.7% fps  62.5 skip  0.0 emu  75% render  96% 13.66 ms draws   619 progs   91 binds   585 | compiled 5681 resets 0 mmu 0+0/s miss 0/s
+ceu-base-round2              speed  123.6% fps  74.0 skip  0.0 emu  77% render  97% 11.45 ms draws   860 progs   39 binds   761 | compiled 2891 resets 0 mmu 0+0/s miss 0/s
+ceu-on4-round2               speed  149.6% fps  89.7 skip  0.0 emu  96% render  79%  7.32 ms draws   311 progs   20 binds   254 | compiled 2293 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-base-round2       speed  151.6% fps  90.7 skip  0.0 emu  81% render  97%  8.87 ms draws   555 progs  222 binds   411 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-on4-round2        speed  165.0% fps  98.7 skip  0.0 emu  91% render  95%  7.57 ms draws   452 progs  112 binds   341 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+nfl-base-round2              speed   97.7% fps  58.5 skip  0.0 emu  68% render  96% 15.00 ms draws   792 progs   96 binds   756 | compiled 4596 resets 0 mmu 0+0/s miss 0/s
+nfl-on4-round2               speed  102.2% fps  61.3 skip  0.0 emu  73% render  95% 14.06 ms draws   621 progs   92 binds   585 | compiled 4372 resets 0 mmu 0+0/s miss 0/s
+
+first version (ossort1, on), with punch-through (onpt), the draw-time prototype (proto); ce = City Escape capped:
+ceu-base-round1              speed  124.1% fps  74.5 skip  0.0 emu  77% render  98% 11.40 ms draws   869 progs   40 binds   768 | compiled 2226 resets 0 mmu 0+0/s miss 0/s
+ceu-on-round1                speed  149.3% fps  89.7 skip  0.0 emu  95% render  79%  7.35 ms draws   311 progs   19 binds   197 | compiled 2950 resets 0 mmu 0+0/s miss 0/s
+ceu-onpt-round1              speed  148.7% fps  89.4 skip  0.0 emu  96% render  79%  7.47 ms draws   313 progs   20 binds   198 | compiled 2290 resets 0 mmu 0+0/s miss 0/s
+ceu-proto-round1             speed  137.3% fps  82.4 skip  0.0 emu  87% render  96%  9.61 ms draws   859 progs   19 binds   197 | compiled 2920 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-base-round1       speed  151.5% fps  90.7 skip  0.0 emu  81% render  98%  8.92 ms draws   555 progs  222 binds   411 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-on-round1         speed  165.6% fps  99.2 skip  0.0 emu  87% render  97%  7.54 ms draws   442 progs  112 binds   298 | compiled 1008 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-onpt-round1       speed  164.3% fps  98.4 skip  0.0 emu  86% render  97%  7.64 ms draws   442 progs  112 binds   299 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-proto-round1      speed  155.9% fps  93.4 skip  0.0 emu  84% render  97%  8.42 ms draws   555 progs  113 binds   299 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+nfl-base-round1              speed   97.9% fps  58.4 skip  0.0 emu  68% render  97% 15.00 ms draws   791 progs   95 binds   756 | compiled 4573 resets 0 mmu 0+0/s miss 0/s
+nfl-on-round1                speed  103.0% fps  61.6 skip  0.0 emu  72% render  95% 13.93 ms draws   622 progs   93 binds   585 | compiled 4380 resets 0 mmu 0+0/s miss 0/s
+nfl-onpt-round1              speed  101.8% fps  60.9 skip  0.0 emu  71% render  96% 14.11 ms draws   620 progs   91 binds   583 | compiled 4372 resets 0 mmu 0+0/s miss 0/s
+nfl-proto-round1             speed   97.5% fps  58.1 skip  0.0 emu  66% render  98% 15.01 ms draws   791 progs   96 binds   590 | compiled 4558 resets 0 mmu 0+0/s miss 0/s
+ce-base-round1               speed   99.6% fps  59.7 skip  0.0 emu  58% render  76% 10.68 ms draws   868 progs   40 binds   768 | compiled 2196 resets 0 mmu 0+0/s miss 0/s
+ce-on-round1                 speed   99.9% fps  59.9 skip  0.0 emu  57% render  49%  6.01 ms draws   314 progs   19 binds   198 | compiled 2239 resets 0 mmu 0+0/s miss 0/s
+ce-onpt-round1               speed   99.8% fps  59.8 skip  0.0 emu  57% render  49%  5.98 ms draws   312 progs   20 binds   197 | compiled 2947 resets 0 mmu 0+0/s miss 0/s
+ce-proto-round1              speed  100.2% fps  60.0 skip  0.0 emu  59% render  66%  8.99 ms draws   867 progs   20 binds   198 | compiled 2250 resets 0 mmu 0+0/s miss 0/s
+ceu-base-round2              speed  121.0% fps  72.7 skip  0.0 emu  74% render  98% 11.68 ms draws   860 progs   39 binds   761 | compiled 2968 resets 0 mmu 0+0/s miss 0/s
+ceu-on-round2                speed  149.6% fps  90.0 skip  0.0 emu  95% render  79%  7.30 ms draws   313 progs   20 binds   198 | compiled 2250 resets 0 mmu 0+0/s miss 0/s
+ceu-onpt-round2              speed  147.0% fps  88.2 skip  0.0 emu  97% render  76%  7.67 ms draws   312 progs   20 binds   197 | compiled 2253 resets 0 mmu 0+0/s miss 0/s
+ceu-proto-round2             speed  135.5% fps  81.5 skip  0.0 emu  86% render  96%  9.83 ms draws   863 progs   19 binds   197 | compiled 2322 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-base-round2       speed  150.8% fps  90.3 skip  0.0 emu  81% render  97%  8.98 ms draws   555 progs  222 binds   412 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-on-round2         speed  163.5% fps  98.0 skip  0.0 emu  86% render  96%  7.67 ms draws   442 progs  112 binds   299 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-onpt-round2       speed  165.5% fps  99.1 skip  0.0 emu  87% render  97%  7.52 ms draws   442 progs  112 binds   298 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+crazy-taxi-proto-round2      speed  155.8% fps  93.3 skip  0.0 emu  84% render  97%  8.41 ms draws   555 progs  113 binds   299 | compiled 1007 resets 0 mmu 0+0/s miss 0/s
+nfl-base-round2              speed   97.1% fps  58.1 skip  0.0 emu  67% render  98% 15.17 ms draws   790 progs   94 binds   754 | compiled 4405 resets 0 mmu 0+0/s miss 0/s
+nfl-on-round2                speed  101.4% fps  60.6 skip  0.0 emu  71% render  96% 14.12 ms draws   619 progs   91 binds   582 | compiled 4365 resets 0 mmu 0+0/s miss 0/s
+nfl-onpt-round2              speed  101.7% fps  60.8 skip  0.0 emu  71% render  96% 14.13 ms draws   620 progs   92 binds   583 | compiled 4334 resets 0 mmu 0+0/s miss 0/s
+nfl-proto-round2             speed   98.4% fps  58.8 skip  0.0 emu  67% render  98% 14.87 ms draws   792 progs   96 binds   590 | compiled 4597 resets 0 mmu 0+0/s miss 0/s
+ce-base-round2               speed   99.4% fps  59.6 skip  0.0 emu  58% render  75% 10.62 ms draws   859 progs   39 binds   760 | compiled 2832 resets 0 mmu 0+0/s miss 0/s
+ce-on-round2                 speed  100.2% fps  60.0 skip  0.0 emu  57% render  50%  6.08 ms draws   313 progs   20 binds   198 | compiled 2245 resets 0 mmu 0+0/s miss 0/s
+ce-onpt-round2               speed  100.2% fps  60.0 skip  0.0 emu  57% render  50%  6.06 ms draws   313 progs   20 binds   198 | compiled 2245 resets 0 mmu 0+0/s miss 0/s
+ce-proto-round2              speed  100.2% fps  60.0 skip  0.0 emu  60% render  66%  9.05 ms draws   868 progs   20 binds   198 | compiled 2242 resets 0 mmu 0+0/s miss 0/s

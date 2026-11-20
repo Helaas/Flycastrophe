@@ -1,0 +1,2376 @@
+== thread Flycast-emu: 21383 samples (CPU-time timer; the kernel tick caps the rate); jit 87%, core 11%, lib 2%
+    8.6%  [SH4 block 01cb0874]
+    5.6%  [dynarec loop/stubs]
+    2.5%  [SH4 block 01caf16c]
+    1.8%  [SH4 block 0026dea0]
+    1.3%  <libc.so.6>
+    1.3%  [SH4 block 8c0175bc]
+    1.3%  [SH4 block 0026bea0]
+    1.2%  [SH4 block 01caf50c]
+    1.1%  [SH4 block 01caf534]
+    1.0%  [SH4 block 8c01734c]
+    0.9%  UpdateSR()
+    0.8%  [SH4 block 01caf564]
+    0.8%  [SH4 block 8c02cc38]
+    0.8%  [SH4 block 01caf518]
+    0.8%  [SH4 block 8c0176b2]
+    0.8%  [SH4 block 00005bc0]
+    0.7%  [SH4 block 01caf544]
+    0.7%  sqWriteMmuTry(unsigned int, Sh4Context*)
+    0.7%  [SH4 block 01caf552]
+    0.7%  [SH4 block 01c9b28e]
+    0.7%  [SH4 block 01caf556]
+    0.7%  void WriteMem_P4<unsigned int>(unsigned int, unsigned int)
+    0.6%  [SH4 block 8c017378]
+    0.6%  [SH4 block 01caf508]
+    0.6%  mmuDynarecLookup(unsigned int, unsigned int, unsigned int) (.lto_priv.0)
+    0.6%  [SH4 block 8c02cc4e]
+    0.6%  [SH4 block 01caf560]
+    0.6%  mmuDispatchCacheFlush()
+    0.6%  [SH4 block 01caf540]
+    0.5%  [SH4 block 8c017544]
+    0.5%  ta_thd_data32_i(simd256_t const*) (.lto_priv.0)
+    0.5%  <libstdc++.so.6.0.30>
+    0.4%  [SH4 block 01caf54e]
+    0.4%  [SH4 block 01c9b2a0]
+    0.4%  [SH4 block 8c0176c2]
+    0.4%  [SH4 block 01caf53c]
+    0.4%  [SH4 block 8c01764c]
+    0.4%  [SH4 block 01c9b778]
+    0.4%  unsigned int ReadMem_p4mmr<unsigned int>(unsigned int)
+    0.4%  [SH4 block 8c017426]
+    0.3%  [SH4 block 8c012394]
+    0.3%  mmuWrite32(unsigned int, unsigned int, unsigned int) (.lto_priv.0)
+    0.3%  [SH4 block 8c01755e]
+    0.3%  bm_GetBlock(void*)
+    0.3%  [SH4 block 8c02cc54]
+    0.3%  [SH4 block 8c017382]
+    0.3%  [SH4 block 8c017628]
+    0.3%  [SH4 block 8c0123a2]
+    0.3%  [SH4 block 8c017528]
+    0.3%  [SH4 block 8c01239c]
+    0.3%  [SH4 block 01caf568]
+    0.3%  unsigned int read_TMU_TCNT<0u>(unsigned int) (.lto_priv.0)
+    0.2%  [SH4 block 8c017604]
+    0.2%  DynaRBI::Relink()
+    0.2%  [SH4 block 8c012454]
+    0.2%  sh4_sched_tick(int) (.constprop.0)
+    0.2%  [SH4 block 8c01761c]
+    0.2%  [SH4 block 8c017418]
+    0.2%  [SH4 block 8c017430]
+    0.2%  UpdateINTC()
+    0.2%  [SH4 block 8c0120dc]
+    0.2%  mmu_full_lookup(unsigned int, TLB_Entry const**, unsigned int&)
+    0.2%  ta_vtx_ListInit(bool)
+    0.2%  compilePC(unsigned int)
+    0.2%  [SH4 block 01caf1a2]
+    0.2%  [SH4 block 8c01238e]
+    0.2%  spg_line_sched(int, int, int, void*) (.lto_priv.0)
+    0.2%  [SH4 block 8c01244e]
+    0.2%  bm_GetCodeByVAddr(unsigned int) (.part.0)
+    0.2%  [SH4 block 01caf570]
+    0.2%  [SH4 block 8c01334a]
+    0.2%  [SH4 block 8c01245a]
+    0.2%  [SH4 block 0026ded0]
+    0.1%  [SH4 block 01c77704]
+    0.1%  [SH4 block 0004e600]
+    0.1%  [SH4 block 8c01245e]
+    0.1%  Arm64Assembler::Arm64Assembler(Sh4Context&, Sh4CodeBuffer&, void*) (.lto_priv.0)
+    0.1%  find_entry(unsigned int, TLB_Entry const**) (.lto_priv.0)
+    0.1%  [SH4 block 01c7753c]
+    0.1%  [SH4 block 01c9b2bc]
+    0.1%  [SH4 block 000aa3c0]
+    0.1%  vixl::aarch64::MacroAssembler::MacroAssembler(unsigned char*, unsigned long, vixl::aarch64::PositionIndepen...
+    0.1%  [SH4 block 0026dfc8]
+    0.1%  mmuRead32(unsigned int, unsigned int) (.lto_priv.0)
+    0.1%  [SH4 block 01cb0a4c]
+    0.1%  [SH4 block 01caf5a6]
+    0.1%  [SH4 block 01caf574]
+    0.1%  [SH4 block 0004e558]
+    0.1%  [SH4 block 0026bfd0]
+    0.1%  [SH4 block 0026dfd0]
+    0.1%  [SH4 block 01c81af8]
+    0.1%  Sh4Context::UpdateFPSCR(Sh4Context*)
+    0.1%  [SH4 block 0026bf4c]
+    0.1%  vixl::EmissionCheckScope::Open(vixl::MacroAssemblerInterface*, unsigned long, vixl::CodeBufferCheckScope::S...
+    0.1%  [SH4 block 8c0155c6]
+    0.1%  [SH4 block 01c799b8]
+    0.1%  [SH4 block 8c015530]
+    0.1%  [SH4 block 00005bb0]
+    0.1%  [SH4 block 8c015950]
+    0.1%  vixl::aarch64::MacroAssembler::MoveImmediateHelper(vixl::aarch64::MacroAssembler*, vixl::aarch64::Register ...
+    0.1%  [SH4 block 01c786e4]
+    0.1%  [SH4 block 01caf57a]
+    0.1%  pvr_WriteReg(unsigned int, unsigned int)
+    0.1%  [SH4 block 01c786ea]
+    0.1%  [SH4 block 0026bed0]
+    0.1%  sh4_sched_request(int, int)
+    0.1%  [SH4 block 8c015574]
+    0.1%  [SH4 block 00005ba4]
+    0.1%  [SH4 block 01c95e10]
+    0.1%  [SH4 block 01c9b2b0]
+    0.1%  [SH4 block 8c0156f0]
+    0.1%  [SH4 block 8c0123b0]
+    0.1%  rdv_LinkBlock(unsigned char*, unsigned int)
+    0.1%  [SH4 block 0002e1e4]
+    0.1%  [SH4 block 01caef68]
+    0.1%  [SH4 block 8c01596e]
+    0.1%  [SH4 block 01c7997e]
+    0.1%  aica::AicaUpdate(int, int, int, void*) (.lto_priv.0)
+    0.1%  vixl::aarch64::VeneerPool::RegisterUnresolvedBranch(long, vixl::aarch64::Label*, vixl::aarch64::ImmBranchTy...
+    0.1%  [SH4 block 01c7880c]
+    0.1%  maple_DoDma() (.lto_priv.0)
+    0.1%  [SH4 block 01c78880]
+    0.1%  [SH4 block 0004ded8]
+    0.1%  [SH4 block 01cb0ad8]
+    0.1%  startup._ZNSt6vectorIPN6config10BaseOptionESaIS2_EE17_M_realloc_insertIJS2_EEEvN9__gnu_cxx17__normal_iterat...
+    0.1%  [SH4 block 00005b90]
+    0.1%  [SH4 block 01cb0aac]
+    0.1%  [SH4 block 8c01283c]
+    0.1%  void WriteMem_p4mmr<unsigned int>(unsigned int, unsigned int)
+    0.1%  unsigned int ReadMem_area0<unsigned int, 0u, false>(unsigned int)
+    0.1%  vixl::aarch64::MacroAssembler::AddSubMacro(vixl::aarch64::Register const&, vixl::aarch64::Register const&, ...
+    0.1%  [SH4 block 8c01656c]
+    0.1%  interpreter_fallback(Sh4Context*, unsigned short, void (*)(Sh4Context*, unsigned int), unsigned int) (.lto_...
+    0.1%  vixl::aarch64::VeneerPool::DeleteUnresolvedBranchInfoForLabel(vixl::aarch64::Label*) (.part.0)
+    0.1%  [SH4 block 01c953bc]
+    0.1%  [SH4 block 01c9c1ec]
+    0.1%  [SH4 block 0009e940]
+    0.1%  [SH4 block 01c788f4]
+    0.1%  [SH4 block 01c79ae4]
+    0.1%  [SH4 block 01c7873a]
+    0.1%  [SH4 block 8c01222a]
+    0.1%  [SH4 block 0026bfc8]
+    0.1%  vixl::aarch64::MacroAssembler::Nop()
+    0.1%  [SH4 block 01ca5c54]
+    0.1%  [SH4 block 0026df4c]
+    0.1%  [SH4 block 01c7891e]
+    0.1%  [SH4 block 000ce8d0]
+    0.1%  [SH4 block 01c9dee4]
+    0.1%  [SH4 block 01c786b8]
+    0.1%  [SH4 block 8c015800]
+    0.1%  [SH4 block 01c95810]
+    0.1%  [SH4 block 8c015918]
+    0.1%  [SH4 block 8c015fa6]
+    0.1%  [SH4 block 8c0155d4]
+    0.1%  Arm64Assembler::GenMmuStaticExit(RuntimeBlockInfo*, unsigned int, RuntimeBlockInfo*, DynaCode*)
+    0.1%  [SH4 block 01caf094]
+    0.1%  [SH4 block 01c77572]
+    0.1%  [SH4 block 01c79a78]
+    0.1%  [SH4 block 8c0127b4]
+    0.1%  [SH4 block 000aa288]
+    0.1%  [SH4 block 01c79958]
+    0.1%  [SH4 block 01c7931e]
+    0.1%  [SH4 block 0004dd48]
+    0.1%  std::vector<std::shared_ptr<RuntimeBlockInfo>, std::allocator<std::shared_ptr<RuntimeBlockInfo>>>::push_bac...
+    0.1%  [SH4 block 01c7f2a4]
+    0.1%  [SH4 block 8c01504e]
+    0.1%  [SH4 block 8c012208]
+    0.1%  [SH4 block 01caeefc]
+    0.1%  [SH4 block 01caf5a2]
+    0.1%  [SH4 block 00005bd0]
+    0.1%  [SH4 block 01c7e9dc]
+    0.1%  [SH4 block 0026be90]
+    0.1%  [SH4 block 01caefba]
+    0.1%  [SH4 block 8c01225a]
+    0.1%  [SH4 block 01c9b274]
+    0.1%  [SH4 block 8c012416]
+    0.1%  [SH4 block 8c0123ec]
+    0.1%  [SH4 block 01c776e4]
+    0.1%  [SH4 block 01e58e40]
+    0.1%  [SH4 block 0026df44]
+    0.1%  [SH4 block 8c01765e]
+    0.1%  [SH4 block 8c017630]
+    0.1%  [SH4 block 01cb095e]
+    0.1%  [SH4 block 01caf1b8]
+    0.1%  [SH4 block 01c7e87c]
+    0.1%  rdv_BlockCheckFail(unsigned int)
+    0.1%  [SH4 block 01ca5c40]
+    0.1%  [SH4 block 01c786d8]
+    0.1%  [SH4 block 01cb0a86]
+    0.1%  [SH4 block 01caf05c]
+    0.1%  [SH4 block 01c79458]
+    0.1%  [SH4 block 01c7885c]
+    0.1%  [SH4 block 0004e37c]
+    0.1%  [SH4 block 8c0121f0]
+    0.1%  [SH4 block 0009ed80]
+    0.1%  [SH4 block 01cb0a2c]
+    0.1%  std::__detail::_Map_base<unsigned int, std::pair<unsigned int const, (anonymous namespace)::SmcAddress>, st...
+    0.1%  fault_handler(int, siginfo_t*, void*)
+    0.1%  Arm64Assembler::GenCall(DynaCode*)
+    0.1%  [SH4 block 01e58e30]
+    0.1%  [SH4 block 01caef46]
+    0.1%  [SH4 block 000a9f8a]
+    0.1%  [SH4 block 01caf054]
+    0.1%  [SH4 block 01c9de42]
+    0.1%  [SH4 block 000a403c]
+    0.1%  [SH4 block 0004e70e]
+    0.1%  [SH4 block 01c7f2b0]
+    0.1%  [SH4 block 8c015986]
+    0.1%  [SH4 block 01caf06a]
+    0.1%  Arm64Assembler::RelinkBlock(RuntimeBlockInfo*)
+    0.1%  [SH4 block 01c78916]
+    0.1%  [SH4 block 8c0155f2]
+    0.1%  [SH4 block 01c95e0e]
+    0.1%  [SH4 block 8c012276]
+    0.1%  [SH4 block 01cb2a0c]
+    0.1%  [SH4 block 00005bd6]
+    0.1%  [SH4 block 01c788d8]
+    0.1%  [SH4 block 01c7f2e6]
+    0.1%  [SH4 block 8c015a36]
+    0.1%  [SH4 block 8c0155ae]
+    0.1%  [SH4 block 8c012204]
+    0.1%  [SH4 block 8c016268]
+    0.1%  [SH4 block 8c01231a]
+    0.1%  vixl::aarch64::Assembler::OneInstrMoveImmediateHelper(vixl::aarch64::Assembler*, vixl::aarch64::Register co...
+    0.1%  Arm64Assembler::GenBranch(DynaCode*, vixl::aarch64::Condition)
+    0.1%  [SH4 block 01e61d7c]
+    0.1%  [SH4 block 01c9b780]
+    0.1%  [SH4 block 01c789d0]
+    0.1%  [SH4 block 01c799f0]
+    0.1%  [SH4 block 01cb0a7e]
+    0.1%  [SH4 block 8c01560e]
+    0.1%  [SH4 block 01c9de10]
+    0.1%  [SH4 block 01e60526]
+    0.1%  [SH4 block 01c77dd8]
+    0.1%  [SH4 block 01e61db4]
+    0.1%  [SH4 block 01c7872e]
+    0.1%  [SH4 block 8c015564]
+    0.1%  [SH4 block 8c015598]
+    0.1%  [SH4 block 01c7923e]
+    0.1%  [SH4 block 01cb099a]
+    0.1%  [SH4 block 01c9de36]
+    0.1%  [SH4 block 000a8300]
+    0.1%  [SH4 block 01cb09ec]
+    0.1%  [SH4 block 01c79aac]
+    0.1%  [SH4 block 01c7872a]
+    0.1%  [SH4 block 8c015ed8]
+    0.1%  [SH4 block 01c7e59c]
+    0.0%  Arm64Assembler::compileBlock(RuntimeBlockInfo*, bool, bool)
+    0.0%  vixl::aarch64::Assembler::AddSub(vixl::aarch64::Register const&, vixl::aarch64::Register const&, vixl::aarc...
+    0.0%  vixl::aarch64::MacroAssembler::B(vixl::aarch64::Label*, vixl::aarch64::Condition)
+    0.0%  [SH4 block 01c78a36]
+    0.0%  [SH4 block 01caf134]
+    0.0%  [SH4 block 01cb0934]
+    0.0%  [SH4 block 01c9dc14]
+    0.0%  [SH4 block 01c9c11a]
+    0.0%  [SH4 block 01cb0a1a]
+    0.0%  [SH4 block 01c9c38c]
+    0.0%  [SH4 block 01c9b31a]
+    0.0%  [SH4 block 8c01a870]
+    0.0%  [SH4 block 01c9551e]
+    0.0%  [SH4 block 01c7eafc]
+    0.0%  [SH4 block 8c016644]
+    0.0%  [SH4 block 8c01a708]
+    0.0%  [SH4 block 01c7eacc]
+    0.0%  [SH4 block 01e587a6]
+    0.0%  [SH4 block 01cb097c]
+    0.0%  [SH4 block 0009e584]
+    0.0%  [SH4 block 01c957f8]
+    0.0%  [SH4 block 01ca5c36]
+    0.0%  [SH4 block 0009dd94]
+    0.0%  [SH4 block 0009ee8a]
+    0.0%  Arm64Assembler::~Arm64Assembler() (.lto_priv.0)
+    0.0%  [SH4 block 01c95512]
+    0.0%  [SH4 block 01c95280]
+    0.0%  [SH4 block 01caee94]
+    0.0%  [SH4 block 01c789b0]
+    0.0%  [SH4 block 01cb0950]
+    0.0%  [SH4 block 8c0156c8]
+    0.0%  [SH4 block 8c015f48]
+    0.0%  [SH4 block 8c0156b0]
+    0.0%  [SH4 block 01c77e06]
+    0.0%  [SH4 block 8c012242]
+    0.0%  [SH4 block 01c9afee]
+    0.0%  [SH4 block 8c01a9aa]
+    0.0%  [SH4 block 8c02d1b4]
+    0.0%  [SH4 block 000a4000]
+    0.0%  sb_ReadMem(unsigned int)
+    0.0%  [SH4 block 8c012216]
+    0.0%  [SH4 block 8c01a748]
+    0.0%  vixl::aarch64::MacroAssembler::B(vixl::aarch64::Label*)
+    0.0%  config::BaseOption*& std::vector<config::BaseOption*, std::allocator<config::BaseOption*>>::emplace_back<co...
+    0.0%  vixl::aarch64::MacroAssembler::LoadStoreMacro(vixl::aarch64::CPURegister const&, vixl::aarch64::MemOperand ...
+    0.0%  [SH4 block 0026bf80]
+    0.0%  [SH4 block 8c01226c]
+    0.0%  [SH4 block 01c9de76]
+    0.0%  [SH4 block 01e6051e]
+    0.0%  [SH4 block 01c7eae0]
+    0.0%  [SH4 block 01c9b30c]
+    0.0%  [SH4 block 000ce880]
+    0.0%  [SH4 block 01caefac]
+    0.0%  [SH4 block 01cafc7c]
+    0.0%  [SH4 block 8c01633e]
+    0.0%  [SH4 block 00060a68]
+    0.0%  [SH4 block 8c019198]
+    0.0%  [SH4 block 01e66448]
+    0.0%  [SH4 block 01ca5c20]
+    0.0%  [SH4 block 01cc3890]
+    0.0%  [SH4 block 000a3f20]
+    0.0%  [SH4 block 01c79370]
+    0.0%  [SH4 block 0004c5dc]
+    0.0%  [SH4 block 01c777f0]
+    0.0%  [SH4 block 01c95e58]
+    0.0%  [SH4 block 01c78718]
+    0.0%  [SH4 block 8c014f7e]
+    0.0%  [SH4 block 0001cd5e]
+    0.0%  [SH4 block 01cafbc6]
+    0.0%  [SH4 block 000a9ee0]
+    0.0%  [SH4 block 000a3fba]
+    0.0%  [SH4 block 01e63f98]
+    0.0%  [SH4 block 8c0162b8]
+    0.0%  [SH4 block 01c7b6bc]
+    0.0%  [SH4 block 01c954ca]
+    0.0%  [SH4 block 01c7f2cc]
+    0.0%  [SH4 block 0004eea4]
+    0.0%  [SH4 block 8c016294]
+    0.0%  [SH4 block 8c0156d2]
+    0.0%  vixl::InvalSetIterator<vixl::InvalSet<long, 4u, long, 9223372036854775807l, 512ul, 2u>>::InvalSetIterator(v...
+    0.0%  [SH4 block 8c015a24]
+    0.0%  i1111_nnnn_mmmm_0101(Sh4Context*, unsigned int)
+    0.0%  [SH4 block 01e66694]
+    0.0%  [SH4 block 01c95d5e]
+    0.0%  bm_GetCodeByVAddr(unsigned int)
+    0.0%  [SH4 block 8c0190f8]
+    0.0%  [SH4 block 01c954be]
+    0.0%  [SH4 block 8c0161e0]
+    0.0%  [SH4 block 8c0128a0]
+    0.0%  [SH4 block 8c014f70]
+    0.0%  maple_base::RawDma(unsigned int const*, unsigned int, unsigned int*)
+    0.0%  [SH4 block 8c016b6c]
+    0.0%  [SH4 block 01c7f4e2]
+    0.0%  [SH4 block 0009de42]
+    0.0%  [SH4 block 01c957e4]
+    0.0%  [SH4 block 8c01597c]
+    0.0%  [SH4 block 01c9dee2]
+    0.0%  [SH4 block 8c015f80]
+    0.0%  [SH4 block 000aa9b0]
+    0.0%  [SH4 block 8c015894]
+    0.0%  [SH4 block 01c955bc]
+    0.0%  [SH4 block 01cb0986]
+    0.0%  [SH4 block 01c9593a]
+    0.0%  [SH4 block 01caf16a]
+    0.0%  [SH4 block 8c01a8a6]
+    0.0%  [SH4 block 01caf0e2]
+    0.0%  [SH4 block 8c0127a6]
+    0.0%  [SH4 block 01c792e4]
+    0.0%  [SH4 block 0009f5ea]
+    0.0%  [SH4 block 01dd5bcc]
+    0.0%  [SH4 block 01cb09ca]
+    0.0%  [SH4 block 000aa362]
+    0.0%  [SH4 block 01c9542e]
+    0.0%  [SH4 block 8c01240e]
+    0.0%  UpdateSystem_INTC_due()
+    0.0%  i1111_nnnn_1010_1101(Sh4Context*, unsigned int)
+    0.0%  [SH4 block 8c0165aa]
+    0.0%  [SH4 block 01c96816]
+    0.0%  [SH4 block 01caef94]
+    0.0%  [SH4 block 01c9540c]
+    0.0%  [SH4 block 01c9b04c]
+    0.0%  [SH4 block 01c7766e]
+    0.0%  [SH4 block 01c776f2]
+    0.0%  [SH4 block 01c952a4]
+    0.0%  [SH4 block 000a3fb0]
+    0.0%  [SH4 block 8c015686]
+    0.0%  [SH4 block 01c788f0]
+    0.0%  [SH4 block 01e66466]
+    0.0%  [SH4 block 8c015032]
+    0.0%  [SH4 block 8c019124]
+    0.0%  tactx_Find(unsigned int, bool) (.constprop.0)
+    0.0%  [SH4 block 0002aed8]
+    0.0%  vixl::aarch64::Assembler::BindToOffset(vixl::aarch64::Label*, long)
+    0.0%  RuntimeBlockInfo::Discard()
+    0.0%  [SH4 block 01caefce]
+    0.0%  [SH4 block 8c016288]
+    0.0%  [SH4 block 01e01dbc]
+    0.0%  [SH4 block 0002da1e]
+    0.0%  [SH4 block 8c015556]
+    0.0%  [SH4 block 01c9b070]
+    0.0%  [SH4 block 01c7ea22]
+    0.0%  [SH4 block 01cafc60]
+    0.0%  [SH4 block 8c015a14]
+    0.0%  [SH4 block 01cb09c4]
+    0.0%  [SH4 block 8c01a7dc]
+    0.0%  vixl::aarch64::Assembler::LoadStore(vixl::aarch64::CPURegister const&, vixl::aarch64::MemOperand const&, vi...
+    0.0%  [SH4 block 01c9aef0]
+    0.0%  [SH4 block 0026bf88]
+    0.0%  vixl::aarch64::MacroAssembler::~MacroAssembler()
+    0.0%  [SH4 block 8c0123a8]
+    0.0%  [SH4 block 8c0162aa]
+    0.0%  [SH4 block 8c012716]
+    0.0%  std::_Rb_tree_iterator<std::pair<void* const, std::shared_ptr<RuntimeBlockInfo>>> std::_Rb_tree<void*, std:...
+    0.0%  [SH4 block 01e604de]
+    0.0%  [SH4 block 01c78a30]
+    0.0%  [SH4 block 000437ae]
+    0.0%  [SH4 block 0002ddd8]
+    0.0%  [SH4 block 0009e5fe]
+    0.0%  [SH4 block 000ce3ac]
+    0.0%  [SH4 block 01c799fa]
+    0.0%  [SH4 block 01c953f0]
+    0.0%  [SH4 block 01c793ee]
+    0.0%  [SH4 block 01e62e34]
+    0.0%  [SH4 block 8c01a94a]
+    0.0%  [SH4 block 01c77e7c]
+    0.0%  [SH4 block 01c776da]
+    0.0%  [SH4 block 8c01a7e6]
+    0.0%  vixl::InvalSet<long, 4u, long, 9223372036854775807l, 512ul, 2u>::insert(long const&)
+    0.0%  [SH4 block 01c9c1b4]
+    0.0%  [SH4 block 01c9de52]
+    0.0%  [SH4 block 01caf196]
+    0.0%  [SH4 block 8c01912a]
+    0.0%  [SH4 block 01c96030]
+    0.0%  [SH4 block 01cb09b0]
+    0.0%  [SH4 block 01cafbe8]
+    0.0%  [SH4 block 01c9affe]
+    0.0%  [SH4 block 8c0127c2]
+    0.0%  [SH4 block 0026de9a]
+    0.0%  [SH4 block 01caefdc]
+    0.0%  [SH4 block 01caf100]
+    0.0%  [SH4 block 01c95f3c]
+    0.0%  [SH4 block 0001cd3c]
+    0.0%  [SH4 block 01cb09de]
+    0.0%  [SH4 block 0002d946]
+    0.0%  [SH4 block 01c955d8]
+    0.0%  [SH4 block 01ca09cc]
+    0.0%  [SH4 block 0004ef10]
+    0.0%  [SH4 block 01c79390]
+    0.0%  [SH4 block 0009e1be]
+    0.0%  [SH4 block 01c9ded6]
+    0.0%  [SH4 block 01c777d0]
+    0.0%  [SH4 block 01c79448]
+    0.0%  [SH4 block 0026bf5c]
+    0.0%  [SH4 block 8c012272]
+    0.0%  [SH4 block 8c012286]
+    0.0%  [SH4 block 000a3fe2]
+    0.0%  [SH4 block 01c9c0e4]
+    0.0%  [SH4 block 8c0121fa]
+    0.0%  [SH4 block 01e58eb4]
+    0.0%  [SH4 block 01cafcf6]
+    0.0%  [SH4 block 8c012378]
+    0.0%  [SH4 block 01caf12c]
+    0.0%  [SH4 block 8c0122e2]
+    0.0%  [SH4 block 000aa462]
+    0.0%  [SH4 block 8c0165f0]
+    0.0%  [SH4 block 01c7f3c4]
+    0.0%  [SH4 block 8c01561a]
+    0.0%  [SH4 block 01ca5c26]
+    0.0%  [SH4 block 01c79348]
+    0.0%  [SH4 block 01c95cae]
+    0.0%  [SH4 block 01c7f44a]
+    0.0%  [SH4 block 000ce8a4]
+    0.0%  [SH4 block 01c953fa]
+    0.0%  [SH4 block 8c015616]
+    0.0%  [SH4 block 8c01918e]
+    0.0%  [SH4 block 01c9b0a4]
+    0.0%  [SH4 block 8c02c928]
+    0.0%  [SH4 block 000a02c8]
+    0.0%  [SH4 block 8c013344]
+    0.0%  [SH4 block 8c0160cc]
+    0.0%  [SH4 block 01c95292]
+    0.0%  [SH4 block 01cb0a9a]
+    0.0%  asic_RL4Pending() (.lto_priv.0)
+    0.0%  [SH4 block 01c9b4e8]
+    0.0%  nvmem::readBios(unsigned int, unsigned int)
+    0.0%  [SH4 block 8c01a978]
+    0.0%  vixl::aarch64::Operand::IsZero() const
+    0.0%  [SH4 block 8c01a74e]
+    0.0%  [SH4 block 8c0126f0]
+    0.0%  [SH4 block 01c9a094]
+    0.0%  [SH4 block 8c012402]
+    0.0%  RegAlloc<eReg, eFReg, true>::AllocDestReg(shil_param const&)
+    0.0%  Arm64RegAlloc::MapRegister(shil_param const&)
+    0.0%  RuntimeBlockInfo::Setup(unsigned int, fpscr_t)
+    0.0%  vixl::aarch64::MacroAssembler::Cmp(vixl::aarch64::Register const&, vixl::aarch64::Operand const&)
+    0.0%  [SH4 block 8c014f56]
+    0.0%  [SH4 block 01c967f2]
+    0.0%  [SH4 block 01c9b5ec]
+    0.0%  [SH4 block 01e66730]
+    0.0%  [SH4 block 01c775fa]
+    0.0%  [SH4 block 01e6050a]
+    0.0%  [SH4 block 01c7e82e]
+    0.0%  [SH4 block 01c79330]
+    0.0%  [SH4 block 01cafbf4]
+    0.0%  [SH4 block 01c95588]
+    0.0%  [SH4 block 01e6672a]
+    0.0%  vixl::InvalSet<long, 4u, long, 9223372036854775807l, 512ul, 2u>::~InvalSet() (.lto_priv.0)
+    0.0%  [SH4 block 000a9f46]
+    0.0%  [SH4 block 000ce424]
+    0.0%  [SH4 block 00016b94]
+    0.0%  [SH4 block 01c786e6]
+    0.0%  [SH4 block 01e60f38]
+    0.0%  [SH4 block 01c792a6]
+    0.0%  [SH4 block 01c970b2]
+    0.0%  [SH4 block 8c013556]
+    0.0%  [SH4 block 01c9df2c]
+    0.0%  [SH4 block 01c9b6de]
+    0.0%  [SH4 block 01e67300]
+    0.0%  [SH4 block 01caef38]
+    0.0%  [SH4 block 01c9ada0]
+    0.0%  [SH4 block 01cc391a]
+    0.0%  [SH4 block 01c96134]
+    0.0%  [SH4 block 000a9ed0]
+    0.0%  [SH4 block 01e63fae]
+    0.0%  [SH4 block 0001f6c8]
+    0.0%  [SH4 block 0004ee04]
+    0.0%  [SH4 block 01caf088]
+    0.0%  [SH4 block 8c0175d8]
+    0.0%  [SH4 block 000ac660]
+    0.0%  [SH4 block 01caf15e]
+    0.0%  [SH4 block 000acd7a]
+    0.0%  [SH4 block 01e0310c]
+    0.0%  [SH4 block 000a093c]
+    0.0%  [SH4 block 0009ed66]
+    0.0%  [SH4 block 01c9c1d0]
+    0.0%  [SH4 block 000ce574]
+    0.0%  [SH4 block 000a8556]
+    0.0%  CCN_CCR_write(unsigned int, unsigned int) (.lto_priv.0)
+    0.0%  [SH4 block 01c9b7d6]
+    0.0%  [SH4 block 8c012256]
+    0.0%  [SH4 block 0026de90]
+    0.0%  [SH4 block 0002e2e6]
+    0.0%  [SH4 block 8c017566]
+    0.0%  [SH4 block 8c014ee4]
+    0.0%  [SH4 block 01c965fc]
+    0.0%  [SH4 block 01c78908]
+    0.0%  [SH4 block 01cafc06]
+    0.0%  [SH4 block 01cb09fe]
+    0.0%  [SH4 block 0001928a]
+    0.0%  [SH4 block 000a9eac]
+    0.0%  [SH4 block 8c012328]
+    0.0%  [SH4 block 01cafcfe]
+    0.0%  getNextSpgInterrupt()
+    0.0%  [SH4 block 01e6df60]
+    0.0%  [SH4 block 8c012722]
+    0.0%  [SH4 block 8c014efe]
+    0.0%  [SH4 block 01c78892]
+    0.0%  [SH4 block 8c017608]
+    0.0%  [SH4 block 01e62218]
+    0.0%  [SH4 block 8c012796]
+    0.0%  [SH4 block 01e63fba]
+    0.0%  [SH4 block 01e604b8]
+    0.0%  [SH4 block 000a9e40]
+    0.0%  [SH4 block 01e58efc]
+    0.0%  [SH4 block 000aa4da]
+    0.0%  [SH4 block 00022548]
+    0.0%  [SH4 block 8c016b98]
+    0.0%  [SH4 block 01cafc28]
+    0.0%  [SH4 block 01cafc88]
+    0.0%  [SH4 block 01caf194]
+    0.0%  [SH4 block 8c014fa4]
+    0.0%  [SH4 block 8c0175ee]
+    0.0%  [SH4 block 8c01502e]
+    0.0%  [SH4 block 8c015048]
+    0.0%  [SH4 block 8c015fba]
+    0.0%  [SH4 block 8c012118]
+    0.0%  [SH4 block 8c01a984]
+    0.0%  [SH4 block 01dd5bb2]
+    0.0%  [SH4 block 8c015056]
+    0.0%  [SH4 block 01cf3b44]
+    0.0%  [SH4 block 0002e2fc]
+    0.0%  [SH4 block 01cb2a60]
+    0.0%  [SH4 block 01c9621e]
+    0.0%  std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release()
+    0.0%  [SH4 block 01c7e884]
+    0.0%  [SH4 block 01c793aa]
+    0.0%  [SH4 block 01c965c4]
+    0.0%  [SH4 block 01c79a02]
+    0.0%  [SH4 block 0026beb2]
+    0.0%  [SH4 block 8c01625e]
+    0.0%  [SH4 block 01c959e2]
+    0.0%  [SH4 block 01c96056]
+    0.0%  [SH4 block 01e625b6]
+    0.0%  [SH4 block 01c96258]
+    0.0%  [SH4 block 8c01a974]
+    0.0%  [SH4 block 8c0123de]
+    0.0%  [SH4 block 8c016304]
+    0.0%  [SH4 block 01cb2a30]
+    0.0%  AnalyseBlock(RuntimeBlockInfo*)
+    0.0%  Arm64Assembler::genMmuAccessStubs()
+    0.0%  [SH4 block 000a9f2a]
+    0.0%  [SH4 block 01e668f8]
+    0.0%  vixl::aarch64::MacroAssembler::Str(vixl::aarch64::CPURegister const&, vixl::aarch64::MemOperand const&)
+    0.0%  [SH4 block 8c01a734]
+    0.0%  [SH4 block 01e01c5c]
+    0.0%  [SH4 block 01c79a12]
+    0.0%  [SH4 block 01e63d0e]
+    0.0%  [SH4 block 01c95c6e]
+    0.0%  [SH4 block 01e61da0]
+    0.0%  [SH4 block 8c02cccc]
+    0.0%  [SH4 block 01e6de94]
+    0.0%  [SH4 block 01caefbc]
+    0.0%  [SH4 block 8c017684]
+    0.0%  [SH4 block 000acca2]
+    0.0%  [SH4 block 000ce8b6]
+    0.0%  [SH4 block 01c9b7e6]
+    0.0%  [SH4 block 000a6b14]
+    0.0%  [SH4 block 8c02b686]
+    0.0%  [SH4 block 01c95a0a]
+    0.0%  [SH4 block 00022574]
+    0.0%  [SH4 block 8c01a8b2]
+    0.0%  [SH4 block 01cafbbc]
+    0.0%  [SH4 block 8c016592]
+    0.0%  [SH4 block 01c9af06]
+    0.0%  [SH4 block 8c01a8d2]
+    0.0%  [SH4 block 01e6f844]
+    0.0%  [SH4 block 0026c038]
+    0.0%  [SH4 block 000a9048]
+    0.0%  [SH4 block 01c79172]
+    0.0%  [SH4 block 01ca0e5c]
+    0.0%  [SH4 block 00060b7c]
+    0.0%  [SH4 block 0001ed94]
+    0.0%  [SH4 block 01c9dd96]
+    0.0%  PvrMessageQueue::enqueue(PvrMessageQueue::MessageType, FramebufferInfo) (.constprop.0)
+    0.0%  [SH4 block 0004a776]
+    0.0%  [SH4 block 0026dfd4]
+    0.0%  [SH4 block 01c9aea2]
+    0.0%  [SH4 block 01caeeda]
+    0.0%  [SH4 block 8c01a8ec]
+    0.0%  [SH4 block 01c9c2fc]
+    0.0%  [SH4 block 01e66fa8]
+    0.0%  [SH4 block 01c9b240]
+    0.0%  [SH4 block 01c95570]
+    0.0%  [SH4 block 000cc498]
+    0.0%  [SH4 block 01c7e808]
+    0.0%  [SH4 block 0006e728]
+    0.0%  [SH4 block 01c95ec0]
+    0.0%  [SH4 block 01c9541a]
+    0.0%  ?core+131698
+    0.0%  [SH4 block 01c9ab00]
+    0.0%  [SH4 block 0026be9a]
+    0.0%  [SH4 block 01cafc02]
+    0.0%  [SH4 block 01e591c6]
+    0.0%  [SH4 block 01c79362]
+    0.0%  [SH4 block 01c792b6]
+    0.0%  [SH4 block 01c79138]
+    0.0%  [SH4 block 01e02ba6]
+    0.0%  [SH4 block 01c78898]
+    0.0%  [SH4 block 01caf08e]
+    0.0%  [SH4 block 01c77602]
+    0.0%  [SH4 block 0009de64]
+    0.0%  [SH4 block 01e58f36]
+    0.0%  [SH4 block 01c9b996]
+    0.0%  [SH4 block 0002d814]
+    0.0%  [SH4 block 01e01b10]
+    0.0%  [SH4 block 000b2324]
+    0.0%  [SH4 block 000a82ec]
+    0.0%  [SH4 block 8c02d158]
+    0.0%  [SH4 block 8c0123ac]
+    0.0%  [SH4 block 8c0136a8]
+    0.0%  [SH4 block 01e5ae80]
+    0.0%  [SH4 block 000accdc]
+    0.0%  [SH4 block 01d0489a]
+    0.0%  [SH4 block 0026dff6]
+    0.0%  [SH4 block 01c9c156]
+    0.0%  [SH4 block 01cb0964]
+    0.0%  [SH4 block 01e6850e]
+    0.0%  [SH4 block 01e74884]
+    0.0%  [SH4 block 01c7f4b2]
+    0.0%  [SH4 block 01c9b61c]
+    0.0%  [SH4 block 01c9aec0]
+    0.0%  [SH4 block 8c016b82]
+    0.0%  [SH4 block 8c015a10]
+    0.0%  [SH4 block 0001c4e8]
+    0.0%  Do_Exception(unsigned int, Sh4ExceptionCode)
+    0.0%  [SH4 block 8c01757c]
+    0.0%  [SH4 block 01c95a8a]
+    0.0%  [SH4 block 8c01b522]
+    0.0%  [SH4 block 8c0168b8]
+    0.0%  [SH4 block 01ca0814]
+    0.0%  [SH4 block 01c9ddc8]
+    0.0%  [SH4 block 01c7936c]
+    0.0%  [SH4 block 8c017410]
+    0.0%  [SH4 block 8c01736a]
+    0.0%  std::_Hashtable<unsigned int, unsigned int, std::allocator<unsigned int>, std::__detail::_Identity, std::eq...
+    0.0%  [SH4 block 01c9de2e]
+    0.0%  [SH4 block 01c9b56c]
+    0.0%  [SH4 block 01e6f864]
+    0.0%  [SH4 block 01e5e5f8]
+    0.0%  [SH4 block 8c013698]
+    0.0%  [SH4 block 8c017698]
+    0.0%  [SH4 block 000a096c]
+    0.0%  [SH4 block 01c9c10e]
+    0.0%  [SH4 block 01c9b9d4]
+    0.0%  [SH4 block 8c01282c]
+    0.0%  [SH4 block 01c77730]
+    0.0%  [SH4 block 8c0175c2]
+    0.0%  [SH4 block 8c0162bc]
+    0.0%  [SH4 block 01e58ed0]
+    0.0%  [SH4 block 8c01619a]
+    0.0%  [SH4 block 0001b636]
+    0.0%  [SH4 block 8c02c5c8]
+    0.0%  [SH4 block 0004a606]
+    0.0%  [SH4 block 01c997ce]
+    0.0%  [SH4 block 01c95eae]
+    0.0%  asic_RL6Pending() (.lto_priv.0)
+    0.0%  [SH4 block 8c0165c0]
+    0.0%  [SH4 block 01c77e2e]
+    0.0%  [SH4 block 01ca0b40]
+    0.0%  [SH4 block 01c77e6a]
+    0.0%  [SH4 block 00074324]
+    0.0%  [SH4 block 01c9de62]
+    0.0%  [SH4 block 8c01213a]
+    0.0%  [SH4 block 01e67316]
+    0.0%  [SH4 block 01ca0918]
+    0.0%  [SH4 block 8c01506c]
+    0.0%  [SH4 block 01cb2a48]
+    0.0%  [SH4 block 01e03094]
+    0.0%  [SH4 block 01c9bc7c]
+    0.0%  [SH4 block 8c014f2c]
+    0.0%  [SH4 block 8c0173da]
+    0.0%  [SH4 block 01c9afb8]
+    0.0%  [SH4 block 8c0127d2]
+    0.0%  std::_Deque_base<unsigned int, std::allocator<unsigned int>>::_M_initialize_map(unsigned long) (.constprop.0)
+    0.0%  [SH4 block 01c9b9aa]
+    0.0%  [SH4 block 01ca0aaa]
+    0.0%  [SH4 block 01c77e26]
+    0.0%  [SH4 block 01c9b9f6]
+    0.0%  [SH4 block 01c9b4c4]
+    0.0%  [SH4 block 01ca0588]
+    0.0%  [SH4 block 8c02d166]
+    0.0%  [SH4 block 01c99890]
+    0.0%  [SH4 block 01c9982a]
+    0.0%  vixl::aarch64::UseScratchRegisterScope::Close()
+    0.0%  [SH4 block 01c99fc2]
+    0.0%  [SH4 block 01e01b42]
+    0.0%  [SH4 block 01c9b7cc]
+    0.0%  [SH4 block 01dd2cac]
+    0.0%  vixl::InvalSet<vixl::aarch64::VeneerPool::BranchInfo, 4u, long, 9223372036854775807l, 128ul, 16u>::EraseInt...
+    0.0%  [SH4 block 01e6645c]
+    0.0%  [SH4 block 01e024c8]
+    0.0%  [SH4 block 0009de22]
+    0.0%  [SH4 block 0009e29c]
+    0.0%  [SH4 block 01e60542]
+    0.0%  [SH4 block 01e604f8]
+    0.0%  [SH4 block 01caf1bc]
+    0.0%  [SH4 block 01e66474]
+    0.0%  [SH4 block 0001ebd8]
+    0.0%  [SH4 block 0009dfcc]
+    0.0%  [SH4 block 01c9c34c]
+    0.0%  [SH4 block 000aa4b4]
+    0.0%  [SH4 block 00063f68]
+    0.0%  [SH4 block 01c960fa]
+    0.0%  [SH4 block 01e591bc]
+    0.0%  [SH4 block 000af6f4]
+    0.0%  [SH4 block 01e62e18]
+    0.0%  [SH4 block 000a080e]
+    0.0%  [SH4 block 01c9b81c]
+    0.0%  [SH4 block 0004bae0]
+    0.0%  [SH4 block 000a084a]
+    0.0%  [SH4 block 01cc2ac0]
+    0.0%  [SH4 block 01e6050e]
+    0.0%  [SH4 block 8c0136ba]
+    0.0%  [SH4 block 000a0b84]
+    0.0%  [SH4 block 01e5ea5e]
+    0.0%  [SH4 block 01e6690c]
+    0.0%  [SH4 block 01cafc8c]
+    0.0%  [SH4 block 8c02cd04]
+    0.0%  [SH4 block 01e6859e]
+    0.0%  [SH4 block 01e642b4]
+    0.0%  [SH4 block 01e6041e]
+    0.0%  [SH4 block 01dd2400]
+    0.0%  [SH4 block 000acd60]
+    0.0%  [SH4 block 8c0175a4]
+    0.0%  [SH4 block 8c0173e6]
+    0.0%  [SH4 block 0001762e]
+    0.0%  [SH4 block 01e72220]
+    0.0%  [SH4 block 01ca0f02]
+    0.0%  [SH4 block 8c014f22]
+    0.0%  [SH4 block 0009de08]
+    0.0%  [SH4 block 01dd23b8]
+    0.0%  [SH4 block 8c0176a2]
+    0.0%  [SH4 block 01cc2ab4]
+    0.0%  [SH4 block 01d0eae0]
+    0.0%  [SH4 block 00064018]
+    0.0%  [SH4 block 01e66912]
+    0.0%  [SH4 block 8c019262]
+    0.0%  [SH4 block 000197d2]
+    0.0%  [SH4 block 8c02c8fc]
+    0.0%  [SH4 block 8c015fa0]
+    0.0%  [SH4 block 01e66410]
+    0.0%  [SH4 block 0002de96]
+    0.0%  shil_opcl_div32p2::f1::impl(int, int, unsigned int)
+    0.0%  [SH4 block 01ca1188]
+    0.0%  [SH4 block 01cb0aa2]
+    0.0%  [SH4 block 01e62e08]
+    0.0%  [SH4 block 01ca0eec]
+    0.0%  [SH4 block 01c95ed0]
+    0.0%  [SH4 block 01e6de08]
+    0.0%  [SH4 block 01c9b822]
+    0.0%  [SH4 block 01c9b74a]
+    0.0%  [SH4 block 8c015812]
+    0.0%  [SH4 block 01e5e69c]
+    0.0%  [SH4 block 01ca0e62]
+    0.0%  [SH4 block 01cd6a38]
+    0.0%  [SH4 block 000a098c]
+    0.0%  [SH4 block 000223f8]
+    0.0%  [SH4 block 8c0160a2]
+    0.0%  [SH4 block 01c960bc]
+    0.0%  [SH4 block 01c7f3bc]
+    0.0%  [SH4 block 01c79382]
+    0.0%  [SH4 block 8c012368]
+    0.0%  [SH4 block 0009e244]
+    0.0%  [SH4 block 0009e290]
+    0.0%  [SH4 block 8c02b670]
+    0.0%  [SH4 block 01ca1248]
+    0.0%  [SH4 block 01e5ddcc]
+    0.0%  [SH4 block 00049d28]
+    0.0%  [SH4 block 0004ba2c]
+    0.0%  [SH4 block 01c96050]
+    0.0%  [SH4 block 01c9dda8]
+    0.0%  [SH4 block 01c9b20e]
+    0.0%  [SH4 block 00019ce0]
+    0.0%  [SH4 block 000a3faa]
+    0.0%  [SH4 block 01c78a1e]
+    0.0%  [SH4 block 01c78730]
+    0.0%  std::vector<config::BaseOption*, std::allocator<config::BaseOption*>>::_M_check_len(unsigned long, char con...
+    0.0%  [SH4 block 01c97074]
+    0.0%  [SH4 block 8c017618]
+    0.0%  [SH4 block 0009e186]
+    0.0%  [SH4 block 01c95a82]
+    0.0%  [SH4 block 000ad0e4]
+    0.0%  [SH4 block 01cafc14]
+    0.0%  [SH4 block 0009e3be]
+    0.0%  [SH4 block 000a9f0e]
+    0.0%  [SH4 block 0009e234]
+    0.0%  [SH4 block 0001bbee]
+    0.0%  [SH4 block 000a01ba]
+    0.0%  [SH4 block 000192a8]
+    0.0%  [SH4 block 000a07f8]
+    0.0%  [SH4 block 000b0b54]
+    0.0%  [SH4 block 01e5c582]
+    0.0%  [SH4 block 8c016c06]
+    0.0%  [SH4 block 000a0bea]
+    0.0%  [SH4 block 01e5e794]
+    0.0%  [SH4 block 0009d288]
+    0.0%  [SH4 block 01c78a44]
+    0.0%  [SH4 block 8c02c90a]
+    0.0%  [SH4 block 0001cd84]
+    0.0%  [SH4 block 0001e7f4]
+    0.0%  [SH4 block 0001414c]
+    0.0%  [SH4 block 01e6050c]
+    0.0%  [SH4 block 01caeed4]
+    0.0%  [SH4 block 01c9b60c]
+    0.0%  [SH4 block 01c960a2]
+    0.0%  [SH4 block 8c014f88]
+    0.0%  [SH4 block 01c79436]
+    0.0%  [SH4 block 01d08f88]
+    0.0%  [SH4 block 000aa4a2]
+    0.0%  [SH4 block 01c7e84e]
+    0.0%  [SH4 block 000a6ad8]
+    0.0%  [SH4 block 8c017584]
+    0.0%  [SH4 block 8c015608]
+    0.0%  [SH4 block 0002ddac]
+    0.0%  [SH4 block 01c7f496]
+    0.0%  [SH4 block 0026dfe4]
+    0.0%  shil_opcl_div32s::f1::impl(unsigned int, int, int)
+    0.0%  std::pair<std::__detail::_Node_iterator<unsigned int, true, false>, bool> std::_Hashtable<unsigned int, uns...
+    0.0%  [SH4 block 01e74fc0]
+    0.0%  [SH4 block 01cf1fbc]
+    0.0%  [SH4 block 01e60464]
+    0.0%  [SH4 block 000cc6bc]
+    0.0%  [SH4 block 8c01635a]
+    0.0%  [SH4 block 8c012268]
+    0.0%  [SH4 block 01caf084]
+    0.0%  [SH4 block 01e6de50]
+    0.0%  [SH4 block 01e5adf8]
+    0.0%  [SH4 block 01c9598c]
+    0.0%  [SH4 block 8c016b8c]
+    0.0%  [SH4 block 8c0175e0]
+    0.0%  [SH4 block 0009dfb4]
+    0.0%  [SH4 block 8c01629c]
+    0.0%  [SH4 block 01c9b1c8]
+    0.0%  [SH4 block 000acd70]
+    0.0%  [SH4 block 01c9de6e]
+    0.0%  [SH4 block 8c02ccda]
+    0.0%  [SH4 block 01caf074]
+    0.0%  [SH4 block 01e5ddec]
+    0.0%  [SH4 block 8c0158be]
+    0.0%  [SH4 block 01cafbc2]
+    0.0%  [SH4 block 8c01767a]
+    0.0%  [SH4 block 01e5aefe]
+    0.0%  [SH4 block 01c9de6a]
+    0.0%  [SH4 block 8c0127d6]
+    0.0%  [SH4 block 8c01a838]
+    0.0%  [SH4 block 00023116]
+    0.0%  [SH4 block 0001cd76]
+    0.0%  [SH4 block 01c9b400]
+    0.0%  [SH4 block 01e58f2a]
+    0.0%  [SH4 block 01c9b22a]
+    0.0%  [SH4 block 01c7442a]
+    0.0%  [SH4 block 01caf5c8]
+    0.0%  [SH4 block 8c015060]
+    0.0%  [SH4 block 01c96072]
+    0.0%  [SH4 block 0001b5ae]
+    0.0%  [SH4 block 01c9b49a]
+    0.0%  [SH4 block 01c9de4e]
+    0.0%  [SH4 block 01e6de40]
+    0.0%  [SH4 block 01e6668c]
+    0.0%  [SH4 block 8c016c1e]
+    0.0%  [SH4 block 01dd2170]
+    0.0%  [SH4 block 01c959dc]
+    0.0%  void Write_SB_IML4NRM<false>(unsigned int, unsigned int) (.lto_priv.0)
+    0.0%  [SH4 block 01dd6488]
+    0.0%  [SH4 block 0004c540]
+    0.0%  [SH4 block 000a3fce]
+    0.0%  [SH4 block 01e6df2c]
+    0.0%  [SH4 block 01c95962]
+    0.0%  [SH4 block 8c02cc34]
+    0.0%  [SH4 block 8c01630e]
+    0.0%  [SH4 block 0002d918]
+    0.0%  [SH4 block 0004ba7a]
+    0.0%  [SH4 block 000a0158]
+    0.0%  [SH4 block 000aa476]
+    0.0%  [SH4 block 01c745f8]
+    0.0%  [SH4 block 01c9dddc]
+    0.0%  [SH4 block 00022d2e]
+    0.0%  [SH4 block 01c7b6c6]
+    0.0%  [SH4 block 8c014f40]
+    0.0%  [SH4 block 0009fb56]
+    0.0%  unsigned int MMRegister<&sb_regs, 65535u, 6252544u>::readModule<6252832u, unsigned int>(unsigned int)
+    0.0%  [SH4 block 8c02ccfc]
+    0.0%  [SH4 block 8c01a73e]
+    0.0%  [SH4 block 8c015018]
+    0.0%  [SH4 block 01c9c174]
+    0.0%  [SH4 block 01e58f14]
+    0.0%  [SH4 block 000abe64]
+    0.0%  [SH4 block 01c7776e]
+    0.0%  [SH4 block 01e01f64]
+    0.0%  [SH4 block 8c014f14]
+    0.0%  [SH4 block 01c9b746]
+    0.0%  [SH4 block 000aa4b8]
+    0.0%  [SH4 block 01e74fb2]
+    0.0%  [SH4 block 01dd23ec]
+    0.0%  [SH4 block 0009f6d4]
+    0.0%  [SH4 block 000980d2]
+    0.0%  [SH4 block 01e66eea]
+    0.0%  [SH4 block 000a0954]
+    0.0%  [SH4 block 01c9b388]
+    0.0%  [SH4 block 8c02d18e]
+    0.0%  [SH4 block 01ca0928]
+    0.0%  [SH4 block 01e58ec0]
+    0.0%  [SH4 block 8c01664a]
+    0.0%  [SH4 block 01c95acc]
+    0.0%  [SH4 block 8c015f02]
+    0.0%  [SH4 block 01e6df14]
+    0.0%  [SH4 block 01cb0a6e]
+    0.0%  [SH4 block 8c017392]
+    0.0%  [SH4 block 8c0163a0]
+    0.0%  [SH4 block 01c77764]
+    0.0%  [SH4 block 01e589d4]
+    0.0%  [SH4 block 000abf0e]
+    0.0%  [SH4 block 000aa4e6]
+    0.0%  [SH4 block 01c9b066]
+    0.0%  [SH4 block 0001be08]
+    0.0%  [SH4 block 01ca0e6e]
+    0.0%  [SH4 block 8c016290]
+    0.0%  [SH4 block 8c01a19e]
+    0.0%  [SH4 block 01e748b2]
+    0.0%  [SH4 block 000490ea]
+    0.0%  [SH4 block 01c9ae16]
+    0.0%  [SH4 block 01c9b3d2]
+    0.0%  [SH4 block 8c0135f4]
+    0.0%  [SH4 block 000a3fe8]
+    0.0%  [SH4 block 01e643ac]
+    0.0%  [SH4 block 0004c7bc]
+    0.0%  [SH4 block 01c9dd84]
+    0.0%  [SH4 block 8c01a97e]
+    0.0%  [SH4 block 8c01a766]
+    0.0%  [SH4 block 8c012742]
+    0.0%  [SH4 block 8c01663e]
+    0.0%  [SH4 block 01c99a94]
+    0.0%  RegAlloc<eReg, eFReg, true>::PreloadLiveIns(unsigned long, unsigned int, unsigned int) (.constprop.0)
+    0.0%  Emit(shilop, shil_param, shil_param, shil_param, unsigned int, shil_param, shil_param)
+    0.0%  RegAlloc<eReg, eFReg, true>::SpillReg(bool, bool)
+    0.0%  [SH4 block 01c95c9a]
+    0.0%  [SH4 block 01e72290]
+    0.0%  [SH4 block 0026df88]
+    0.0%  [SH4 block 0002cb58]
+    0.0%  [SH4 block 01c79294]
+    0.0%  [SH4 block 01c99c84]
+    0.0%  [SH4 block 01cafcc0]
+    0.0%  [SH4 block 01c7b594]
+    0.0%  [SH4 block 01c95d72]
+    0.0%  [SH4 block 0026dfc4]
+    0.0%  [SH4 block 000a9f56]
+    0.0%  [SH4 block 01c964e8]
+    0.0%  [SH4 block 0009e1d2]
+    0.0%  [SH4 block 8c01a804]
+    0.0%  [SH4 block 000b0d3c]
+    0.0%  [SH4 block 000a0242]
+    0.0%  [SH4 block 00060a28]
+    0.0%  [SH4 block 01e6052a]
+    0.0%  [SH4 block 8c012894]
+    0.0%  [SH4 block 01c95f68]
+    0.0%  [SH4 block 0009e204]
+    0.0%  [SH4 block 01d04964]
+    0.0%  [SH4 block 0009d2e0]
+    0.0%  [SH4 block 01e7234c]
+    0.0%  [SH4 block 01e68a66]
+    0.0%  [SH4 block 01e66904]
+    0.0%  [SH4 block 000cc50e]
+    0.0%  [SH4 block 00068a50]
+    0.0%  [SH4 block 01e6ddda]
+    0.0%  [SH4 block 00060bdc]
+    0.0%  [SH4 block 01c79342]
+    0.0%  [SH4 block 01e03070]
+    0.0%  [SH4 block 00060a82]
+    0.0%  [SH4 block 01e72d2a]
+    0.0%  [SH4 block 01e750fa]
+    0.0%  [SH4 block 01c967fa]
+    0.0%  [SH4 block 0001c904]
+    0.0%  [SH4 block 0009de8e]
+    0.0%  [SH4 block 000a0260]
+    0.0%  [SH4 block 0002da44]
+    0.0%  [SH4 block 01c7943c]
+    0.0%  [SH4 block 01e66f18]
+    0.0%  [SH4 block 01ca0fd4]
+    0.0%  [SH4 block 000aa4a8]
+    0.0%  [SH4 block 8c012702]
+    0.0%  [SH4 block 0006fff2]
+    0.0%  [SH4 block 01c9b710]
+    0.0%  [SH4 block 01ca5c1c]
+    0.0%  [SH4 block 01d0cf52]
+    0.0%  [SH4 block 000a9e9c]
+    0.0%  [SH4 block 0009e26e]
+    0.0%  [SH4 block 8c0155ee]
+    0.0%  [SH4 block 01cf1e58]
+    0.0%  [SH4 block 0009dff2]
+    0.0%  [SH4 block 01c95d4a]
+    0.0%  [SH4 block 01e748dc]
+    0.0%  [SH4 block 01e6883e]
+    0.0%  [SH4 block 01d0cf3c]
+    0.0%  [SH4 block 01e6692a]
+    0.0%  [SH4 block 0009e000]
+    0.0%  [SH4 block 000cc146]
+    0.0%  [SH4 block 00043756]
+    0.0%  [SH4 block 0009e17e]
+    0.0%  [SH4 block 000ae644]
+    0.0%  [SH4 block 01e5e0c4]
+    0.0%  [SH4 block 8c02b680]
+    0.0%  [SH4 block 01c79196]
+    0.0%  [SH4 block 8c02cd6a]
+    0.0%  [SH4 block 0001bac4]
+    0.0%  ggpo::getLocalInput(MapleInputState*) (.lto_priv.0)
+    0.0%  [SH4 block 00048000]
+    0.0%  unsigned int Read_SB_ISTNRM<false>(unsigned int) (.lto_priv.0)
+    0.0%  [SH4 block 8c0127ca]
+    0.0%  [SH4 block 01caef42]
+    0.0%  [SH4 block 0001fdb4]
+    0.0%  [SH4 block 01c9c32e]
+    0.0%  [SH4 block 01e6f83e]
+    0.0%  [SH4 block 8c01767e]
+    0.0%  [SH4 block 01c9b552]
+    0.0%  [SH4 block 01c743a6]
+    0.0%  asic_RaiseInterrupt(HollyInterruptID)
+    0.0%  [SH4 block 01c955c2]
+    0.0%  [SH4 block 01ca13d6]
+    0.0%  [SH4 block 01e6687a]
+    0.0%  [SH4 block 01e750aa]
+    0.0%  [SH4 block 01caf582]
+    0.0%  [SH4 block 01e5e050]
+    0.0%  sb_WriteMem(unsigned int, unsigned int)
+    0.0%  [SH4 block 0009e172]
+    0.0%  [SH4 block 8c014efa]
+    0.0%  [SH4 block 0001b61e]
+    0.0%  [SH4 block 0026dfea]
+    0.0%  [SH4 block 01cafbce]
+    0.0%  [SH4 block 0009ee7c]
+    0.0%  [SH4 block 0026deb2]
+    0.0%  [SH4 block 01ca5c4a]
+    0.0%  void WriteMem_area0<unsigned int, 0u, false>(unsigned int, unsigned int)
+    0.0%  [SH4 block 01e668ea]
+    0.0%  [SH4 block 01c7de64]
+    0.0%  [SH4 block 01c9b75a]
+    0.0%  [SH4 block 01caf0d4]
+    0.0%  [SH4 block 000aa4cc]
+    0.0%  [SH4 block 0009acb0]
+    0.0%  [SH4 block 01c997ac]
+    0.0%  [SH4 block 01e62e28]
+    0.0%  [SH4 block 01e01df4]
+    0.0%  [SH4 block 000aa4ce]
+    0.0%  [SH4 block 0009e1e8]
+    0.0%  [SH4 block 0004debc]
+    0.0%  [SH4 block 00060b1a]
+    0.0%  [SH4 block 01e74828]
+    0.0%  [SH4 block 0009e638]
+    0.0%  [SH4 block 0002da10]
+    0.0%  [SH4 block 8c0168ae]
+    0.0%  [SH4 block 0009f3b8]
+    0.0%  [SH4 block 0002a144]
+    0.0%  [SH4 block 000437a4]
+    0.0%  [SH4 block 01e688de]
+    0.0%  [SH4 block 000acdbc]
+    0.0%  [SH4 block 01c9b0d0]
+    0.0%  [SH4 block 01e688b4]
+    0.0%  [SH4 block 01e0192e]
+    0.0%  [SH4 block 01c77130]
+    0.0%  [SH4 block 01cf1fc4]
+    0.0%  ?core+131170
+    0.0%  [SH4 block 0009f8b4]
+    0.0%  [SH4 block 0009e1a8]
+    0.0%  [SH4 block 000aa4e2]
+    0.0%  [SH4 block 000a3fc0]
+    0.0%  [SH4 block 0001e742]
+    0.0%  i1111_nnnn_mmmm_0000(Sh4Context*, unsigned int)
+    0.0%  [SH4 block 000abedc]
+    0.0%  [SH4 block 01e5e0c8]
+    0.0%  [SH4 block 01e01e0e]
+    0.0%  [SH4 block 000abe7e]
+    0.0%  [SH4 block 01c9b748]
+    0.0%  [SH4 block 000a3fd4]
+    0.0%  [SH4 block 01e58ea0]
+    0.0%  [SH4 block 000cc000]
+    0.0%  [SH4 block 01c9b01e]
+    0.0%  [SH4 block 00067fb8]
+    0.0%  [SH4 block 0002dbdc]
+    0.0%  [SH4 block 000acba8]
+    0.0%  [SH4 block 01e68a20]
+    0.0%  [SH4 block 0009e2ac]
+    0.0%  [SH4 block 0009e2cc]
+    0.0%  [SH4 block 01c972b4]
+    0.0%  [SH4 block 8c02c940]
+    0.0%  [SH4 block 000ac82c]
+    0.0%  [SH4 block 01c7f36e]
+    0.0%  [SH4 block 01caf58e]
+    0.0%  [SH4 block 00063f8e]
+    0.0%  [SH4 block 0004baa2]
+    0.0%  [SH4 block 01c9b000]
+    0.0%  [SH4 block 0004c84e]
+    0.0%  [SH4 block 01e5e280]
+    0.0%  [SH4 block 01ca4a2c]
+    0.0%  [SH4 block 01c79350]
+    0.0%  [SH4 block 01e6043a]
+    0.0%  [SH4 block 01caf174]
+    0.0%  [SH4 block 8c015fca]
+    0.0%  [SH4 block 000ce448]
+    0.0%  [SH4 block 0002da58]
+    0.0%  [SH4 block 01c79184]
+    0.0%  [SH4 block 01c999bc]
+    0.0%  [SH4 block 01e668d4]
+    0.0%  [SH4 block 000a6bbc]
+    0.0%  [SH4 block 0004e6f8]
+    0.0%  [SH4 block 01e74cec]
+    0.0%  [SH4 block 0006fba8]
+    0.0%  [SH4 block 01cf1ed8]
+    0.0%  [SH4 block 01e5e0a6]
+    0.0%  [SH4 block 01c9b5ba]
+    0.0%  [SH4 block 01c9b4ae]
+    0.0%  [SH4 block 01e5c8ba]
+    0.0%  [SH4 block 01cafc24]
+    0.0%  i1111_nnnn_0101_1101(Sh4Context*, unsigned int)
+    0.0%  [SH4 block 8c01a954]
+    0.0%  [SH4 block 01dd2184]
+    0.0%  [SH4 block 01c95946]
+    0.0%  [SH4 block 01c9af24]
+    0.0%  [SH4 block 000aadf8]
+    0.0%  [SH4 block 01cd6a64]
+    0.0%  void Write_SB_ISTNRM<false>(unsigned int, unsigned int) (.lto_priv.0)
+    0.0%  [SH4 block 000153fa]
+    0.0%  [SH4 block 000ce5f8]
+    0.0%  [SH4 block 01ca0ef8]
+    0.0%  [SH4 block 01e5e08c]
+    0.0%  [SH4 block 00022d3e]
+    0.0%  [SH4 block 01c99e98]
+    0.0%  [SH4 block 01ca494c]
+    0.0%  [SH4 block 01c95c4e]
+    0.0%  [SH4 block 0009acac]
+    0.0%  [SH4 block 0009fc34]
+    0.0%  [SH4 block 01cb0a20]
+    0.0%  [SH4 block 0009de7a]
+    0.0%  mmuwin::switchAsid(unsigned int)
+    0.0%  [SH4 block 01c7f2c4]
+    0.0%  [SH4 block 01c99ace]
+    0.0%  [SH4 block 000b0b0a]
+    0.0%  [SH4 block 8c01360e]
+    0.0%  [SH4 block 01dd218a]
+    0.0%  [SH4 block 01e74f0c]
+    0.0%  [SH4 block 01c9ae70]
+    0.0%  [SH4 block 01c9658a]
+    0.0%  [SH4 block 01e61d92]
+    0.0%  [SH4 block 0009d39a]
+    0.0%  [SH4 block 01e024da]
+    0.0%  [SH4 block 01cb0aa4]
+    0.0%  [SH4 block 01e5e9f2]
+    0.0%  [SH4 block 01e62558]
+    0.0%  [SH4 block 0004ded0]
+    0.0%  [SH4 block 000ce568]
+    0.0%  [SH4 block 01ca0b22]
+    0.0%  [SH4 block 000aa450]
+    0.0%  [SH4 block 01c9642a]
+    0.0%  [SH4 block 000a3f7e]
+    0.0%  [SH4 block 01cb0948]
+    0.0%  [SH4 block 000491e4]
+    0.0%  asic_RL2Pending() (.lto_priv.0)
+    0.0%  <[vdso]>
+    0.0%  [SH4 block 01cafcb0]
+    0.0%  [SH4 block 01c9b740]
+    0.0%  [SH4 block 01e604f0]
+    0.0%  [SH4 block 01c9b732]
+    0.0%  [SH4 block 01cafc42]
+    0.0%  [SH4 block 01c9b632]
+    0.0%  [SH4 block 000ce364]
+    0.0%  [SH4 block 00075baa]
+    0.0%  [SH4 block 01c9afc8]
+    0.0%  [SH4 block 01e58c34]
+    0.0%  [SH4 block 01c9b5aa]
+    0.0%  [SH4 block 01e5877c]
+    0.0%  [SH4 block 01cafcf0]
+    0.0%  [SH4 block 8c012824]
+    0.0%  [SH4 block 01e5e0ac]
+    0.0%  [SH4 block 8c015a02]
+    0.0%  [SH4 block 01e6c6f8]
+    0.0%  [SH4 block 0004ef88]
+    0.0%  [SH4 block 01dd240e]
+    0.0%  ?core+131998
+    0.0%  [SH4 block 0009fc1a]
+    0.0%  [SH4 block 01c9b086]
+    0.0%  [SH4 block 01c997ec]
+    0.0%  [SH4 block 0009eb08]
+    0.0%  [SH4 block 01c99db0]
+    0.0%  [SH4 block 01c9b760]
+    0.0%  [SH4 block 8c0158a4]
+    0.0%  [SH4 block 8c015f14]
+    0.0%  [SH4 block 01c9b3ae]
+    0.0%  [SH4 block 01e66808]
+    0.0%  [SH4 block 01c9b588]
+    0.0%  [SH4 block 01cf1ece]
+    0.0%  [SH4 block 01e01e28]
+    0.0%  [SH4 block 000589ac]
+    0.0%  [SH4 block 01c9b532]
+    0.0%  [SH4 block 01c9adde]
+    0.0%  [SH4 block 01c78a0a]
+    0.0%  [SH4 block 8c0175fc]
+    0.0%  [SH4 block 01e015d8]
+    0.0%  [SH4 block 01e5e5d6]
+    0.0%  [SH4 block 01e67508]
+    0.0%  [SH4 block 01e01b9c]
+    0.0%  [SH4 block 8c0191a4]
+    0.0%  [SH4 block 0009f994]
+    0.0%  [SH4 block 8c012882]
+    0.0%  [SH4 block 01e664c4]
+    0.0%  [SH4 block 01c9ae60]
+    0.0%  [SH4 block 01e5c85e]
+    0.0%  [SH4 block 01e5e7a0]
+    0.0%  [SH4 block 01e74e34]
+    0.0%  [SH4 block 01cf1e9a]
+    0.0%  [SH4 block 000197c0]
+    0.0%  [SH4 block 01c9b476]
+    0.0%  [SH4 block 0009818c]
+    0.0%  [SH4 block 0004916a]
+    0.0%  [SH4 block 8c0168cc]
+    0.0%  [SH4 block 00049f58]
+    0.0%  [SH4 block 01c95c58]
+    0.0%  [SH4 block 8c01a7c8]
+    0.0%  i1111_nnnn_0110_1101(Sh4Context*, unsigned int)
+    0.0%  [SH4 block 0004ba18]
+    0.0%  [SH4 block 000aae4a]
+    0.0%  [SH4 block 01e67458]
+    0.0%  [SH4 block 8c01611e]
+    0.0%  [SH4 block 01c9df84]
+    0.0%  [SH4 block 01c99ab4]
+    0.0%  [SH4 block 01cafc18]
+    0.0%  [SH4 block 01c9b34e]
+    0.0%  [SH4 block 01c79356]
+    0.0%  [SH4 block 01c9a104]
+    0.0%  [SH4 block 01e58ecc]
+    0.0%  ta_handle_cmd(unsigned int) (.lto_priv.0)
+    0.0%  [SH4 block 0001c314]
+    0.0%  [SH4 block 8c01270e]
+    0.0%  [SH4 block 0004c538]
+    0.0%  [SH4 block 00017192]
+    0.0%  [SH4 block 01e5ddd4]
+    0.0%  [SH4 block 01d0eaec]
+    0.0%  [SH4 block 01cd1ecc]
+    0.0%  [SH4 block 01c9dd98]
+    0.0%  [SH4 block 000a9f9c]
+    0.0%  [SH4 block 000ac79a]
+    0.0%  [SH4 block 8c01760c]
+    0.0%  [SH4 block 000ad0de]
+    0.0%  [SH4 block 01c7c878]
+    0.0%  [SH4 block 01c9b236]
+    0.0%  [SH4 block 0001fd48]
+    0.0%  [SH4 block 01c9528c]
+    0.0%  [SH4 block 01c9b23a]
+    0.0%  [SH4 block 000a0218]
+    0.0%  [SH4 block 01c9b5ca]
+    0.0%  [SH4 block 01c9b360]
+    0.0%  [SH4 block 01c9ae92]
+    0.0%  [SH4 block 0004c4fc]
+    0.0%  [SH4 block 01e66328]
+    0.0%  [SH4 block 01e6de8e]
+    0.0%  [SH4 block 000115ac]
+    0.0%  i1111_nnnn_mmmm_0010(Sh4Context*, unsigned int)
+    0.0%  [SH4 block 8c012358]
+    0.0%  [SH4 block 00005bf0]
+    0.0%  [SH4 block 01c95dea]
+    0.0%  [SH4 block 01c76f1c]
+    0.0%  [SH4 block 01e643b0]
+    0.0%  [SH4 block 01c791a4]
+    0.0%  [SH4 block 01c7b5a0]
+    0.0%  [SH4 block 01c9abbe]
+    0.0%  [SH4 block 01d04458]
+    0.0%  [SH4 block 01ca0f80]
+    0.0%  [SH4 block 01c957f4]
+    0.0%  [SH4 block 8c014f76]
+    0.0%  [SH4 block 8c014f1a]
+    0.0%  [SH4 block 01c9b622]
+    0.0%  [SH4 block 8c015870]
+    0.0%  [SH4 block 0009f63a]
+    0.0%  [SH4 block 0009f90e]
+    0.0%  [SH4 block 000aaac2]
+    0.0%  [SH4 block 0001cd70]
+    0.0%  [SH4 block 000a9f6a]
+    0.0%  [SH4 block 01c95c64]
+    0.0%  [SH4 block 8c01689e]
+    0.0%  [SH4 block 0001e780]
+    0.0%  [SH4 block 01c95d76]
+    0.0%  [SH4 block 0001d3ac]
+    0.0%  [SH4 block 000abe42]
+    0.0%  [SH4 block 00075c68]
+    0.0%  [SH4 block 01c9ae64]
+    0.0%  [SH4 block 000a0a2c]
+    0.0%  [SH4 block 8c0173c0]
+    0.0%  [SH4 block 00017560]
+    0.0%  [SH4 block 01c9b51e]
+    0.0%  [SH4 block 8c01688c]
+    0.0%  [SH4 block 01c7929a]
+    0.0%  [SH4 block 01e6ddd0]
+    0.0%  [SH4 block 00011788]
+    0.0%  [SH4 block 8c01a99c]
+    0.0%  [SH4 block 01e74a36]
+    0.0%  [SH4 block 8c015f90]
+    0.0%  [SH4 block 0001ea9e]
+    0.0%  [SH4 block 01c9b9b6]
+    0.0%  [SH4 block 01ca108a]
+    0.0%  [SH4 block 8c01662a]
+    0.0%  [SH4 block 01c7ea00]
+    0.0%  [SH4 block 01c9b9ee]
+    0.0%  [SH4 block 01c9df66]
+    0.0%  [SH4 block 01c7ea18]
+    0.0%  [SH4 block 01d08fa4]
+    0.0%  [SH4 block 01c967fc]
+    0.0%  [SH4 block 01c9df36]
+    0.0%  [SH4 block 8c012364]
+    0.0%  [SH4 block 8c014f5a]
+    0.0%  [SH4 block 01c959ee]
+    0.0%  [SH4 block 01e6262c]
+    0.0%  [SH4 block 01e750b6]
+    0.0%  [SH4 block 00005be0]
+    0.0%  [SH4 block 000a3f76]
+    0.0%  [SH4 block 01c9b1e2]
+    0.0%  [SH4 block 01e586f8]
+    0.0%  [SH4 block 01c9b526]
+    0.0%  [SH4 block 8c01a82c]
+    0.0%  [SH4 block 8c014f26]
+    0.0%  [SH4 block 8c016138]
+    0.0%  [SH4 block 01cd3898]
+    0.0%  [SH4 block 0004a570]
+    0.0%  [SH4 block 01e66eb6]
+    0.0%  [SH4 block 01c9b1ec]
+    0.0%  [SH4 block 000ac6c4]
+    0.0%  [SH4 block 0004e2dc]
+    0.0%  [SH4 block 01c9de86]
+    0.0%  [SH4 block 01c7e974]
+    0.0%  Arm64Assembler::GenWriteMemory(shil_opcode const&, unsigned long, bool) (.isra.0)
+    0.0%  dec_generic(unsigned int) (.lto_priv.0)
+    0.0%  [SH4 block 01c9981e]
+    0.0%  vixl::aarch64::MacroAssembler::Mov(vixl::aarch64::Register const&, vixl::aarch64::Register const&, vixl::aa...
+    0.0%  ?core+1316c0
+    0.0%  [SH4 block 000acb90]
+    0.0%  vixl::aarch64::MacroAssembler::LogicalMacro(vixl::aarch64::Register const&, vixl::aarch64::Register const&,...
+    0.0%  void Arm64Assembler::GenCallRuntime<void, unsigned int>(void (*)(unsigned int))
+    0.0%  (anonymous namespace)::markCodeBytes(unsigned int, unsigned int)
+    0.0%  [SH4 block 000b0b84]
+    0.0%  [SH4 block 01e688f0]
+    0.0%  [SH4 block 000aaeaa]
+    0.0%  [SH4 block 000a6b38]
+    0.0%  [SH4 block 01c99e12]
+    0.0%  [SH4 block 01e6256e]
+    0.0%  [SH4 block 01e5c8d4]
+    0.0%  void std::vector<shil_opcode, std::allocator<shil_opcode>>::_M_realloc_insert<shil_opcode const&>(__gnu_cxx...
+    0.0%  [SH4 block 0002cb66]
+    0.0%  [SH4 block 0004a5ee]
+    0.0%  [SH4 block 000cc322]
+    0.0%  [SH4 block 8c01832c]
+    0.0%  [SH4 block 0009ded2]
+    0.0%  [SH4 block 01c9b766]
+    0.0%  [SH4 block 0026c01e]
+    0.0%  [SH4 block 01e74e94]
+    0.0%  [SH4 block 01c74392]
+    0.0%  [SH4 block 0001758a]
+    0.0%  [SH4 block 01e63d9a]
+    0.0%  [SH4 block 01e03124]
+    0.0%  [SH4 block 01e674aa]
+    0.0%  [SH4 block 00049cb8]
+    0.0%  [SH4 block 01e689c8]
+    0.0%  [SH4 block 01e68950]
+    0.0%  [SH4 block 0009f0f0]
+    0.0%  [SH4 block 0009812e]
+    0.0%  [SH4 block 00049d3c]
+    0.0%  [SH4 block 0009ddd6]
+    0.0%  [SH4 block 000cc5ec]
+    0.0%  [SH4 block 000ae682]
+    0.0%  [SH4 block 0009e144]
+    0.0%  [SH4 block 000ac886]
+    0.0%  [SH4 block 000a020a]
+    0.0%  ?core+1315c0
+    0.0%  [SH4 block 0009de16]
+    0.0%  [SH4 block 000aaeea]
+    0.0%  [SH4 block 01c95f24]
+    0.0%  [SH4 block 00060b14]
+    0.0%  [SH4 block 0007197a]
+    0.0%  [SH4 block 00022340]
+    0.0%  [SH4 block 01e5c56c]
+    0.0%  [SH4 block 0007a73a]
+    0.0%  [SH4 block 8c02c91a]
+    0.0%  [SH4 block 01e7237e]
+    0.0%  [SH4 block 01c7f41e]
+    0.0%  [SH4 block 01c99fea]
+    0.0%  std::vector<RegAlloc<eReg, eFReg, true>::DirtyReg, std::allocator<RegAlloc<eReg, eFReg, true>::DirtyReg>>::...
+    0.0%  [SH4 block 01c9ae7c]
+    0.0%  [SH4 block 01e63ce0]
+    0.0%  [SH4 block 0009ef4c]
+    0.0%  [SH4 block 01e604f6]
+    0.0%  [SH4 block 0009f08e]
+    0.0%  [SH4 block 000af2c8]
+    0.0%  [SH4 block 000197c6]
+    0.0%  [SH4 block 0004dd40]
+    0.0%  [SH4 block 01e63d46]
+    0.0%  [SH4 block 0009eca8]
+    0.0%  [SH4 block 0009ebe8]
+    0.0%  [SH4 block 01c76f14]
+    0.0%  [SH4 block 00060a7a]
+    0.0%  [SH4 block 01e603f8]
+    0.0%  [SH4 block 8c01a88e]
+    0.0%  [SH4 block 01c9ab20]
+    0.0%  [SH4 block 000a082e]
+    0.0%  [SH4 block 01e68b58]
+    0.0%  [SH4 block 0009ef72]
+    0.0%  [SH4 block 01cd6a7e]
+    0.0%  [SH4 block 00022e76]
+    0.0%  [SH4 block 0002dbea]
+    0.0%  [SH4 block 000ce8c8]
+    0.0%  [SH4 block 000ae608]
+    0.0%  [SH4 block 01e642e0]
+    0.0%  [SH4 block 01dd5bbe]
+    0.0%  [SH4 block 01e6dfaa]
+    0.0%  [SH4 block 01e68d24]
+    0.0%  [SH4 block 00043778]
+    0.0%  [SH4 block 00065254]
+    0.0%  [SH4 block 01e62220]
+    0.0%  [SH4 block 0009e262]
+    0.0%  [SH4 block 01c7935c]
+    0.0%  [SH4 block 0004f3c8]
+    0.0%  [SH4 block 0009f14e]
+    0.0%  [SH4 block 00072442]
+    0.0%  [SH4 block 01e687a8]
+    0.0%  [SH4 block 000aa4a0]
+    0.0%  [SH4 block 0009efbc]
+    0.0%  [SH4 block 01e68890]
+    0.0%  [SH4 block 01e03178]
+    0.0%  [SH4 block 01ca119a]
+    0.0%  [SH4 block 000ac800]
+    0.0%  [SH4 block 0004bc88]
+    0.0%  [SH4 block 01e6043c]
+    0.0%  [SH4 block 01e66f00]
+    0.0%  [SH4 block 0002cbe2]
+    0.0%  [SH4 block 01d0490a]
+    0.0%  [SH4 block 01e68bc8]
+    0.0%  [SH4 block 01e5ae28]
+    0.0%  [SH4 block 01e02a38]
+    0.0%  [SH4 block 0004ba8a]
+    0.0%  [SH4 block 000992e0]
+    0.0%  [SH4 block 000ac7f2]
+    0.0%  [SH4 block 01e6f834]
+    0.0%  [SH4 block 01e5dbca]
+    0.0%  [SH4 block 0009d1c6]
+    0.0%  [SH4 block 0026e28c]
+    0.0%  [SH4 block 0009d1ec]
+    0.0%  [SH4 block 000ae376]
+    0.0%  [SH4 block 0009f898]
+    0.0%  [SH4 block 8c01590c]
+    0.0%  [SH4 block 01c7778c]
+    0.0%  [SH4 block 000ac94a]
+    0.0%  [SH4 block 01e64bdc]
+    0.0%  [SH4 block 0007ace2]
+    0.0%  [SH4 block 01c9b990]
+    0.0%  [SH4 block 01e6dea6]
+    0.0%  [SH4 block 8c0136e2]
+    0.0%  [SH4 block 0001c50a]
+    0.0%  [SH4 block 01e689b2]
+    0.0%  [SH4 block 8c02b67a]
+    0.0%  [SH4 block 01e01544]
+    0.0%  [SH4 block 01e63d24]
+    0.0%  [SH4 block 000ac6b0]
+    0.0%  [SH4 block 01dd4094]
+    0.0%  [SH4 block 000b03dc]
+    0.0%  [SH4 block 00068dbe]
+    0.0%  [SH4 block 01e63e04]
+    0.0%  [SH4 block 000aca54]
+    0.0%  [SH4 block 01c7c9ca]
+    0.0%  [SH4 block 01c96830]
+    0.0%  [SH4 block 0004c7a4]
+    0.0%  [SH4 block 0009811a]
+    0.0%  [SH4 block 01e68986]
+    0.0%  [SH4 block 01dd63e0]
+    0.0%  [SH4 block 01e5e056]
+    0.0%  [SH4 block 01cf1ec6]
+    0.0%  [SH4 block 8c0168a4]
+    0.0%  [SH4 block 01e5de4a]
+    0.0%  [SH4 block 01cafcca]
+    0.0%  [SH4 block 01c791aa]
+    0.0%  [SH4 block 0009e226]
+    0.0%  [SH4 block 01e6899c]
+    0.0%  [SH4 block 01c960de]
+    0.0%  [SH4 block 0001d558]
+    0.0%  [SH4 block 01e5e0a0]
+    0.0%  [SH4 block 000ce892]
+    0.0%  [SH4 block 01e59bec]
+    0.0%  [SH4 block 01e5ae24]
+    0.0%  [SH4 block 0009d370]
+    0.0%  [SH4 block 000ac120]
+    0.0%  [SH4 block 000ce2c4]
+    0.0%  [SH4 block 0001eee2]
+    0.0%  [SH4 block 8c016250]
+    0.0%  [SH4 block 000184f0]
+    0.0%  [SH4 block 0002dbb6]
+    0.0%  ?core+1316c8
+    0.0%  [SH4 block 01cd1e60]
+    0.0%  [SH4 block 000cc3f8]
+    0.0%  [SH4 block 01c9df5e]
+    0.0%  [SH4 block 000a8ea6]
+    0.0%  [SH4 block 01c7dea0]
+    0.0%  [SH4 block 000224ac]
+    0.0%  [SH4 block 000ce490]
+    0.0%  [SH4 block 01e74ffe]
+    0.0%  [SH4 block 0009f5a0]
+    0.0%  [SH4 block 01e625cc]
+    0.0%  [SH4 block 01e5e756]
+    0.0%  [SH4 block 01e68b8c]
+    0.0%  [SH4 block 000a9060]
+    0.0%  [SH4 block 0004a10c]
+    0.0%  [SH4 block 0009e694]
+    0.0%  [SH4 block 0007ad32]
+    0.0%  [SH4 block 01ca11c8]
+    0.0%  [SH4 block 01e66840]
+    0.0%  [SH4 block 01dd404a]
+    0.0%  [SH4 block 000cc82c]
+    0.0%  [SH4 block 000aee00]
+    0.0%  [SH4 block 01e68abe]
+    0.0%  [SH4 block 01c9b854]
+    0.0%  [SH4 block 0006f76c]
+    0.0%  [SH4 block 00070a4c]
+    0.0%  [SH4 block 8c0128e4]
+    0.0%  [SH4 block 01c9af46]
+    0.0%  [SH4 block 01e684f4]
+    0.0%  [SH4 block 01c9dd9c]
+    0.0%  [SH4 block 000aa80c]
+    0.0%  [SH4 block 01cb080c]
+    0.0%  [SH4 block 000aa520]
+    0.0%  [SH4 block 01e68a7c]
+    0.0%  [SH4 block 01e6044c]
+    0.0%  [SH4 block 01c95fcc]
+    0.0%  [SH4 block 01e63fa8]
+    0.0%  [SH4 block 0009df06]
+    0.0%  [SH4 block 000cbc14]
+    0.0%  [SH4 block 00073fea]
+    0.0%  [SH4 block 0007ade4]
+    0.0%  [SH4 block 0009f136]
+    0.0%  [SH4 block 000abfb0]
+    0.0%  [SH4 block ac013360]
+    0.0%  [SH4 block 000a080c]
+    0.0%  [SH4 block 8c01354c]
+    0.0%  [SH4 block 000115f8]
+    0.0%  RegWrite_SB_SDST(unsigned int, unsigned int) (.lto_priv.0)
+    0.0%  [SH4 block 0009efe6]
+    0.0%  [SH4 block 0009f780]
+    0.0%  [SH4 block 01c9b62e]
+    0.0%  CCN_PTEH_write(unsigned int, unsigned int) (.lto_priv.0)
+    0.0%  SetCurrentTARC(unsigned int)
+    0.0%  [SH4 block 00022532]
+    0.0%  [SH4 block 01c99e52]
+    0.0%  [SH4 block 0001d514]
+    0.0%  [SH4 block 01c96140]
+    0.0%  [SH4 block 01c793b8]
+    0.0%  [SH4 block 00074e4a]
+    0.0%  [SH4 block 01e5ae90]
+    0.0%  [SH4 block 01cd6a00]
+    0.0%  [SH4 block 01cc2aa0]
+    0.0%  [SH4 block 01e664a8]
+    0.0%  [SH4 block 01ca1272]
+    0.0%  [SH4 block 8c02d2f8]
+    0.0%  [SH4 block 8c0191c6]
+    0.0%  [SH4 block 000acb4e]
+    0.0%  [SH4 block 01e63cce]
+    0.0%  [SH4 block 01e5c608]
+    0.0%  [SH4 block 000b339e]
+    0.0%  [SH4 block 01c99bca]
+    0.0%  [SH4 block 01cb29b8]
+    0.0%  [SH4 block 01c7da40]
+    0.0%  [SH4 block 01e63c94]
+    0.0%  [SH4 block 01ca0a44]
+    0.0%  shil_opcl_div1::f1::impl(unsigned int, int, unsigned int, Sh4Context*)
+    0.0%  [SH4 block 01e6fc1c]
+    0.0%  [SH4 block 8c01227c]
+    0.0%  [SH4 block 000acd58]
+    0.0%  [SH4 block 8c0122d0]
+    0.0%  [SH4 block 01e5e5be]
+    0.0%  [SH4 block 01c7e844]
+    0.0%  [SH4 block 0006446c]
+    0.0%  [SH4 block 0009f9fe]
+    0.0%  [SH4 block 01ca0b60]
+    0.0%  [SH4 block 000177b6]
+    0.0%  [SH4 block 8c016c10]
+    0.0%  [SH4 block 01e5e0e8]
+    0.0%  [SH4 block 8c015a1a]
+    0.0%  [SH4 block 01e6686a]
+    0.0%  [SH4 block 01e62664]
+    0.0%  [SH4 block 01c9594c]
+    0.0%  [SH4 block 01e722c6]
+    0.0%  [SH4 block 8c01acb4]
+    0.0%  [SH4 block 0009f602]
+    0.0%  [SH4 block 01e62508]
+    0.0%  [SH4 block 000acc8c]
+    0.0%  i1111_nnnn_1011_1101(Sh4Context*, unsigned int)
+    0.0%  [SH4 block 01e68b44]
+    0.0%  [SH4 block 01df1204]
+    0.0%  [SH4 block 000ac958]
+    0.0%  [SH4 block 000ae6bc]
+    0.0%  [SH4 block 01e015e0]
+    0.0%  [SH4 block 00069d8c]
+    0.0%  [SH4 block 01dd6380]
+    0.0%  [SH4 block 000cc2d4]
+    0.0%  [SH4 block 0001eb28]
+    0.0%  [SH4 block 0001ca3c]
+    0.0%  [SH4 block 01dd170c]
+    0.0%  [SH4 block 01e6fbd0]
+    0.0%  [SH4 block 000ac6fc]
+    0.0%  [SH4 block 01e6df1c]
+    0.0%  [SH4 block 01e6263a]
+    0.0%  [SH4 block 01e6e018]
+    0.0%  [SH4 block 01e66832]
+    0.0%  [SH4 block 01dd2ce2]
+    0.0%  [SH4 block 01e75120]
+    0.0%  [SH4 block 01dd2426]
+    0.0%  [SH4 block 8c0128e8]
+    0.0%  [SH4 block 01c7e872]
+    0.0%  [SH4 block 0004c5a6]
+    0.0%  [SH4 block 01e5e746]
+    0.0%  ?core+131690
+    0.0%  [SH4 block 000acd3c]
+    0.0%  [SH4 block 01c9abbc]
+    0.0%  [SH4 block 000b0d26]
+    0.0%  [SH4 block 01cb081c]
+    0.0%  [SH4 block 01c9af5e]
+    0.0%  [SH4 block 01ca0f0c]
+    0.0%  [SH4 block 01cd6aac]
+    0.0%  [SH4 block 0001e640]
+    0.0%  [SH4 block 0004a76c]
+    0.0%  [SH4 block 01e74e74]
+    0.0%  [SH4 block 000a0226]
+    0.0%  [SH4 block 0007acd0]
+    0.0%  [SH4 block 000ac68e]
+    0.0%  [SH4 block 01e63e40]
+    0.0%  [SH4 block 00018548]
+    0.0%  [SH4 block 0001bb8c]
+    0.0%  i1111_nnnn_mmmm_0011(Sh4Context*, unsigned int)
+    0.0%  [SH4 block 01c7c98a]
+    0.0%  [SH4 block 000abfc2]
+    0.0%  [SH4 block 01c9615a]
+    0.0%  [SH4 block 00049ec8]
+    0.0%  [SH4 block 01e74864]
+    0.0%  [SH4 block 00022400]
+    0.0%  [SH4 block 00049154]
+    0.0%  [SH4 block 0003ef74]
+    0.0%  [SH4 block 01e74890]
+    0.0%  [SH4 block 01e62164]
+    0.0%  [SH4 block 01e5ae20]
+    0.0%  [SH4 block 0001d350]
+    0.0%  unsigned int pvr_read32p<unsigned int>(unsigned int)
+    0.0%  [SH4 block 01e5ae8c]
+    0.0%  [SH4 block 0001e60a]
+    0.0%  [SH4 block 01cc2aca]
+    0.0%  [SH4 block 000aa4be]
+    0.0%  [SH4 block 000cc46c]
+    0.0%  ?core+131248
+    0.0%  [SH4 block 000216c2]
+    0.0%  [SH4 block 01e64bda]
+    0.0%  [SH4 block 0009fc2c]
+    0.0%  [SH4 block 01cf1f5e]
+    0.0%  [SH4 block 01c793e4]
+    0.0%  [SH4 block 01e5c6b6]
+    0.0%  [SH4 block 01e625f8]
+    0.0%  [SH4 block 01e64bd4]
+    0.0%  [SH4 block 01e67482]
+    0.0%  [SH4 block 8c015076]
+    0.0%  [SH4 block 00075a94]
+    0.0%  [SH4 block 01c9b3dc]
+    0.0%  [SH4 block 01e5c830]
+    0.0%  [SH4 block 01dd40a0]
+    0.0%  [SH4 block 0009fa0c]
+    0.0%  [SH4 block 01e5879e]
+    0.0%  [SH4 block 8c016638]
+    0.0%  [SH4 block 01e625a8]
+    0.0%  ?core+1315c8
+    0.0%  [SH4 block 01c9adce]
+    0.0%  ?core+131780
+    0.0%  [SH4 block 8c0155e4]
+    0.0%  [SH4 block 0009e926]
+    0.0%  [SH4 block 000abef2]
+    0.0%  [SH4 block 01c9b4fc]
+    0.0%  [SH4 block 0009d272]
+    0.0%  [SH4 block 0004ba5a]
+    0.0%  [SH4 block 00068410]
+    0.0%  [SH4 block 000a0924]
+    0.0%  [SH4 block 000cd968]
+    0.0%  [SH4 block 01c7eaf6]
+    0.0%  [SH4 block 01e74dba]
+    0.0%  [SH4 block 01cafbf0]
+    0.0%  [SH4 block 0004a50e]
+    0.0%  [SH4 block 01e7505c]
+    0.0%  [SH4 block 8c01a892]
+    0.0%  [SH4 block 01e74ff2]
+    0.0%  [SH4 block 01c9992c]
+    0.0%  UpdateTMUCounts(unsigned int) (.lto_priv.0)
+    0.0%  [SH4 block 0002da90]
+    0.0%  [SH4 block 0002dade]
+    0.0%  [SH4 block 01c99fa8]
+    0.0%  [SH4 block 01c9ab96]
+    0.0%  [SH4 block 01ca0838]
+    0.0%  ?core+130dd0
+    0.0%  [SH4 block 01e74fa2]
+    0.0%  [SH4 block 000abe72]
+    0.0%  [SH4 block 8c017580]
+    0.0%  _ZSt14__copy_move_a1ILb1EPSt10shared_ptrI16RuntimeBlockInfoES2_EN9__gnu_cxx11__enable_ifIXsrSt23__is_random...
+    0.0%  [SH4 block 01e02b9c]
+    0.0%  [SH4 block 01c7c9ba]
+    0.0%  [SH4 block 00022d56]
+    0.0%  [SH4 block 0001fb74]
+    0.0%  [SH4 block 0001fc5a]
+    0.0%  [SH4 block 000ad10e]
+    0.0%  [SH4 block 000a9f82]
+    0.0%  [SH4 block 000219c0]
+    0.0%  [SH4 block 00021810]
+    0.0%  [SH4 block 01c99cc2]
+    0.0%  [SH4 block 000992f8]
+    0.0%  [SH4 block 00049daa]
+    0.0%  [SH4 block 01c7ca80]
+    0.0%  [SH4 block 0009fbfe]
+    0.0%  [SH4 block 8c0191b8]
+    0.0%  [SH4 block 8c01a7cc]
+    0.0%  [SH4 block 01e63f84]
+    0.0%  [SH4 block 000aaff4]
+    0.0%  [SH4 block 8c014f96]
+    0.0%  [SH4 block 01e74ed4]
+    0.0%  [SH4 block 0009e12c]
+    0.0%  [SH4 block 01e625e8]
+    0.0%  [SH4 block 01dd5b0c]
+    0.0%  [SH4 block 01e75072]
+    0.0%  [SH4 block 000ac820]
+    0.0%  [SH4 block 00043806]
+    0.0%  [SH4 block 01c9bc1c]
+    0.0%  [SH4 block 01c95df0]
+    0.0%  [SH4 block 0001d91e]
+    0.0%  [SH4 block 000accee]
+    0.0%  [SH4 block 000acc1a]
+    0.0%  [SH4 block 01e59bf0]
+    0.0%  [SH4 block 01caf5ac]
+    0.0%  [SH4 block 000acb10]
+    0.0%  [SH4 block 000216bc]
+    0.0%  [SH4 block 01c9a032]
+    0.0%  [SH4 block 0009fbb4]
+    0.0%  [SH4 block 00075bcc]
+    0.0%  [SH4 block 01c95d8c]
+    0.0%  [SH4 block 01ca1252]
+    0.0%  [SH4 block 01e6df98]
+    0.0%  [SH4 block 01ca0d2c]
+    0.0%  [SH4 block 000aeb34]
+    0.0%  [SH4 block 01e749f8]
+    0.0%  [SH4 block 01c7ca2e]
+    0.0%  [SH4 block 01c7ea9e]
+    0.0%  [SH4 block 000a3f66]
+    0.0%  [SH4 block 01ca1348]
+    0.0%  [SH4 block 00048f68]
+    0.0%  [SH4 block 01c99c40]
+    0.0%  [SH4 block 0004a6bc]
+    0.0%  [SH4 block 01c77e32]
+    0.0%  [SH4 block 01d045e0]
+    0.0%  [SH4 block 01c9977e]
+    0.0%  [SH4 block 01c9b6d0]
+    0.0%  [SH4 block 01cb2a18]
+    0.0%  [SH4 block 01e5c6c0]
+    0.0%  [SH4 block 0001929c]
+    0.0%  [SH4 block 01e0235a]
+    0.0%  [SH4 block 01cd2c4c]
+    0.0%  [SH4 block 01e5e5a4]
+    0.0%  [SH4 block 01e75010]
+    0.0%  [SH4 block 01e01b5a]
+    0.0%  [SH4 block 01e6c6c6]
+    0.0%  [SH4 block 8c015f0e]
+    0.0%  [SH4 block 01e66348]
+    0.0%  [SH4 block 0001d46e]
+    0.0%  [SH4 block 01cd2c2c]
+    0.0%  [SH4 block 00049eba]
+    0.0%  [SH4 block 000abf82]
+    0.0%  [SH4 block 000aaf10]
+    0.0%  [SH4 block 0004c592]
+    0.0%  [SH4 block 8c01a99e]
+    0.0%  [SH4 block 01d0483c]
+    0.0%  [SH4 block 01e5e61c]
+    0.0%  [SH4 block 01c9dfa2]
+    0.0%  [SH4 block 01d04698]
+    0.0%  shil_opcl_div32u::f1::impl(unsigned int, unsigned int, unsigned int)
+    0.0%  [SH4 block 01e6c6b8]
+    0.0%  [SH4 block 00075a46]
+    0.0%  [SH4 block 000a0bf4]
+    0.0%  [SH4 block 01c95fc0]
+    0.0%  [SH4 block 01c7e994]
+    0.0%  [SH4 block 01c9b7ee]
+    0.0%  [SH4 block 0002309a]
+    0.0%  [SH4 block 8c0127d8]
+    0.0%  [SH4 block 01c99810]
+    0.0%  [SH4 block 8c016044]
+    0.0%  [SH4 block 01c95f70]
+    0.0%  [SH4 block 8c0137f8]
+    0.0%  [SH4 block 0002de7e]
+    0.0%  [SH4 block 01c9b83c]
+    0.0%  [SH4 block 01c970b8]
+    0.0%  [SH4 block 00026b60]
+    0.0%  [SH4 block 01e5e07a]
+    0.0%  [SH4 block 8c018342]
+    0.0%  [SH4 block 01c970a2]
+    0.0%  [SH4 block 0001163e]
+    0.0%  [SH4 block 8c0173f6]
+    0.0%  [SH4 block 000a0850]
+    0.0%  [SH4 block 0001c206]
+    0.0%  [SH4 block 01e5e28a]
+    0.0%  [SH4 block 01ca13f4]
+    0.0%  [SH4 block 01e5c8e4]
+    0.0%  [SH4 block 00018532]
+    0.0%  vixl::aarch64::Assembler::IsImmLogical(unsigned long, unsigned int, unsigned int*, unsigned int*, unsigned ...
+    0.0%  [SH4 block 000b33a2]
+    0.0%  [SH4 block 0001ebb8]
+    0.0%  [SH4 block 01e62554]
+    0.0%  [SH4 block 01e02a10]
+    0.0%  [SH4 block 000acc2a]
+    0.0%  [SH4 block 0009e936]
+    0.0%  [SH4 block 000aafa4]
+    0.0%  [SH4 block 00098140]
+    0.0%  [SH4 block 000cbd62]
+    0.0%  [SH4 block 000a9f1c]
+    0.0%  [SH4 block 000cc1a8]
+    0.0%  [SH4 block 01e74ec6]
+    0.0%  [SH4 block 01c953e4]
+    0.0%  [SH4 block 01c9aeb4]
+    0.0%  [SH4 block 0002a618]
+    0.0%  [SH4 block 000224bc]
+    0.0%  [SH4 block 01c9ae82]
+    0.0%  [SH4 block 01e5e79a]
+    0.0%  [SH4 block 0026bfea]
+    0.0%  [SH4 block 01e03148]
+    0.0%  [SH4 block 0001c162]
+    0.0%  [SH4 block 8c01636a]
+    0.0%  std::_Deque_base<unsigned char, std::allocator<unsigned char>>::~_Deque_base() (.lto_priv.0)
+    0.0%  [SH4 block 01ca13dc]
+    0.0%  [SH4 block 8c0158f4]
+    0.0%  [SH4 block 8c0136c4]
+    0.0%  [SH4 block 01e0191e]
+    0.0%  [SH4 block 01c9b8a6]
+    0.0%  [SH4 block 0001eb10]
+    0.0%  [SH4 block 0009ef5e]
+    0.0%  [SH4 block 0001ed26]
+    0.0%  unsigned int MMRegister<&sb_regs, 65535u, 6252544u>::readModule<6252808u, unsigned int>(unsigned int)
+    0.0%  [SH4 block 01dd638c]
+    0.0%  [SH4 block 01c9af34]
+    0.0%  [SH4 block 01e5c6d6]
+    0.0%  [SH4 block 01c7717a]
+    0.0%  [SH4 block 01ca1058]
+    0.0%  [SH4 block 01cafcce]
+    0.0%  [SH4 block 8c02d1c2]
+    0.0%  [SH4 block 01dd4100]
+    0.0%  [SH4 block 0004a23e]
+    0.0%  [SH4 block 01e67522]
+    0.0%  [SH4 block 01c99764]
+    0.0%  [SH4 block 000acbe8]
+    0.0%  [SH4 block 01c9727a]
+    0.0%  [SH4 block 01d046be]
+    0.0%  [SH4 block 01c95b12]
+    0.0%  [SH4 block 01ca0cd8]
+    0.0%  [SH4 block 01c9b5fa]
+    0.0%  [SH4 block 00029dc0]
+    0.0%  [SH4 block 00018d0c]
+    0.0%  [SH4 block 8c01589e]
+    0.0%  [SH4 block 01e58cd8]
+    0.0%  [SH4 block 01cafcec]
+    0.0%  [SH4 block 8c01a900]
+    0.0%  [SH4 block 01cb23f4]
+    0.0%  [SH4 block 01dd5b9e]
+    0.0%  [SH4 block 01cf37de]
+    0.0%  [SH4 block 0009936a]
+    0.0%  [SH4 block 0002ad1a]
+    0.0%  [SH4 block 01cd6a2c]
+    0.0%  [SH4 block 01ca1312]
+    0.0%  [SH4 block 01c99b04]
+    0.0%  [SH4 block 000aaf38]
+    0.0%  [SH4 block 01e7510c]
+    0.0%  [SH4 block 0001c276]
+    0.0%  [SH4 block 0001dd72]
+    0.0%  [SH4 block 0001b5ce]
+    0.0%  [SH4 block 01c95d40]
+    0.0%  [SH4 block 01e625f4]
+    0.0%  [SH4 block 0001dc54]
+    0.0%  [SH4 block 01e6dde0]
+    0.0%  [SH4 block 00058c84]
+    0.0%  [SH4 block 01e6c578]
+    0.0%  [SH4 block 01cd6a24]
+    0.0%  [SH4 block 8c0191bc]
+    0.0%  [SH4 block 01e5dbe8]
+    0.0%  [SH4 block 00017872]
+    0.0%  [SH4 block 01c7ca54]
+    0.0%  [SH4 block 0002a904]
+    0.0%  [SH4 block 000115c8]
+    0.0%  [SH4 block 0001f854]
+    0.0%  [SH4 block 01dd2414]
+    0.0%  [SH4 block 8c0168c4]
+    0.0%  [SH4 block 0009e16a]
+    0.0%  [SH4 block 0004bb22]
+    0.0%  [SH4 block 00022d16]
+    0.0%  [SH4 block 0026dfd8]
+    0.0%  [SH4 block 01e5c882]
+    0.0%  [SH4 block 8c0158ae]
+    0.0%  [SH4 block 0009fc0a]
+    0.0%  [SH4 block 01e5c5f6]
+    0.0%  [SH4 block 01c95d6c]
+    0.0%  [SH4 block 00049cfe]
+    0.0%  [SH4 block 01ca0f40]
+    0.0%  [SH4 block 8c0159f4]
+    0.0%  [SH4 block 01c9ade8]
+    0.0%  [SH4 block 01c953de]
+    0.0%  [SH4 block 01cafce4]
+    0.0%  [SH4 block 01d08f98]
+    0.0%  [SH4 block 01d04804]
+    0.0%  [SH4 block 000ad102]
+    0.0%  maple_schd(int, int, int, void*) (.lto_priv.0)
+    0.0%  [SH4 block 00022bb2]
+    0.0%  bm_ResetCache()
+    0.0%  MemChip::Read8(unsigned int)
+    0.0%  void std::vector<std::pair<unsigned int, unsigned int>, std::allocator<std::pair<unsigned int, unsigned int...
+    0.0%  addrspace::write32(unsigned int, unsigned int)
+    0.0%  __gnu_cxx::__normal_iterator<Sh4RegType*, std::vector<Sh4RegType, std::allocator<Sh4RegType>>> std::__find_...
+    0.0%  vixl::aarch64::MacroAssembler::Lsr(vixl::aarch64::Register const&, vixl::aarch64::Register const&, unsigned...
+    0.0%  Arm64Assembler::binaryFop(shil_opcode*, void (vixl::aarch64::MacroAssembler::*)(vixl::aarch64::VRegister co...
+    0.0%  vixl::aarch64::Assembler::mov(vixl::aarch64::Register const&, vixl::aarch64::Register const&)
+    0.0%  shil_param::shil_param(Sh4RegType) (.lto_priv.0)
+    0.0%  std::_Rb_tree_iterator<std::pair<Sh4RegType const, RegAlloc<eReg, eFReg, true>::reg_alloc>> std::_Rb_tree<S...
+    0.0%  RegAlloc<eReg, eFReg, true>::IsAllocg(shil_param const&) (.isra.0)
+    0.0%  SSAOptimizer::AddVersionPass() (.constprop.0)
+    0.0%  FlatMap<SSAOptimizer::RegValue, unsigned int>::operator[](SSAOptimizer::RegValue const&)
+    0.0%  dec_param(DecParam, shil_param&, shil_param&, unsigned int)
+    0.0%  RegAlloc<eReg, eFReg, true>::DoAlloc(RuntimeBlockInfo*, eReg const*, eFReg const*) (.constprop.0)
+    0.0%  [SH4 block 0004a22e]
+    0.0%  [SH4 block 000ae5ee]
+    0.0%  [SH4 block 01c7da48]
+    0.0%  [SH4 block 01e02076]
+    0.0%  [SH4 block 0004bb16]
+    0.0%  [SH4 block 000afeba]
+    0.0%  [SH4 block 0009f11c]
+    0.0%  [SH4 block 01e74a2a]
+    0.0%  [SH4 block 0009f02c]
+    0.0%  [SH4 block 000a406e]
+    0.0%  [SH4 block 01e6685a]
+    0.0%  [SH4 block 0007acfa]
+    0.0%  [SH4 block 000aef16]
+    0.0%  RegAlloc<eReg, eFReg, true>::AllocSourceReg(shil_param const&)
+    0.0%  Arm64Assembler::GenMemAddr(shil_opcode const&, vixl::aarch64::Register const*)
+    0.0%  [SH4 block 000ae622]
+    0.0%  [SH4 block 000ae628]
+    0.0%  [SH4 block 000115e8]
+    0.0%  [SH4 block 00068aa0]
+    0.0%  [SH4 block 000ae5dc]
+    0.0%  [SH4 block 00029c62]
+    0.0%  [SH4 block 00017620]
+    0.0%  [SH4 block 01e72418]
+    0.0%  [SH4 block 00060a80]
+    0.0%  [SH4 block 0004bca4]
+    0.0%  [SH4 block 01cf1ed2]
+    0.0%  [SH4 block 0004db9c]
+    0.0%  [SH4 block 01c9b888]
+    0.0%  [SH4 block 01e68a0a]
+    0.0%  [SH4 block 000cc358]
+    0.0%  [SH4 block 01dd5d7a]
+    0.0%  [SH4 block 00068e46]
+  other libraries, by caller:
+    0.6%  <libc.so.6> from <libstdc++.so.6.0.30>
+    0.5%  <libc.so.6> from <libc.so.6>
+    0.2%  <libstdc++.so.6.0.30> from <libstdc++.so.6.0.30>
+    0.1%  <libstdc++.so.6.0.30> from rdv_BlockCheckFail(unsigned int)
+    0.1%  <libc.so.6> from mmuwin::mapPage(unsigned int, unsigned int)
+    0.0%  <libstdc++.so.6.0.30> from std::_Rb_tree_iterator<std::pair<void* const, std::shared_ptr<RuntimeBlockInfo>>> std::_Rb_tree<void*, std:...
+    0.0%  <libc.so.6> from startup._ZNSt6vectorIPN6config10BaseOptionESaIS2_EE17_M_realloc_insertIJS2_EEEvN9__gnu_cxx17__normal_iterat...
+    0.0%  <libc.so.6> from compilePC(unsigned int)
+    0.0%  <libstdc++.so.6.0.30> from DynaRBI::Relink()
+    0.0%  <libc.so.6> from Arm64Assembler::Arm64Assembler(Sh4Context&, Sh4CodeBuffer&, void*) (.lto_priv.0)
+    0.0%  <libstdc++.so.6.0.30> from startup._ZNSt6vectorIPN6config10BaseOptionESaIS2_EE17_M_realloc_insertIJS2_EEEvN9__gnu_cxx17__normal_iterat...
+    0.0%  <libc.so.6> from std::mutex::lock()
+
+== thread render: 4208 samples (CPU-time timer; the kernel tick caps the rate); lib 92%, core 8%
+   48.7%  <libmali.so.1.9.0>
+   19.7%  <libc.so.6>
+   14.2%  <retroarch>
+    3.5%  <libwayland-client.so.0.22.0>
+    3.0%  <libSDL2-2.0.so.0>
+    1.6%  void DrawList<0u, false>(std::vector<PolyParam, std::allocator<PolyParam>> const&, int, int)
+    1.4%  OpenGLRenderer::Process(TA_context*)
+    1.4%  <libpulsecommon-16.1.so>
+    0.8%  <libpulse.so.0.24.2>
+    0.7%  retro_run
+    0.6%  setTileClipping(rend_context&)
+    0.6%  void SetGPState<2u, true>(PolyParam const*, unsigned int) (.constprop.0)
+    0.4%  OpenGLRenderer::Render()
+    0.3%  <libstdc++.so.6.0.30>
+    0.3%  <libffi.so.8.1.0>
+    0.3%  DrawStrips()
+    0.3%  GetProgram(bool, bool, bool, bool, bool, unsigned int, bool, unsigned int, bool, bool, bool, bool, int, boo...
+    0.3%  SetTextureRepeatMode(unsigned int, unsigned int, unsigned int) (.lto_priv.0)
+    0.2%  Emulator::render() (.constprop.0)
+    0.2%  BaseTextureCache<TextureCacheData>::getTextureCacheData(TSP, TCW, int) (.constprop.0)
+    0.2%  UpdateInputState(unsigned int) (.part.0.lto_priv.0)
+    0.1%  <[vdso]>
+    0.1%  tactx_Recycle(TA_context*) (.lto_priv.0)
+    0.1%  OpenGLRenderer::GetTexture(TSP, TCW, int)
+    0.1%  <libm.so.6>
+    0.1%  drawVmusAndCrosshairs(int, int)
+    0.1%  Emulator::checkStatus(bool) (.constprop.0)
+    0.1%  setTileClip(unsigned int, Rect&) (.lto_priv.0)
+    0.1%  TransformMatrix::CalcMatrices(rend_context const*, int, int) (.constprop.0)
+    0.1%  getVideoShift(float&, float&) (.constprop.0)
+    0.0%  void texture_VQ<ConvertTwiddle<Unpacker1555>>(PixelBuffer<ConvertTwiddle<Unpacker1555>::unpacked_type>*, un...
+    0.0%  getScaledFramebufferSize(rend_context const&, int&, int&)
+    0.0%  get_analog_stick(short (*)(unsigned int, unsigned int, unsigned int, unsigned int), int, int, short*, short*)
+    0.0%  void texture_VQ<ConvertTwiddle<Unpacker4444>>(PixelBuffer<ConvertTwiddle<Unpacker4444>::unpacked_type>*, un...
+    0.0%  GLGraphicsContext::setSwapInterval(int)
+    0.0%  rglBindFramebuffer.constprop.0
+    0.0%  rglViewport
+    0.0%  getPvrFramebufferSize(rend_context const&, int&, int&)
+    0.0%  ?core+130dd8
+    0.0%  getRegionTileAddrAndSize(unsigned int&, unsigned int&)
+    0.0%  ?core+131d78
+    0.0%  OpenGLRenderer::Present()
+    0.0%  <ld-linux-aarch64.so.1>
+    0.0%  PostProcessor::getFramebuffer(int, int) (.constprop.0)
+    0.0%  TransformMatrix::getBaseScissor() const (.constprop.0)
+    0.0%  PostProcessor::render(unsigned int) (.constprop.0)
+    0.0%  ?core+131510
+    0.0%  ?core+130d90
+    0.0%  parseWait() (.lto_priv.0)
+    0.0%  getBitmask(unsigned int, int)
+    0.0%  SetCull(unsigned int)
+    0.0%  ?core+131ad0
+    0.0%  std::map<unsigned int, GLCache::TextureParameters, std::less<unsigned int>, std::allocator<std::pair<unsign...
+  other libraries, by caller:
+   45.3%  <libmali.so.1.9.0> from <libmali.so.1.9.0>
+   13.1%  <libc.so.6> from <libc.so.6>
+    9.2%  <retroarch> from <retroarch>
+    5.3%  <libc.so.6> from <libmali.so.1.9.0>
+    4.8%  <retroarch> from <[unmapped]>
+    3.2%  <libwayland-client.so.0.22.0> from <libwayland-client.so.0.22.0>
+    2.0%  <libSDL2-2.0.so.0> from <libSDL2-2.0.so.0>
+    1.2%  <libpulsecommon-16.1.so> from <libpulsecommon-16.1.so>
+    1.0%  <libmali.so.1.9.0> from retro_run
+    1.0%  <libSDL2-2.0.so.0> from <retroarch>
+    0.7%  <libpulse.so.0.24.2> from <libpulse.so.0.24.2>
+    0.6%  <libmali.so.1.9.0> from <[stack]>
+
+== thread deadcast-aica: 2256 samples (CPU-time timer; the kernel tick caps the rate); core 83%, lib 17%
+   30.0%  aica::timeStep()
+   15.4%  <libc.so.6>
+    5.5%  aica::arm::CPUSwitchMode(int, bool) (.lto_priv.0)
+    4.2%  unsigned int aica::arm::recompiler::DoMemOp<true, false>(unsigned int, unsigned int)
+    3.5%  void aica::arm::recompiler::MSR_do<0u>(unsigned int, unsigned int)
+    3.1%  aica::arm::recompiler::interpret(unsigned int)
+    2.5%  ?core+ed2044
+    2.4%  drflac__decode_samples_with_residual.lto_priv.0
+    1.4%  aica::arm::CPUUpdateCPSR()
+    1.4%  hunk_read_into_memory.lto_priv.0
+    1.1%  <libstdc++.so.6.0.30>
+    1.1%  aica::workerLoop()
+    1.0%  unsigned int aica::arm::recompiler::DoMemOp<false, false>(unsigned int, unsigned int)
+    1.0%  ?core+ed2034
+    0.9%  void aica::sgc::ChannelEx::StreamStep<(aica::sgc::PCMSType)1, true, false>()
+    0.8%  aica::UpdateSh4Ints() (.lto_priv.0)
+    0.8%  aica::update_arm_interrupts() (.lto_priv.0)
+    0.7%  ?core+ed2040
+    0.7%  unsigned int aica::arm::recompiler::DoMemOp<true, true>(unsigned int, unsigned int)
+    0.7%  CHDTrack::Read(unsigned int, unsigned char*, SectorFormat*, unsigned char*, SubcodeFormat*)
+    0.6%  flac_decoder_decode_interleaved
+    0.6%  aica::sgc::ReadCommonReg(unsigned int, bool)
+    0.5%  void aica::sgc::ChannelEx::AegStep<(aica::sgc::EGState)2>()
+    0.4%  ?core+ed203c
+    0.4%  ?core+ed22e4
+    0.4%  ?core+ed202c
+    0.4%  void aica::writeTimerAndIntReg<unsigned short>(unsigned int, unsigned short)
+    0.4%  void aica::writeRegInternal<unsigned short>(unsigned int, unsigned short)
+    0.3%  void aica::sgc::ChannelEx::StreamStep<(aica::sgc::PCMSType)1, false, false>()
+    0.3%  ?core+ed37c8
+    0.3%  ?core+1311d8
+    0.3%  ?core+ed232c
+    0.3%  ?core+ed2304
+    0.3%  ?core+ed227c
+    0.3%  Disc::ReadSectors(unsigned int, unsigned int, unsigned char*, unsigned int, bool, LoadProgress*) (.constpro...
+    0.3%  unsigned int aica::arm::recompiler::DoMemOp<false, true>(unsigned int, unsigned int)
+    0.3%  aica::arm::CPUFiq()
+    0.3%  ?core+ed2030
+    0.2%  void aica::writeRegInternal<unsigned char>(unsigned int, unsigned char)
+    0.2%  void aica::sgc::ChannelEx::FegStep<(aica::sgc::EGState)0>()
+    0.2%  ?core+ed2770
+    0.2%  ?core+ed2028
+    0.2%  ?core+131ad8
+    0.2%  void aica::sgc::ChannelEx::Lfo::CalcPlfo<(aica::sgc::LFOType)2>()
+    0.2%  ?core+ed231c
+    0.2%  <[vdso]>
+    0.2%  unsigned int aica::arm::readMem<unsigned int>(unsigned int) (.lto_priv.0)
+    0.2%  ?core+ed2008
+    0.2%  ?core+ed218c
+    0.2%  void aica::arm::writeMem<unsigned int>(unsigned int, unsigned int) (.lto_priv.0)
+    0.2%  unsigned short aica::readRegInternal<unsigned short>(unsigned int)
+    0.2%  ?core+ed23b4
+    0.2%  ?core+ed2178
+    0.2%  ?core+ed2310
+    0.1%  ?core+131ad0
+    0.1%  ?core+ed238c
+    0.1%  ?core+ed3910
+    0.1%  ?core+ed2194
+    0.1%  ?core+ed3b80
+    0.1%  ?core+ed21dc
+    0.1%  ?core+ed21c8
+    0.1%  ?core+ed25c0
+    0.1%  <ld-linux-aarch64.so.1>
+    0.1%  ?core+ed2140
+    0.1%  ?core+ed2a80
+    0.1%  ?core+ed220c
+    0.1%  ?core+ed2198
+    0.1%  ?core+ed22c0
+    0.1%  drflac__read_next_flac_frame_header.lto_priv.0
+    0.1%  ?core+ed2070
+    0.1%  ?core+ed2104
+    0.1%  ?core+ed2170
+    0.1%  ?core+ed229c
+    0.1%  ?core+ed2164
+    0.1%  ?core+ed2160
+    0.1%  ?core+ed2260
+    0.1%  ?core+ed2b00
+    0.1%  ?core+ed2264
+    0.1%  drflac__decode_flac_frame.lto_priv.0
+    0.1%  ?core+ed3540
+    0.1%  ?core+ed2080
+    0.1%  ?core+ed2580
+    0.1%  ?core+ed2238
+    0.1%  ?core+ed2640
+    0.1%  ?core+ed23b8
+    0.1%  ?core+ed21d8
+    0.1%  ?core+ed23a0
+    0.1%  ?core+ed2050
+    0.1%  ?core+ed2234
+    0.1%  ?core+ed2330
+    0.1%  ?core+ed2e00
+    0.1%  ?core+ed2218
+    0.1%  ?core+ed2300
+    0.1%  ?core+ed2780
+    0.1%  ?core+ed230c
+    0.1%  ?core+ed2118
+    0.1%  ?core+ed21fc
+    0.1%  ?core+ed22f4
+    0.1%  ?core+ed2318
+    0.1%  ?core+ed2980
+    0.1%  ?core+ed2718
+    0.1%  ?core+ed2210
+    0.1%  ?core+ed21e8
+    0.1%  ?core+ed29f0
+    0.1%  ?core+ed2148
+    0.1%  ?core+ed21bc
+    0.1%  ?core+ed2150
+    0.1%  ?core+ed2904
+    0.1%  ?core+ed2278
+    0.1%  ?core+ed2368
+    0.1%  ?core+ed21b8
+    0.1%  ?core+ed2728
+    0.1%  ?core+ed3000
+    0.0%  aica::arm::recompiler::compile()
+    0.0%  ?core+ed2b40
+    0.0%  ?core+ed2448
+    0.0%  ?core+ed270c
+    0.0%  ?core+ed2244
+    0.0%  ?core+ed20fc
+    0.0%  ?core+ed2b80
+    0.0%  ?core+ed23d0
+    0.0%  ?core+ed2054
+    0.0%  ?core+ed23ac
+    0.0%  ?core+ed272c
+    0.0%  ?core+ed3490
+    0.0%  ?core+ed29cc
+    0.0%  ?core+131f08
+    0.0%  ?core+ed3b10
+    0.0%  ?core+ed2258
+    0.0%  ?core+ed2204
+    0.0%  ?core+ed225c
+    0.0%  ?core+ed33c0
+    0.0%  ?core+ed26ec
+    0.0%  ?core+ed2740
+    0.0%  ?core+ed233c
+    0.0%  ?core+ed22f0
+    0.0%  ?core+ed3180
+    0.0%  ?core+ed2098
+    0.0%  ?core+ed23c0
+    0.0%  ?core+130fd0
+    0.0%  void aica::sgc::ChannelEx::Lfo::CalcAlfo<(aica::sgc::LFOType)2>()
+    0.0%  ?core+ed37bc
+    0.0%  ?core+ed3318
+    0.0%  ?core+ed26f8
+    0.0%  ?core+ed215c
+    0.0%  ?core+ed2380
+    0.0%  ?core+ed3840
+    0.0%  ?core+ed2cc0
+    0.0%  ?core+ed21cc
+    0.0%  ?core+ed32ec
+    0.0%  ?core+ed31b4
+    0.0%  ?core+ed20c4
+    0.0%  ?core+ed2794
+    0.0%  ?core+ed2270
+    0.0%  ?core+ed2358
+    0.0%  ?core+ed20a8
+    0.0%  drflac__read_uint8.constprop.1
+    0.0%  ?core+ed34c4
+    0.0%  ?core+ed24c0
+    0.0%  ?core+ed27f8
+    0.0%  ?core+ed3330
+    0.0%  ?core+ed224c
+    0.0%  ?core+ed32c8
+    0.0%  ?core+ed20b4
+    0.0%  ?core+ed25f8
+    0.0%  ?core+ed2cec
+    0.0%  ?core+ed34a0
+    0.0%  ?core+ed37f8
+    0.0%  ?core+ed2f80
+    0.0%  ?core+ed2374
+    0.0%  ?core+ed2708
+    0.0%  ?core+ed3780
+    0.0%  ?core+ed37b0
+    0.0%  ?core+ed22a8
+    0.0%  ?core+ed2e70
+    0.0%  ?core+130dd0
+    0.0%  ?core+ed2124
+    0.0%  ?core+ed2800
+    0.0%  ?core+ed2384
+    0.0%  ?core+ed206c
+    0.0%  ?core+ed302c
+    0.0%  ?core+ed21a8
+    0.0%  ?core+ed20d8
+    0.0%  ?core+ed2094
+    0.0%  ?core+ed3184
+    0.0%  ?core+130dd8
+    0.0%  ?core+ed20d0
+    0.0%  ?core+ed2714
+    0.0%  ?core+ed32d8
+    0.0%  ?core+ed2200
+    0.0%  convertSector(unsigned char*, unsigned char*, int, int, int) (.constprop.0.isra.0)
+    0.0%  ?core+ed22ec
+    0.0%  ?core+ed2078
+    0.0%  ?core+ed2268
+    0.0%  ?core+ed217c
+    0.0%  ?core+ed2bbc
+    0.0%  ?core+ed3300
+    0.0%  ?core+ed2390
+    0.0%  ?core+ed2bd4
+    0.0%  ?core+ed2298
+    0.0%  ?core+ed21a0
+    0.0%  ?core+ed23a4
+    0.0%  ?core+ed2360
+    0.0%  ?core+ed347c
+    0.0%  ?core+ed2014
+    0.0%  ?core+ed228c
+    0.0%  ?core+ed3750
+    0.0%  ?core+ed31b0
+    0.0%  ?core+ed279c
+    0.0%  ?core+ed2540
+    0.0%  ?core+ed22e0
+    0.0%  ?core+ed2340
+    0.0%  ?core+ed2e80
+    0.0%  ?core+ed2254
+    0.0%  ?core+ed36e4
+    0.0%  inflate
+    0.0%  ?core+ed3a44
+    0.0%  ?core+ed254c
+    0.0%  ?core+ed20a0
+    0.0%  ?core+ed200c
+    0.0%  ?core+ed20f4
+    0.0%  zlib_codec_decompress.lto_priv.0
+    0.0%  ?core+ed26e8
+    0.0%  ?core+ed3a94
+    0.0%  ?core+ed326c
+    0.0%  ?core+ed207c
+    0.0%  ?core+ed2154
+    0.0%  ?core+ed2364
+    0.0%  ?core+ed23c8
+    0.0%  ?core+ed2dc0
+    0.0%  ?core+ed2388
+    0.0%  ?core+ed216c
+    0.0%  ?core+ed3ac0
+    0.0%  ?core+ed2a20
+    0.0%  ?core+ed2c00
+    0.0%  ?core+ed2c34
+    0.0%  ?core+ed3a40
+    0.0%  ?core+ed2370
+    0.0%  ?core+ed2240
+    0.0%  ?core+ed20c0
+    0.0%  ?core+ed21f4
+    0.0%  ?core+ed21c4
+    0.0%  ?core+ed360c
+    0.0%  ?core+ed234c
+    0.0%  ?core+ed2440
+  other libraries, by caller:
+   12.9%  <libc.so.6> from <libc.so.6>
+    2.0%  <libc.so.6> from aica::timeStep()
+    0.9%  <libstdc++.so.6.0.30> from <libstdc++.so.6.0.30>
+    0.3%  <libc.so.6> from CHDTrack::Read(unsigned int, unsigned char*, SectorFormat*, unsigned char*, SubcodeFormat*)
+    0.2%  <libstdc++.so.6.0.30> from aica::workerLoop()
+    0.2%  <[vdso]> from <libc.so.6>
+    0.1%  <libc.so.6> from Disc::ReadSectors(unsigned int, unsigned int, unsigned char*, unsigned int, bool, LoadProgress*) (.constpro...
+    0.1%  <ld-linux-aarch64.so.1> from aica::UpdateSh4Ints() (.lto_priv.0)
+    0.1%  <libc.so.6> from aica::workerLoop()
+    0.0%  <libc.so.6> from <libstdc++.so.6.0.30>
+    0.0%  <libc.so.6> from <retroarch>
+    0.0%  <libc.so.6> from flac_decoder_read_callback.lto_priv.0
+
+== thread deadcast-parse: 650 samples (CPU-time timer; the kernel tick caps the rate); core 91%, lib 9%
+   28.3%  makePrimRestartIndex(std::vector<PolyParam, std::allocator<PolyParam>>&, int, int, bool, rend_context&) (.i...
+   25.8%  Ta_Dma* TAParserTempl<0, 1, 2, 3>::ta_poly_data<3u, 1u>(Ta_Dma*, Ta_Dma*)
+   18.0%  TAParserTempl<2, 1, 0, 3>::EndPolyStrip()
+    8.2%  <libc.so.6>
+    7.1%  ta_parse(TA_context*, bool, bool)
+    3.2%  TAParserTempl<0, 1, 2, 3>::ta_main(Ta_Dma*, Ta_Dma*)
+    2.3%  PolyParam* std::__stable_partition_adaptive<PolyParam*, PolyParam*, __gnu_cxx::__ops::_Iter_pred<placeLarge...
+    1.4%  sortPolyParams(std::vector<PolyParam, std::allocator<PolyParam>>&, int, int, rend_context&)
+    0.9%  TAParserTempl<0, 1, 2, 3>::AppendPolyParam0(void*)
+    0.8%  PolyParam& std::vector<PolyParam, std::allocator<PolyParam>>::emplace_back<>() (.isra.0)
+    0.6%  void std::__merge_adaptive<PolyParam*, long, PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, Pol...
+    0.6%  <libstdc++.so.6.0.30>
+    0.5%  void std::__insertion_sort<PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, PolyParam*, __gnu_cxx...
+    0.5%  PolyParam* std::__move_merge<PolyParam*, PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, PolyPar...
+    0.5%  Ta_Dma* TAParserTempl<0, 1, 2, 3>::ta_poly_data<0u, 1u>(Ta_Dma*, Ta_Dma*)
+    0.5%  getRegionSettings(int, RenderPass&)
+    0.2%  void std::__merge_sort_with_buffer<PolyParam*, PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, P...
+    0.2%  parseRenderPass(RenderPass&, RenderPass const&, rend_context&, bool)
+    0.2%  OpenGLRenderer::Parse(TA_context*)
+    0.2%  ta_parse_reset()
+    0.2%  ?core+130d90
+    0.2%  ?core+131f00
+  other libraries, by caller:
+    4.3%  <libc.so.6> from <libc.so.6>
+    3.2%  <libc.so.6> from <libstdc++.so.6.0.30>
+    0.5%  <libstdc++.so.6.0.30> from <libstdc++.so.6.0.30>
+    0.3%  <libc.so.6> from PolyParam* std::__move_merge<PolyParam*, PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, PolyPar...
+    0.2%  <libc.so.6> from void std::__insertion_sort<PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, PolyParam*, __gnu_cxx...
+    0.2%  <libc.so.6> from parseLoop()
+    0.2%  <libstdc++.so.6.0.30> from parseLoop()
+
+== SH4 blocks by guest cycles (top 0 of 400 listed)
