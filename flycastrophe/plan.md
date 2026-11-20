@@ -61,6 +61,12 @@ is in [evidence/](evidence/), the scripts in [bench/](bench/README.md).
 > Armada's SH4 thread is 87% game code and at most about 9% MMU work, so no MMU change
 > (`evidence/phase3/20261119-armada-profile/`). Delay Frame Swapping costs no speed and stays enabled
 > (`evidence/phase3/20261119-delay-swap/`).
+>
+> Measured 2026-11-20: Sega Rally 2's attract runs at half speed because the game invalidates the whole
+> TLB twice a frame (at least 41% of the SH4 thread); its race has no full flushes and averages 95%
+> (`evidence/phase3/20261120-sega-rally-2-profile/`). NFL 2K2's field is gray at grass stadiums on 0.2.0,
+> the 0.3.0 test core and Leaf's own Flycast alike, cause unknown (`evidence/phase3/20261120-nfl2k2-gray-field/`).
+> The 0.3.0 profile's training is in `evidence/phase3/20261120-release-0.3.0-prep/`.
 > Release bar run 2026-11-08 ([phase3](evidence/phase3/README.md)): with audio on,
 > Flycastrophe holds 60 fps on both games with the lowest frame-time p95 (Leaf's Flycast 58.5/59.9,
 > FlyCast Fast UMRK 35.0/58.2); uncapped Crazy Taxi 71.6 vs 58.9 vs 48.5 (same scene), SA2 91.4 vs

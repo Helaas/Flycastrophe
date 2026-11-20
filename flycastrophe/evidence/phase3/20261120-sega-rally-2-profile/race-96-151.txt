@@ -1,0 +1,48 @@
+16405 samples in 96-151 s
+   87.6%  jit: live blocks
+    4.9%  jit: main loop and stubs
+    1.2%  core: sqWriteMmuTry(unsigned int, Sh4Context*)
+    0.8%  core: ta_thd_data32_i(simd256_t const*) (.lto_priv.0)
+    0.8%  lib: libc.so.6
+    0.5%  core: mmuDynarecLookup(unsigned int, unsigned int, unsigned int) (.lto_priv.0)
+    0.3%  core: find_entry(unsigned int, TLB_Entry const**) (.lto_priv.0)
+    0.2%  core: sh4_sched_tick(int) (.constprop.0)
+    0.2%  core: Sh4Context::UpdateFPSCR(Sh4Context*)
+    0.2%  core: deadcast::rallySkip(unsigned int) (.lto_priv.0)
+    0.2%  core: UpdateSR()
+    0.2%  core: mmu_full_lookup(unsigned int, TLB_Entry const**, unsigned int&)
+    0.2%  core: bm_GetCodeByVAddr(unsigned int) (.part.0)
+    0.2%  core: mmuRead32(unsigned int, unsigned int) (.lto_priv.0)
+    0.2%  core: unsigned int ReadMem_p4mmr<unsigned int>(unsigned int)
+    0.2%  core: spg_line_sched(int, int, int, void*) (.lto_priv.0)
+    0.1%  core: sh4_sched_request(int, int)
+    0.1%  core: aica::AicaUpdate(int, int, int, void*) (.lto_priv.0)
+    0.1%  lib: libstdc++.so.6.0.30
+    0.1%  core: pvr_WriteReg(unsigned int, unsigned int)
+    0.1%  core: void WriteMem_p4mmr<unsigned int>(unsigned int, unsigned int)
+    0.1%  core: mmuwin::switchAsid(unsigned int)
+    0.1%  core: ta_vtx_data(SQBuffer const*, unsigned int)
+    0.1%  core: sb_ReadMem(unsigned int)
+    0.1%  core: unsigned int read_TMU_TCNT<2u>(unsigned int) (.lto_priv.0)
+    0.1%  core: ta_vtx_ListInit(bool)
+    0.1%  core: mmuWrite32(unsigned int, unsigned int, unsigned int) (.lto_priv.0)
+    0.1%  core: i1111_nnnn_mmmm_0101(Sh4Context*, unsigned int)
+library time by the core function that called it:
+    0.2%  libc.so.6 <- PvrMessageQueue::enqueue(PvrMessageQueue::MessageType, FramebufferInfo) (.constprop.0)
+    0.2%  libc.so.6 <- pvr_WriteReg(unsigned int, unsigned int)
+    0.1%  libc.so.6 <- mmuwin::mapPage(unsigned int, unsigned int)
+    0.0%  libc.so.6 <- maple_DoDma() (.lto_priv.0)
+    0.0%  libstdc++.so.6.0.30 <- rend_end_render(int, int, int, void*)
+    0.0%  libc.so.6 <- maple_schd(int, int, int, void*) (.lto_priv.0)
+    0.0%  libc.so.6 <- ggpo::getLocalInput(MapleInputState*) (.lto_priv.0)
+    0.0%  libc.so.6 <- spg_line_sched(int, int, int, void*) (.lto_priv.0)
+    0.0%  libc.so.6 <- RuntimeBlockInfo::Setup(unsigned int, fpscr_t)
+    0.0%  libstdc++.so.6.0.30 <- spg_line_sched(int, int, int, void*) (.lto_priv.0)
+main loop and stubs by offset (64-byte buckets):
+    1.7%  +0x80
+    1.5%  +0xc0
+    0.7%  +0x140
+    0.6%  +0x40
+    0.3%  +0x180
+    0.1%  +0x100
+    0.1%  +0x0

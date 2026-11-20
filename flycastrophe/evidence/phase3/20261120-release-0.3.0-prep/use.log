@@ -1,0 +1,4 @@
+build-core: DEVELOPMENT build of /Volumes/Storage/UMRK/.worktrees/flycastrophe-rel030 at c5c865dc
+build-core: building in ghcr.io/utility-muffin-research-kitchen/mlp1-toolchain@sha256:66aac16fb8b07e663c9b4d66970f272df195a6eba98dfad8286eabbaa617faf9
+build-core: flycastrophe_libretro.so sha256 3ae7f022805fdc26f16e928e2da0afb889afddaadb2f3c8f2043149fc866dcd6
+build-core: development build, not checked against the lock

@@ -1,0 +1,48 @@
+32809 samples in 60-170 s
+   35.0%  jit: blocks gone by quit
+   25.2%  lib: libc.so.6
+   17.7%  jit: live blocks
+   10.0%  core: fault_handler(int, siginfo_t*, void*)
+    2.9%  jit: main loop and stubs
+    1.3%  core: cache_entry(TLB_Entry const&) (.lto_priv.0)
+    0.8%  core: mmu_full_lookup(unsigned int, TLB_Entry const**, unsigned int&)
+    0.8%  core: sqWriteMmuTry(unsigned int, Sh4Context*)
+    0.8%  core: mmuwin::(anonymous namespace)::clearWindow(int) (.lto_priv.0)
+    0.7%  core: find_entry(unsigned int, TLB_Entry const**) (.lto_priv.0)
+    0.6%  core: mmuwin::mapPage(unsigned int, unsigned int)
+    0.5%  core: ta_thd_data32_i(simd256_t const*) (.lto_priv.0)
+    0.5%  core: Arm64Dynarec::rewrite(host_context_t&, void*)
+    0.3%  core: bm_GetCodeByVAddr(unsigned int) (.part.0)
+    0.3%  core: mmuDynarecLookup(unsigned int, unsigned int, unsigned int) (.lto_priv.0)
+    0.2%  core: mmuDispatchCacheFlush()
+    0.2%  core: UpdateSR()
+    0.2%  core: sh4_sched_tick(int) (.constprop.0)
+    0.1%  core: VramLockedWrite(unsigned char*)
+    0.1%  core: unsigned int ReadMem_p4mmr<unsigned int>(unsigned int)
+    0.1%  core: deadcast::rallySkip(unsigned int) (.lto_priv.0)
+    0.1%  core: mmuRead32(unsigned int, unsigned int) (.lto_priv.0)
+    0.1%  core: Sh4Context::UpdateFPSCR(Sh4Context*)
+    0.1%  core: std::pair<unsigned int, unsigned int>& std::vector<std::pair<unsigned int, unsigned int>, 
+    0.1%  lib: [vdso]
+    0.1%  core: void WriteMem_p4mmr<unsigned int>(unsigned int, unsigned int)
+    0.1%  core: sh4_sched_request(int, int)
+    0.1%  core: ta_vtx_ListInit(bool)
+library time by the core function that called it:
+   13.9%  libc.so.6 <- mmuwin::mapPage(unsigned int, unsigned int)
+    6.1%  libc.so.6 <- CCN_MMUCR_write(unsigned int, unsigned int) (.lto_priv.0)
+    4.9%  libc.so.6 <- mmuwin::(anonymous namespace)::clearWindow(int) (.lto_priv.0)
+    0.1%  libc.so.6 <- pvr_WriteReg(unsigned int, unsigned int)
+    0.1%  libc.so.6 <- PvrMessageQueue::enqueue(PvrMessageQueue::MessageType, FramebufferInfo) (.constprop.0)
+    0.1%  [vdso] <- [jit]
+    0.0%  libc.so.6 <- maple_DoDma() (.lto_priv.0)
+    0.0%  libc.so.6 <- maple_schd(int, int, int, void*) (.lto_priv.0)
+    0.0%  libstdc++.so.6.0.30 <- maple_DoDma() (.lto_priv.0)
+    0.0%  libc.so.6 <- [jit]
+main loop and stubs by offset (64-byte buckets):
+    1.2%  +0xc0
+    0.7%  +0x80
+    0.3%  +0x140
+    0.3%  +0x40
+    0.2%  +0x180
+    0.1%  +0x100
+    0.1%  +0x0

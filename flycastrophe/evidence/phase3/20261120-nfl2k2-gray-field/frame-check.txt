@@ -1,0 +1,2 @@
+nfl2k2 rel030: frames 1458 and 1459, 0 different frames in both, 0 of them reproduced by a second run of the first build (0 not): 0 identical, 0 differ
+nfl2k2 rel030tr: frames 1458 and 1503, 0 different frames in both, 0 of them reproduced by a second run of the first build (0 not): 0 identical, 0 differ
