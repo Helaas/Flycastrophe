@@ -569,7 +569,8 @@ const u8 *regroupTranslucent(std::vector<PolyParam>& polys, int first, int end, 
 					continue;
 				box.add({ vtx.x, vtx.y, vtx.x, vtx.y });
 			}
-		if (baseMerge && !units.empty() && !units.back().barrier && pp.equivalentIgnoreCullingDirection(polys[units.back().begin])
+		// (a run of Naomi 2 polygons is merged as any other, and stays where it is)
+		if (baseMerge && !units.empty() && pp.equivalentIgnoreCullingDirection(polys[units.back().begin])
 				&& pushesIndex(polys[units.back().begin], ctx))
 		{
 			units.back().end = i + 1;
