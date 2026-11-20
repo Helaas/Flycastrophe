@@ -1,0 +1,8 @@
+result=ok reply=GET_PERF_INFO ready=1 fps=55.797 frame_time_p95_ms=17.454 deviation_pct=147.058 samples=426 frames=429 dropped=0 audio_ready=1 audio_samples=431 audio_underrun_pct=0.465 audio_blocking_pct=0.465 
+result=ok reply=GET_PERF_INFO ready=1 fps=57.488 frame_time_p95_ms=17.414 deviation_pct=115.841 samples=729 frames=732 dropped=0 audio_ready=1 audio_samples=735 audio_underrun_pct=0.272 audio_blocking_pct=0.272 
+result=ok reply=GET_PERF_INFO ready=1 fps=58.214 frame_time_p95_ms=17.358 deviation_pct=98.553 samples=1033 frames=1036 dropped=0 audio_ready=1 audio_samples=1039 audio_underrun_pct=0.193 audio_blocking_pct=0.193 
+result=ok reply=GET_PERF_INFO ready=1 fps=58.620 frame_time_p95_ms=17.349 deviation_pct=87.243 samples=1337 frames=1340 dropped=0 audio_ready=1 audio_samples=1343 audio_underrun_pct=0.149 audio_blocking_pct=0.149 
+result=ok reply=GET_PERF_INFO ready=1 fps=58.875 frame_time_p95_ms=17.302 deviation_pct=79.098 samples=1641 frames=1644 dropped=0 audio_ready=1 audio_samples=1647 audio_underrun_pct=0.122 audio_blocking_pct=0.122 
+result=ok reply=GET_PERF_INFO ready=1 fps=59.056 frame_time_p95_ms=17.286 deviation_pct=72.884 samples=1945 frames=1948 dropped=0 audio_ready=1 audio_samples=1951 audio_underrun_pct=0.103 audio_blocking_pct=0.103 
+result=ok reply=GET_PERF_INFO ready=1 fps=60.038 frame_time_p95_ms=17.242 deviation_pct=2.852 samples=2048 frames=2251 dropped=0 audio_ready=1 audio_samples=2254 audio_underrun_pct=0.089 audio_blocking_pct=0.089 
+result=ok reply=GET_PERF_INFO ready=1 fps=60.035 frame_time_p95_ms=17.215 deviation_pct=2.773 samples=2048 frames=2555 dropped=0 audio_ready=1 audio_samples=2558 audio_underrun_pct=0.078 audio_blocking_pct=0.078 

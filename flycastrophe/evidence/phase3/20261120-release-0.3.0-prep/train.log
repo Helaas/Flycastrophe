@@ -1,0 +1,52 @@
+/Volumes/Storage/UMRK/tmp/dc-core-bench/out/fcr-pgogen_libretro.so: 1 file pushed, 0 skipped. 33.8 MB/s (61828904 bytes in 1.744s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/rapad: 1 file pushed, 0 skipped. 488.7 MB/s (528104 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/drive-loop.sh: 1 file pushed, 0 skipped. 0.7 MB/s (441 bytes in 0.001s)
+/Volumes/Storage/UMRK/tmp/dc-core-bench/core-options-arm-fcr-pgogen.cfg: 1 file pushed, 0 skipped. 0.2 MB/s (37 bytes in 0.000s)
+== spiderman-0 19:53:26
+/Volumes/Storage/UMRK/tmp/flycastrophe-pgo/downloads/2191-24507012/extracted/Spider-Man (USA).state.raw.state: 1 file pushed, 0 skipped. 34.4 MB/s (28020951 bytes in 0.776s)
+/Volumes/Storage/UMRK/tmp/flycastrophe-pgo/train/drive-generic.txt: 1 file pushed, 0 skipped. 0.0 MB/s (269 bytes in 0.008s)
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Spider-Man (USA).state.auto", 28020951 bytes.
+spiderman-0: 354 .gcda files so far
+== spiderman-1 19:54:42
+/Volumes/Storage/UMRK/tmp/flycastrophe-pgo/downloads/2191-24507012/extracted/Spider-Man (USA)_1.state.raw.state: 1 file pushed, 0 skipped. 34.1 MB/s (28158503 bytes in 0.788s)
+/Volumes/Storage/UMRK/tmp/flycastrophe-pgo/train/drive-generic.txt: 1 file pushed, 0 skipped. 0.0 MB/s (269 bytes in 0.008s)
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Spider-Man (USA).state.auto", 28158503 bytes.
+spiderman-1: 354 .gcda files so far
+== spiderman-2 19:55:56
+/Volumes/Storage/UMRK/tmp/flycastrophe-pgo/downloads/2191-24507012/extracted/Spider-Man (USA)_2.state.raw.state: 1 file pushed, 0 skipped. 34.3 MB/s (28098199 bytes in 0.782s)
+/Volumes/Storage/UMRK/tmp/flycastrophe-pgo/train/drive-generic.txt: 1 file pushed, 0 skipped. 0.0 MB/s (269 bytes in 0.008s)
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[libretro INFO] [BOOT] Game ID is [T13008N]
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Spider-Man (USA).state.auto", 28098199 bytes.
+spiderman-2: 354 .gcda files so far
+== ecco 19:57:12
+/Volumes/Storage/UMRK/tmp/flycastrophe-pgo/downloads/1610-16739623/extracted/Ecco the Dolphin - Defender of the Future (USA) (En,Fr,De,Es).state.raw.state: 1 file pushed, 0 skipped. 34.7 MB/s (28191580 bytes in 0.775s)
+/Volumes/Storage/UMRK/tmp/flycastrophe-pgo/train/drive-generic.txt: 1 file pushed, 0 skipped. 1.0 MB/s (269 bytes in 0.000s)
+[libretro INFO] [BOOT] Game ID is [MK-51033]
+[libretro INFO] [BOOT] Game ID is [MK-51033]
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Ecco the Dolphin - Defender of the Future (USA) (En,Fr,De,Es).state.auto", 28191580 bytes.
+ecco: 354 .gcda files so far
+== sonic 19:58:28
+/Volumes/Storage/UMRK/tmp/flycastrophe-pgo/downloads/1600-16664186/extracted/Sonic Adventure (USA) (En,Ja,Fr,De,Es) (Rev A).state3.raw.state: 1 file pushed, 0 skipped. 33.7 MB/s (36580088 bytes in 1.035s)
+/Volumes/Storage/UMRK/tmp/flycastrophe-pgo/train/drive-generic.txt: 1 file pushed, 0 skipped. 0.0 MB/s (269 bytes in 0.008s)
+[libretro INFO] [BOOT] Game ID is [MK-51000]
+[libretro INFO] [BOOT] Game ID is [MK-51000]
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/Sonic Adventure (USA) (En,Ja,Fr,De,Es) (Rev A).state.auto", 36580088 bytes.
+sonic: 354 .gcda files so far
+== doa2-boot 19:59:43
+/Volumes/Storage/UMRK/tmp/flycastrophe-pgo/kcw/drive-boot.txt: 1 file pushed, 0 skipped. 0.4 MB/s (129 bytes in 0.000s)
+[libretro INFO] [BOOT] Game ID is [T3601N]
+[libretro INFO] [BOOT] Game ID is [T3601N]
+doa2-boot: 354 .gcda files so far
+== powerstone-boot 20:01:26
+/Volumes/Storage/UMRK/tmp/flycastrophe-pgo/kcw/drive-boot.txt: 1 file pushed, 0 skipped. 1.7 MB/s (129 bytes in 0.000s)
+[libretro INFO] [BOOT] Game ID is [T1201N]
+[libretro INFO] [BOOT] Game ID is [T1201N]
+powerstone-boot: 354 .gcda files so far
+/userdata/fcr-pgo/gcda/: 354 files pulled, 0 skipped. 6.0 MB/s (1541496 bytes in 0.245s)
+pulled 354 .gcda files (13 renderer) to /Volumes/Storage/UMRK/tmp/flycastrophe-pgo/rel030/train/gcda
+done 20:03:08

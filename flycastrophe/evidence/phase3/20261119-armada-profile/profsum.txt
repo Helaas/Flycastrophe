@@ -1,0 +1,369 @@
+== thread Flycast-emu: 21383 samples (CPU-time timer; the kernel tick caps the rate); jit 87%, core 11%, lib 2%
+    8.6%  [SH4 block 01cb0874]
+    5.6%  [dynarec loop/stubs]
+    2.5%  [SH4 block 01caf16c]
+    1.8%  [SH4 block 0026dea0]
+    1.3%  <libc.so.6>
+    1.3%  [SH4 block 8c0175bc]
+    1.3%  [SH4 block 0026bea0]
+    1.2%  [SH4 block 01caf50c]
+    1.1%  [SH4 block 01caf534]
+    1.0%  [SH4 block 8c01734c]
+    0.9%  UpdateSR()
+    0.8%  [SH4 block 01caf564]
+    0.8%  [SH4 block 8c02cc38]
+    0.8%  [SH4 block 01caf518]
+    0.8%  [SH4 block 8c0176b2]
+    0.8%  [SH4 block 00005bc0]
+    0.7%  [SH4 block 01caf544]
+    0.7%  sqWriteMmuTry(unsigned int, Sh4Context*)
+    0.7%  [SH4 block 01caf552]
+    0.7%  [SH4 block 01c9b28e]
+    0.7%  [SH4 block 01caf556]
+    0.7%  void WriteMem_P4<unsigned int>(unsigned int, unsigned int)
+    0.6%  [SH4 block 8c017378]
+    0.6%  [SH4 block 01caf508]
+    0.6%  mmuDynarecLookup(unsigned int, unsigned int, unsigned int) (.lto_priv.0)
+    0.6%  [SH4 block 8c02cc4e]
+    0.6%  [SH4 block 01caf560]
+    0.6%  mmuDispatchCacheFlush()
+    0.6%  [SH4 block 01caf540]
+    0.5%  [SH4 block 8c017544]
+    0.5%  ta_thd_data32_i(simd256_t const*) (.lto_priv.0)
+    0.5%  <libstdc++.so.6.0.30>
+    0.4%  [SH4 block 01caf54e]
+    0.4%  [SH4 block 01c9b2a0]
+    0.4%  [SH4 block 8c0176c2]
+    0.4%  [SH4 block 01caf53c]
+    0.4%  [SH4 block 8c01764c]
+    0.4%  [SH4 block 01c9b778]
+    0.4%  unsigned int ReadMem_p4mmr<unsigned int>(unsigned int)
+    0.4%  [SH4 block 8c017426]
+    0.3%  [SH4 block 8c012394]
+    0.3%  mmuWrite32(unsigned int, unsigned int, unsigned int) (.lto_priv.0)
+    0.3%  [SH4 block 8c01755e]
+    0.3%  bm_GetBlock(void*)
+    0.3%  [SH4 block 8c02cc54]
+  other libraries, by caller:
+    0.6%  <libc.so.6> from <libstdc++.so.6.0.30>
+    0.5%  <libc.so.6> from <libc.so.6>
+    0.2%  <libstdc++.so.6.0.30> from <libstdc++.so.6.0.30>
+    0.1%  <libstdc++.so.6.0.30> from rdv_BlockCheckFail(unsigned int)
+    0.1%  <libc.so.6> from mmuwin::mapPage(unsigned int, unsigned int)
+    0.0%  <libstdc++.so.6.0.30> from std::_Rb_tree_iterator<std::pair<void* const, std::shared_ptr<RuntimeBlockInfo>>> std::_Rb_tree<void*, std:...
+    0.0%  <libc.so.6> from startup._ZNSt6vectorIPN6config10BaseOptionESaIS2_EE17_M_realloc_insertIJS2_EEEvN9__gnu_cxx17__normal_iterat...
+    0.0%  <libc.so.6> from compilePC(unsigned int)
+    0.0%  <libstdc++.so.6.0.30> from DynaRBI::Relink()
+    0.0%  <libc.so.6> from Arm64Assembler::Arm64Assembler(Sh4Context&, Sh4CodeBuffer&, void*) (.lto_priv.0)
+    0.0%  <libstdc++.so.6.0.30> from startup._ZNSt6vectorIPN6config10BaseOptionESaIS2_EE17_M_realloc_insertIJS2_EEEvN9__gnu_cxx17__normal_iterat...
+    0.0%  <libc.so.6> from std::mutex::lock()
+
+== thread render: 4208 samples (CPU-time timer; the kernel tick caps the rate); lib 92%, core 8%
+   48.7%  <libmali.so.1.9.0>
+   19.7%  <libc.so.6>
+   14.2%  <retroarch>
+    3.5%  <libwayland-client.so.0.22.0>
+    3.0%  <libSDL2-2.0.so.0>
+    1.6%  void DrawList<0u, false>(std::vector<PolyParam, std::allocator<PolyParam>> const&, int, int)
+    1.4%  OpenGLRenderer::Process(TA_context*)
+    1.4%  <libpulsecommon-16.1.so>
+    0.8%  <libpulse.so.0.24.2>
+    0.7%  retro_run
+    0.6%  setTileClipping(rend_context&)
+    0.6%  void SetGPState<2u, true>(PolyParam const*, unsigned int) (.constprop.0)
+    0.4%  OpenGLRenderer::Render()
+    0.3%  <libstdc++.so.6.0.30>
+    0.3%  <libffi.so.8.1.0>
+    0.3%  DrawStrips()
+    0.3%  GetProgram(bool, bool, bool, bool, bool, unsigned int, bool, unsigned int, bool, bool, bool, bool, int, boo...
+    0.3%  SetTextureRepeatMode(unsigned int, unsigned int, unsigned int) (.lto_priv.0)
+    0.2%  Emulator::render() (.constprop.0)
+    0.2%  BaseTextureCache<TextureCacheData>::getTextureCacheData(TSP, TCW, int) (.constprop.0)
+    0.2%  UpdateInputState(unsigned int) (.part.0.lto_priv.0)
+    0.1%  <[vdso]>
+    0.1%  tactx_Recycle(TA_context*) (.lto_priv.0)
+    0.1%  OpenGLRenderer::GetTexture(TSP, TCW, int)
+    0.1%  <libm.so.6>
+    0.1%  drawVmusAndCrosshairs(int, int)
+    0.1%  Emulator::checkStatus(bool) (.constprop.0)
+    0.1%  setTileClip(unsigned int, Rect&) (.lto_priv.0)
+    0.1%  TransformMatrix::CalcMatrices(rend_context const*, int, int) (.constprop.0)
+    0.1%  getVideoShift(float&, float&) (.constprop.0)
+    0.0%  void texture_VQ<ConvertTwiddle<Unpacker1555>>(PixelBuffer<ConvertTwiddle<Unpacker1555>::unpacked_type>*, un...
+    0.0%  getScaledFramebufferSize(rend_context const&, int&, int&)
+    0.0%  get_analog_stick(short (*)(unsigned int, unsigned int, unsigned int, unsigned int), int, int, short*, short*)
+    0.0%  void texture_VQ<ConvertTwiddle<Unpacker4444>>(PixelBuffer<ConvertTwiddle<Unpacker4444>::unpacked_type>*, un...
+    0.0%  GLGraphicsContext::setSwapInterval(int)
+    0.0%  rglBindFramebuffer.constprop.0
+    0.0%  rglViewport
+    0.0%  getPvrFramebufferSize(rend_context const&, int&, int&)
+    0.0%  ?core+130dd8
+    0.0%  getRegionTileAddrAndSize(unsigned int&, unsigned int&)
+    0.0%  ?core+131d78
+    0.0%  OpenGLRenderer::Present()
+    0.0%  <ld-linux-aarch64.so.1>
+    0.0%  PostProcessor::getFramebuffer(int, int) (.constprop.0)
+    0.0%  TransformMatrix::getBaseScissor() const (.constprop.0)
+  other libraries, by caller:
+   45.3%  <libmali.so.1.9.0> from <libmali.so.1.9.0>
+   13.1%  <libc.so.6> from <libc.so.6>
+    9.2%  <retroarch> from <retroarch>
+    5.3%  <libc.so.6> from <libmali.so.1.9.0>
+    4.8%  <retroarch> from <[unmapped]>
+    3.2%  <libwayland-client.so.0.22.0> from <libwayland-client.so.0.22.0>
+    2.0%  <libSDL2-2.0.so.0> from <libSDL2-2.0.so.0>
+    1.2%  <libpulsecommon-16.1.so> from <libpulsecommon-16.1.so>
+    1.0%  <libmali.so.1.9.0> from retro_run
+    1.0%  <libSDL2-2.0.so.0> from <retroarch>
+    0.7%  <libpulse.so.0.24.2> from <libpulse.so.0.24.2>
+    0.6%  <libmali.so.1.9.0> from <[stack]>
+
+== thread deadcast-aica: 2256 samples (CPU-time timer; the kernel tick caps the rate); core 83%, lib 17%
+   30.0%  aica::timeStep()
+   15.4%  <libc.so.6>
+    5.5%  aica::arm::CPUSwitchMode(int, bool) (.lto_priv.0)
+    4.2%  unsigned int aica::arm::recompiler::DoMemOp<true, false>(unsigned int, unsigned int)
+    3.5%  void aica::arm::recompiler::MSR_do<0u>(unsigned int, unsigned int)
+    3.1%  aica::arm::recompiler::interpret(unsigned int)
+    2.5%  ?core+ed2044
+    2.4%  drflac__decode_samples_with_residual.lto_priv.0
+    1.4%  aica::arm::CPUUpdateCPSR()
+    1.4%  hunk_read_into_memory.lto_priv.0
+    1.1%  <libstdc++.so.6.0.30>
+    1.1%  aica::workerLoop()
+    1.0%  unsigned int aica::arm::recompiler::DoMemOp<false, false>(unsigned int, unsigned int)
+    1.0%  ?core+ed2034
+    0.9%  void aica::sgc::ChannelEx::StreamStep<(aica::sgc::PCMSType)1, true, false>()
+    0.8%  aica::UpdateSh4Ints() (.lto_priv.0)
+    0.8%  aica::update_arm_interrupts() (.lto_priv.0)
+    0.7%  ?core+ed2040
+    0.7%  unsigned int aica::arm::recompiler::DoMemOp<true, true>(unsigned int, unsigned int)
+    0.7%  CHDTrack::Read(unsigned int, unsigned char*, SectorFormat*, unsigned char*, SubcodeFormat*)
+    0.6%  flac_decoder_decode_interleaved
+    0.6%  aica::sgc::ReadCommonReg(unsigned int, bool)
+    0.5%  void aica::sgc::ChannelEx::AegStep<(aica::sgc::EGState)2>()
+    0.4%  ?core+ed203c
+    0.4%  ?core+ed22e4
+    0.4%  ?core+ed202c
+    0.4%  void aica::writeTimerAndIntReg<unsigned short>(unsigned int, unsigned short)
+    0.4%  void aica::writeRegInternal<unsigned short>(unsigned int, unsigned short)
+    0.3%  void aica::sgc::ChannelEx::StreamStep<(aica::sgc::PCMSType)1, false, false>()
+    0.3%  ?core+ed37c8
+    0.3%  ?core+1311d8
+    0.3%  ?core+ed232c
+    0.3%  ?core+ed2304
+    0.3%  ?core+ed227c
+    0.3%  Disc::ReadSectors(unsigned int, unsigned int, unsigned char*, unsigned int, bool, LoadProgress*) (.constpro...
+    0.3%  unsigned int aica::arm::recompiler::DoMemOp<false, true>(unsigned int, unsigned int)
+    0.3%  aica::arm::CPUFiq()
+    0.3%  ?core+ed2030
+    0.2%  void aica::writeRegInternal<unsigned char>(unsigned int, unsigned char)
+    0.2%  void aica::sgc::ChannelEx::FegStep<(aica::sgc::EGState)0>()
+    0.2%  ?core+ed2770
+    0.2%  ?core+ed2028
+    0.2%  ?core+131ad8
+    0.2%  void aica::sgc::ChannelEx::Lfo::CalcPlfo<(aica::sgc::LFOType)2>()
+    0.2%  ?core+ed231c
+  other libraries, by caller:
+   12.9%  <libc.so.6> from <libc.so.6>
+    2.0%  <libc.so.6> from aica::timeStep()
+    0.9%  <libstdc++.so.6.0.30> from <libstdc++.so.6.0.30>
+    0.3%  <libc.so.6> from CHDTrack::Read(unsigned int, unsigned char*, SectorFormat*, unsigned char*, SubcodeFormat*)
+    0.2%  <libstdc++.so.6.0.30> from aica::workerLoop()
+    0.2%  <[vdso]> from <libc.so.6>
+    0.1%  <libc.so.6> from Disc::ReadSectors(unsigned int, unsigned int, unsigned char*, unsigned int, bool, LoadProgress*) (.constpro...
+    0.1%  <ld-linux-aarch64.so.1> from aica::UpdateSh4Ints() (.lto_priv.0)
+    0.1%  <libc.so.6> from aica::workerLoop()
+    0.0%  <libc.so.6> from <libstdc++.so.6.0.30>
+    0.0%  <libc.so.6> from <retroarch>
+    0.0%  <libc.so.6> from flac_decoder_read_callback.lto_priv.0
+
+== thread deadcast-parse: 650 samples (CPU-time timer; the kernel tick caps the rate); core 91%, lib 9%
+   28.3%  makePrimRestartIndex(std::vector<PolyParam, std::allocator<PolyParam>>&, int, int, bool, rend_context&) (.i...
+   25.8%  Ta_Dma* TAParserTempl<0, 1, 2, 3>::ta_poly_data<3u, 1u>(Ta_Dma*, Ta_Dma*)
+   18.0%  TAParserTempl<2, 1, 0, 3>::EndPolyStrip()
+    8.2%  <libc.so.6>
+    7.1%  ta_parse(TA_context*, bool, bool)
+    3.2%  TAParserTempl<0, 1, 2, 3>::ta_main(Ta_Dma*, Ta_Dma*)
+    2.3%  PolyParam* std::__stable_partition_adaptive<PolyParam*, PolyParam*, __gnu_cxx::__ops::_Iter_pred<placeLarge...
+    1.4%  sortPolyParams(std::vector<PolyParam, std::allocator<PolyParam>>&, int, int, rend_context&)
+    0.9%  TAParserTempl<0, 1, 2, 3>::AppendPolyParam0(void*)
+    0.8%  PolyParam& std::vector<PolyParam, std::allocator<PolyParam>>::emplace_back<>() (.isra.0)
+    0.6%  void std::__merge_adaptive<PolyParam*, long, PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, Pol...
+    0.6%  <libstdc++.so.6.0.30>
+    0.5%  void std::__insertion_sort<PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, PolyParam*, __gnu_cxx...
+    0.5%  PolyParam* std::__move_merge<PolyParam*, PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, PolyPar...
+    0.5%  Ta_Dma* TAParserTempl<0, 1, 2, 3>::ta_poly_data<0u, 1u>(Ta_Dma*, Ta_Dma*)
+    0.5%  getRegionSettings(int, RenderPass&)
+    0.2%  void std::__merge_sort_with_buffer<PolyParam*, PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, P...
+    0.2%  parseRenderPass(RenderPass&, RenderPass const&, rend_context&, bool)
+    0.2%  OpenGLRenderer::Parse(TA_context*)
+    0.2%  ta_parse_reset()
+    0.2%  ?core+130d90
+    0.2%  ?core+131f00
+  other libraries, by caller:
+    4.3%  <libc.so.6> from <libc.so.6>
+    3.2%  <libc.so.6> from <libstdc++.so.6.0.30>
+    0.5%  <libstdc++.so.6.0.30> from <libstdc++.so.6.0.30>
+    0.3%  <libc.so.6> from PolyParam* std::__move_merge<PolyParam*, PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, PolyPar...
+    0.2%  <libc.so.6> from void std::__insertion_sort<PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, PolyParam*, __gnu_cxx...
+    0.2%  <libc.so.6> from parseLoop()
+    0.2%  <libstdc++.so.6.0.30> from parseLoop()
+
+== SH4 blocks by guest cycles (top 15 of 400 listed)
+   15.8%  block 01cb0874: runs 65993813, 32 cycles, 24 instructions
+            01cb0874  shad R2,R0 ; R2=0 R0=9
+            01cb0876  add R11,R0 ; R11=0 R0=9
+            01cb0878  fmov.s @R0+,FR0 ; R0=9 FR0=0.000000
+            01cb087a  fmov.s @R0+,FR1 ; R0=9 FR1=-0.294282
+            01cb087c  fmov.s @R0+,FR2 ; R0=9 FR2=0.291339
+            01cb087e  fldi1 FR3 ; FR3=58.486973
+            01cb0880  ftrv xmtrx,<FV_N> ;
+            01cb0882  mov #0x0,R10 ; R10=114e2c
+            01cb0884  shll R10 ; R10=114e2c
+            01cb0886  fcmp/gt FR11,FR2 ; FR11=0.000000 FR2=0.291339
+            01cb0888  rotcl R10 ; R10=114e2c
+            01cb088a  fcmp/gt FR3,FR2 ; FR3=58.486973 FR2=0.291339
+            01cb088c  add #1,R10 ; R10=114e2c
+            01cb088e  rotcl R10 ; R10=114e2c
+            01cb0890  fcmp/gt FR0,FR11 ; FR0=0.000000 FR11=0.000000
+            01cb0892  rotcl R10 ; R10=114e2c
+            01cb0894  fcmp/gt FR3,FR0 ; FR3=58.486973 FR0=0.000000
+            01cb0896  rotcl R10 ; R10=114e2c
+            01cb0898  fcmp/gt FR1,FR11 ; FR1=-0.294282 FR11=0.000000
+            01cb089a  rotcl R10 ; R10=114e2c
+            01cb089c  fcmp/gt FR3,FR1 ; FR3=58.486973 FR1=-0.294282
+            01cb089e  rotcl R10 ; R10=114e2c
+            01cb08a0  rts ;
+            01cb08a2  nop ;
+    7.3%  block 01caf16c: runs 139163249, 7 cycles, 4 instructions
+            01caf16c  mov.w @R13+,R0 ; R13=2081a0 R0=9
+            01caf16e  dt R12 ; R12=10ef64
+            01caf170  or R0,R6 ; R0=9 R6=40
+            01caf172  bf 0x1CAF16C ;
+    6.6%  block 01caf50c: runs 46401560, 19 cycles, 6 instructions
+            01caf50c  add #-3,R12 ; R12=10ef64
+            01caf50e  mov.w @R13+,R4 ; R13=2081a0 R4=0
+            01caf510  mov.w @R13+,R5 ; R13=2081a0 R5=f7354
+            01caf512  mov.w @R13+,R6 ; R13=2081a0 R6=40
+            01caf514  cmp/pl R8 ; R8=ff8cc
+            01caf516  bf 0x1CAF574 ;
+    2.8%  block 01c9b28e: runs 25060746, 15 cycles, 7 instructions
+            01c9b28e  mov R13,R4 ; R13=2081a0 R4=0
+            01c9b290  mov.w @R4,R1 ; R4=0 R1=ff
+            01c9b292  extu.w R1,R7 ; R1=ff R7=1
+            01c9b294  mov.l @(0x1C9B420[PC]),R2 ; R2=0
+            01c9b296  cmp/eq R2,R7 ; R2=0 R7=1
+            01c9b298  bf.s 0x1C9B2A0 ;
+            01c9b29a  add #2,R13 ; R13=2081a0
+    2.4%  block 01caf534: runs 46401560, 7 cycles, 4 instructions
+            01caf534  mov R4,R0 ; R4=0 R0=9
+            01caf536  mov.b @(R0,R9),R10 ; R9=0 R10=114e2c
+            01caf538  tst R10,R10 ; R10=114e2c R10=114e2c
+            01caf53a  bf 0x1CAF544 ;
+    2.4%  block 01caf518: runs 46401560, 7 cycles, 3 instructions
+            01caf518  mov.l @(0x1CAF52C[PC]),R0 ; R0=9
+            01caf51a  cmp/eq R0,R8 ; R0=9 R8=ff8cc
+            01caf51c  bf 0x1CAF534 ;
+    2.1%  block 8c01734c: runs 9996594, 28 cycles, 15 instructions
+            8c01734c  mov.l R8,@-R15 ; R8=ff8cc R15=c3bf3ec
+            8c01734e  mov.l R9,@-R15 ; R9=0 R15=c3bf3ec
+            8c017350  mov.l R10,@-R15 ; R10=114e2c R15=c3bf3ec
+            8c017352  mov.l R11,@-R15 ; R11=0 R15=c3bf3ec
+            8c017354  mov.l R12,@-R15 ; R12=10ef64 R15=c3bf3ec
+            8c017356  sts.l PR,@-R15 ; R15=c3bf3ec
+            8c017358  add #-16,R15 ; R15=c3bf3ec
+            8c01735a  mov #0x4A,R0 ; R0=9
+            8c01735c  mov.l @(0x8C0174C8[PC]),R4 ; R4=0
+            8c01735e  shll R0 ; R0=9
+            8c017360  mov.l @(R0,R4),R6 ; R4=0 R6=40
+            8c017362  mov.l @(0x8C0174B8[PC]),R5 ; R5=f7354
+            8c017364  mov.l @(0x4,R5),R2 ; R5=f7354 R2=0
+            8c017366  cmp/eq R2,R6 ; R2=0 R6=40
+            8c017368  bf 0x8C017378 ;
+    2.0%  block 8c017544: runs 9996594, 27 cycles, 13 instructions
+            8c017544  mov.l R8,@-R15 ; R8=ff8cc R15=c3bf3ec
+            8c017546  mov.l R9,@-R15 ; R9=0 R15=c3bf3ec
+            8c017548  mov.l R10,@-R15 ; R10=114e2c R15=c3bf3ec
+            8c01754a  mov.l R11,@-R15 ; R11=0 R15=c3bf3ec
+            8c01754c  sts.l PR,@-R15 ; R15=c3bf3ec
+            8c01754e  add #-16,R15 ; R15=c3bf3ec
+            8c017550  mov.l @(0x8C0176E0[PC]),R10 ; R10=114e2c
+            8c017552  add #4,R10 ; R10=114e2c
+            8c017554  mov.l @(0x8C0176D8[PC]),R0 ; R0=9
+            8c017556  mov #0x1,R1 ; R1=ff
+            8c017558  mov.l @(0x8C0176E8[PC]),R9 ; R9=0
+            8c01755a  jsr @R0 ; R0=9
+            8c01755c  mov.l R1,@R9 ; R1=ff R9=0
+    2.0%  block 01caf552: runs 19235600, 14 cycles, 7 instructions
+            01caf552  mov R5,R0 ; R5=f7354 R0=9
+            01caf554  mov.b R10,@(R0,R9) ; R10=114e2c R9=0
+            01caf556  and R10,R14 ; R10=114e2c R14=c3bf424
+            01caf558  mov R6,R0 ; R6=40 R0=9
+            01caf55a  mov.b @(R0,R9),R10 ; R9=0 R10=114e2c
+            01caf55c  tst R10,R10 ; R10=114e2c R10=114e2c
+            01caf55e  bf 0x1CAF568 ;
+    1.9%  block 8c017528: runs 9993859, 25 cycles, 8 instructions
+            8c017528  add #16,R15 ; R15=c3bf3ec
+            8c01752a  lds.l @R15+,PR ; R15=c3bf3ec
+            8c01752c  mov.l @R15+,R12 ; R15=c3bf3ec R12=10ef64
+            8c01752e  mov.l @R15+,R11 ; R15=c3bf3ec R11=0
+            8c017530  mov.l @R15+,R10 ; R15=c3bf3ec R10=114e2c
+            8c017532  mov.l @R15+,R9 ; R15=c3bf3ec R9=0
+            8c017534  rts ;
+            8c017536  mov.l @R15+,R8 ; R15=c3bf3ec R8=ff8cc
+    1.8%  block 01caf540: runs 17614731, 14 cycles, 7 instructions
+            01caf540  mov R4,R0 ; R4=0 R0=9
+            01caf542  mov.b R10,@(R0,R9) ; R10=114e2c R9=0
+            01caf544  mov R10,R14 ; R10=114e2c R14=c3bf424
+            01caf546  mov R5,R0 ; R5=f7354 R0=9
+            01caf548  mov.b @(R0,R9),R10 ; R9=0 R10=114e2c
+            01caf54a  tst R10,R10 ; R10=114e2c R10=114e2c
+            01caf54c  bf 0x1CAF556 ;
+    1.8%  block 8c0176c2: runs 9996594, 24 cycles, 8 instructions
+            8c0176c2  mov R8,R0 ; R8=ff8cc R0=9
+            8c0176c4  add #16,R15 ; R15=c3bf3ec
+            8c0176c6  lds.l @R15+,PR ; R15=c3bf3ec
+            8c0176c8  mov.l @R15+,R11 ; R15=c3bf3ec R11=0
+            8c0176ca  mov.l @R15+,R10 ; R15=c3bf3ec R10=114e2c
+            8c0176cc  mov.l @R15+,R9 ; R15=c3bf3ec R9=0
+            8c0176ce  rts ;
+            8c0176d0  mov.l @R15+,R8 ; R15=c3bf3ec R8=ff8cc
+    1.7%  block 0026dea0: runs 2934089, 79 cycles, 86 instructions
+            0026dea0  mov R0,R1 ; R0=9 R1=ff
+            0026dea2  swap.b R14,R0 ; R14=c3bf424 R0=9
+            0026dea4  and #0xE,R0 ;
+            0026dea6  cmp/eq #0xE,R0 ;
+            0026dea8  bf 0x26DED0 ;
+            0026deaa  add #-32,R14 ; R14=c3bf424
+            0026deac  mov.l @(0x2081A8),R0 ;
+            0026deae  jsr @R0 ; R0=9
+            0026deb0  nop ;
+            0026deb2  mov.l @(0x18,R9),R0 ; R9=0 R0=9
+            0026deb4  mov.l R0,@(0x0,R14) ; R0=9 R14=c3bf424
+            0026deb6  mov.l @(0x1C,R9),R0 ; R9=0 R0=9
+            0026deb8  mov.l R0,@(0x4,R14) ; R0=9 R14=c3bf424
+            0026deba  mov.l @(0x20,R9),R0 ; R9=0 R0=9
+            0026debc  mov.l R0,@(0x8,R14) ; R0=9 R14=c3bf424
+            0026debe  mov.l @(0x24,R9),R0 ; R9=0 R0=9
+            0026dec0  mov.l R0,@(0xC,R14) ; R0=9 R14=c3bf424
+            0026dec2  mov.l @(0x28,R9),R0 ; R9=0 R0=9
+            0026dec4  mov.l R0,@(0x10,R14) ; R0=9 R14=c3bf424
+            0026dec6  mov.l @(0x2C,R9),R0 ; R9=0 R0=9
+            0026dec8  mov.l R0,@(0x14,R14) ; R0=9 R14=c3bf424
+            0026deca  pref @R14 ; R14=c3bf424
+            0026decc  add #32,R14 ; R14=c3bf424
+            0026dece  add #32,R14 ; R14=c3bf424
+    1.7%  block 01caf564: runs 28869446, 8 cycles, 6 instructions
+            01caf564  mov R6,R0 ; R6=40 R0=9
+            01caf566  mov.b R10,@(R0,R9) ; R10=114e2c R9=0
+            01caf568  and R14,R10 ; R14=c3bf424 R10=114e2c
+            01caf56a  mov R10,R0 ; R10=114e2c R0=9
+            01caf56c  tst #0xBF,R0 ;
+            01caf56e  bf 0x1CAF508 ;
+    1.7%  block 01caf544: runs 28786829, 8 cycles, 5 instructions
+            01caf544  mov R10,R14 ; R10=114e2c R14=c3bf424
+            01caf546  mov R5,R0 ; R5=f7354 R0=9
+            01caf548  mov.b @(R0,R9),R10 ; R9=0 R10=114e2c
+            01caf54a  tst R10,R10 ; R10=114e2c R10=114e2c
+            01caf54c  bf 0x1CAF556 ;

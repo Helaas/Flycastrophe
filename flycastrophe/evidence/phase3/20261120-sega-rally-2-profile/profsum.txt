@@ -1,0 +1,402 @@
+== thread Flycast-emu: 52858 samples (CPU-time timer; the kernel tick caps the rate); jit 63%, lib 19%, core 18%
+   33.0%  [dynarec loop/stubs]
+   19.0%  <libc.so.6>
+    7.1%  fault_handler(int, siginfo_t*, void*)
+    0.9%  cache_entry(TLB_Entry const&) (.lto_priv.0)
+    0.7%  LzmaDec_DecodeReal2
+    0.6%  mmu_full_lookup(unsigned int, TLB_Entry const**, unsigned int&)
+    0.6%  sqWriteMmuTry(unsigned int, Sh4Context*)
+    0.5%  mmuwin::(anonymous namespace)::clearWindow(int) (.lto_priv.0)
+    0.5%  [SH4 block 000170e2]
+    0.5%  find_entry(unsigned int, TLB_Entry const**) (.lto_priv.0)
+    0.5%  mmuwin::mapPage(unsigned int, unsigned int)
+    0.4%  [SH4 block 01c62c28]
+    0.4%  [SH4 block 000170de]
+    0.4%  [SH4 block 01b3c3d0]
+    0.4%  [SH4 block 000170d6]
+    0.4%  ta_thd_data32_i(simd256_t const*) (.lto_priv.0)
+    0.3%  ecc_generate
+    0.3%  Arm64Dynarec::rewrite(host_context_t&, void*)
+    0.3%  UpdateSR()
+    0.3%  mmuDynarecLookup(unsigned int, unsigned int, unsigned int) (.lto_priv.0)
+    0.3%  [SH4 block 8c01233a]
+    0.3%  bm_GetCodeByVAddr(unsigned int) (.part.0)
+    0.3%  [SH4 block 01b5df74]
+    0.3%  [SH4 block 01df3aea]
+    0.3%  [SH4 block 01b648d8]
+    0.3%  <libstdc++.so.6.0.30>
+    0.2%  [SH4 block 01b64d1c]
+    0.2%  [SH4 block 01b5b4bc]
+    0.2%  [SH4 block 01b56dc0]
+    0.2%  [SH4 block 8c012302]
+    0.2%  [SH4 block 01b5b4c6]
+    0.2%  [SH4 block 01b577f6]
+    0.2%  [SH4 block 000338c2]
+    0.2%  [SH4 block 01b557bc]
+    0.2%  [SH4 block 01bf4428]
+    0.2%  [SH4 block 00040e80]
+    0.2%  [SH4 block 01b8ad2a]
+    0.2%  sh4_sched_tick(int) (.constprop.0)
+    0.2%  mmuDispatchCacheFlush()
+    0.2%  [SH4 block 00036c2c]
+    0.2%  [SH4 block 01b86ebe]
+    0.1%  Arm64Assembler::compileBlock(RuntimeBlockInfo*, bool, bool)
+    0.1%  unsigned int ReadMem_p4mmr<unsigned int>(unsigned int)
+    0.1%  [SH4 block 01b93ace]
+    0.1%  deadcast::rallySkip(unsigned int) (.lto_priv.0)
+  other libraries, by caller:
+    9.7%  <libc.so.6> from mmuwin::mapPage(unsigned int, unsigned int)
+    4.8%  <libc.so.6> from CCN_MMUCR_write(unsigned int, unsigned int) (.lto_priv.0)
+    3.5%  <libc.so.6> from mmuwin::(anonymous namespace)::clearWindow(int) (.lto_priv.0)
+    0.5%  <libc.so.6> from <libc.so.6>
+    0.4%  <libc.so.6> from <libstdc++.so.6.0.30>
+    0.1%  <libstdc++.so.6.0.30> from <libstdc++.so.6.0.30>
+    0.0%  <[vdso]> from <[vdso]>
+    0.0%  <libstdc++.so.6.0.30> from std::_Rb_tree_iterator<std::pair<Sh4RegType const, RegAlloc<eReg, eFReg, true>::reg_alloc>> std::_Rb_tree<S...
+    0.0%  <[vdso]> from <libc.so.6>
+    0.0%  <libstdc++.so.6.0.30> from startup._ZNSt6vectorIPN6config10BaseOptionESaIS2_EE17_M_realloc_insertIJS2_EEEvN9__gnu_cxx17__normal_iterat...
+    0.0%  <libc.so.6> from AnalyseBlock(RuntimeBlockInfo*)
+    0.0%  <libc.so.6> from addrspace::unprotectVram(unsigned int, unsigned int)
+
+== thread render: 9817 samples (CPU-time timer; the kernel tick caps the rate); lib 90%, core 10%
+   52.7%  <libmali.so.1.9.0>
+   16.9%  <libc.so.6>
+   12.2%  <retroarch>
+    2.8%  <libSDL2-2.0.so.0>
+    2.8%  <libwayland-client.so.0.22.0>
+    1.9%  void DrawList<0u, false>(std::vector<PolyParam, std::allocator<PolyParam>> const&, int, int)
+    1.4%  OpenGLRenderer::Process(TA_context*)
+    1.2%  DrawStrips()
+    1.2%  <libpulsecommon-16.1.so>
+    1.0%  void SetGPState<2u, true>(PolyParam const*, unsigned int) (.constprop.0)
+    0.8%  <libpulse.so.0.24.2>
+    0.5%  SetTextureRepeatMode(unsigned int, unsigned int, unsigned int) (.lto_priv.0)
+    0.5%  GetProgram(bool, bool, bool, bool, bool, unsigned int, bool, unsigned int, bool, bool, bool, bool, int, boo...
+    0.5%  retro_run
+    0.4%  <libffi.so.8.1.0>
+    0.3%  <libstdc++.so.6.0.30>
+    0.2%  Emulator::render() (.constprop.0)
+    0.2%  setTileClipping(rend_context&)
+    0.2%  UpdateInputState(unsigned int) (.part.0.lto_priv.0)
+    0.2%  OpenGLRenderer::Render()
+    0.2%  <libm.so.6>
+    0.1%  BaseTextureCache<TextureCacheData>::getTextureCacheData(TSP, TCW, int) (.constprop.0)
+    0.1%  <[vdso]>
+    0.1%  GLCache::TexParameteri(unsigned int, unsigned int, int) (.constprop.3)
+    0.1%  SetCull(unsigned int)
+    0.1%  std::map<unsigned int, GLCache::TextureParameters, std::less<unsigned int>, std::allocator<std::pair<unsign...
+    0.1%  SetBaseClipping()
+    0.1%  PostProcessor::render(unsigned int) (.constprop.0)
+    0.1%  Emulator::checkStatus(bool) (.constprop.0)
+    0.1%  OpenGLRenderer::GetTexture(TSP, TCW, int)
+    0.1%  void texture_TW<ConvertTwiddle<UnpackerNop<unsigned short>>>(PixelBuffer<ConvertTwiddle<UnpackerNop<unsigne...
+    0.1%  tactx_Recycle(TA_context*) (.lto_priv.0)
+    0.1%  GLCache::TexParameteri(unsigned int, unsigned int, int) (.constprop.2)
+    0.1%  GLGraphicsContext::setSwapInterval(int)
+    0.1%  TransformMatrix::CalcMatrices(rend_context const*, int, int) (.constprop.0)
+    0.0%  SetupMainVBO()
+    0.0%  setTileClip(unsigned int, Rect&) (.lto_priv.0)
+    0.0%  getRegionTileAddrAndSize(unsigned int&, unsigned int&)
+    0.0%  getScaledFramebufferSize(rend_context const&, int&, int&)
+    0.0%  rglBindFramebuffer.constprop.0
+    0.0%  drawVmusAndCrosshairs(int, int)
+    0.0%  retro_resize_renderer(int, int, float)
+    0.0%  TransformMatrix::intersectTileAndFBScissor() const (.constprop.0)
+    0.0%  get_analog_stick(short (*)(unsigned int, unsigned int, unsigned int, unsigned int), int, int, short*, short*)
+    0.0%  getVideoShift(float&, float&) (.constprop.0)
+  other libraries, by caller:
+   48.8%  <libmali.so.1.9.0> from <libmali.so.1.9.0>
+    9.6%  <libc.so.6> from <libc.so.6>
+    7.3%  <retroarch> from <retroarch>
+    6.2%  <libc.so.6> from <libmali.so.1.9.0>
+    4.7%  <retroarch> from <[unmapped]>
+    2.6%  <libwayland-client.so.0.22.0> from <libwayland-client.so.0.22.0>
+    2.1%  <libSDL2-2.0.so.0> from <libSDL2-2.0.so.0>
+    1.3%  <libmali.so.1.9.0> from retro_run
+    1.0%  <libpulsecommon-16.1.so> from <libpulsecommon-16.1.so>
+    0.7%  <libSDL2-2.0.so.0> from <retroarch>
+    0.6%  <libpulse.so.0.24.2> from <libpulse.so.0.24.2>
+    0.5%  <libmali.so.1.9.0> from <[stack]>
+
+== thread deadcast-aica: 3833 samples (CPU-time timer; the kernel tick caps the rate); core 78%, lib 22%
+   31.0%  aica::timeStep()
+   18.4%  <libc.so.6>
+    4.5%  aica::arm::CPUSwitchMode(int, bool) (.lto_priv.0)
+    4.3%  void aica::arm::recompiler::MSR_do<0u>(unsigned int, unsigned int)
+    3.4%  unsigned int aica::arm::recompiler::DoMemOp<true, false>(unsigned int, unsigned int)
+    2.7%  <libstdc++.so.6.0.30>
+    2.7%  aica::arm::recompiler::interpret(unsigned int)
+    2.0%  ?core+ed2044
+    1.5%  unsigned int aica::arm::recompiler::DoMemOp<false, false>(unsigned int, unsigned int)
+    1.4%  drflac__decode_samples_with_residual.lto_priv.0
+    1.3%  aica::arm::CPUUpdateCPSR()
+    1.1%  aica::workerLoop()
+    1.0%  aica::UpdateSh4Ints() (.lto_priv.0)
+    0.9%  ?core+ed203c
+    0.8%  ?core+ed2040
+    0.8%  ?core+ed2034
+    0.7%  unsigned int aica::arm::recompiler::DoMemOp<true, true>(unsigned int, unsigned int)
+    0.7%  aica::update_arm_interrupts() (.lto_priv.0)
+    0.6%  hunk_read_into_memory.lto_priv.0
+    0.6%  flac_decoder_decode_interleaved
+    0.5%  aica::sgc::ReadCommonReg(unsigned int, bool)
+    0.4%  ?core+ed202c
+    0.4%  unsigned int aica::arm::recompiler::DoMemOp<false, true>(unsigned int, unsigned int)
+    0.3%  ?core+131ad8
+    0.3%  void aica::sgc::ChannelEx::StepDecodeSample<(aica::sgc::PCMSType)3, true>(unsigned int)
+    0.3%  void aica::writeRegInternal<unsigned short>(unsigned int, unsigned short)
+    0.3%  unsigned short aica::readRegInternal<unsigned short>(unsigned int)
+    0.3%  void aica::arm::writeMem<unsigned int>(unsigned int, unsigned int) (.lto_priv.0)
+    0.3%  ?core+ed6974
+    0.3%  ?core+1311d8
+    0.3%  <[vdso]>
+    0.2%  ?core+ed2030
+    0.2%  ?core+ed2008
+    0.2%  ?core+ed2050
+    0.2%  unsigned int aica::arm::readMem<unsigned int>(unsigned int) (.lto_priv.0)
+    0.2%  void aica::writeTimerAndIntReg<unsigned short>(unsigned int, unsigned short)
+    0.2%  ?core+ed6d90
+    0.2%  ?core+ed7140
+    0.2%  ?core+ed6c0c
+    0.2%  void aica::writeRegInternal<unsigned char>(unsigned int, unsigned char)
+    0.2%  ?core+ed6cf0
+    0.2%  ?core+ed6d80
+    0.2%  ?core+ed6bd8
+    0.2%  ?core+ed6da8
+    0.2%  ?core+ed6ce8
+  other libraries, by caller:
+   16.0%  <libc.so.6> from <libc.so.6>
+    2.5%  <libstdc++.so.6.0.30> from <libstdc++.so.6.0.30>
+    1.6%  <libc.so.6> from aica::timeStep()
+    0.5%  <libc.so.6> from <libstdc++.so.6.0.30>
+    0.3%  <[vdso]> from <libc.so.6>
+    0.3%  <libstdc++.so.6.0.30> from aica::workerLoop()
+    0.2%  <libc.so.6> from aica::workerLoop()
+    0.1%  <ld-linux-aarch64.so.1> from aica::timeStep()
+    0.1%  <ld-linux-aarch64.so.1> from aica::UpdateSh4Ints() (.lto_priv.0)
+    0.1%  <libc.so.6> from drflac_open_with_metadata_private.constprop.0
+    0.1%  <libc.so.6> from CHDTrack::Read(unsigned int, unsigned char*, SectorFormat*, unsigned char*, SubcodeFormat*)
+    0.1%  <libc.so.6> from cdfl_codec_decompress.lto_priv.0
+
+== thread deadcast-parse: 1601 samples (CPU-time timer; the kernel tick caps the rate); core 92%, lib 8%
+   28.0%  makePrimRestartIndex(std::vector<PolyParam, std::allocator<PolyParam>>&, int, int, bool, rend_context&) (.i...
+   26.4%  Ta_Dma* TAParserTempl<0, 1, 2, 3>::ta_poly_data<3u, 1u>(Ta_Dma*, Ta_Dma*)
+   14.3%  TAParserTempl<2, 1, 0, 3>::EndPolyStrip()
+    7.3%  <libc.so.6>
+    6.6%  sortPolyParams(std::vector<PolyParam, std::allocator<PolyParam>>&, int, int, rend_context&)
+    5.6%  ta_parse(TA_context*, bool, bool)
+    2.9%  PolyParam* std::__move_merge<PolyParam*, PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, PolyPar...
+    2.8%  TAParserTempl<0, 1, 2, 3>::ta_main(Ta_Dma*, Ta_Dma*)
+    1.7%  void std::__insertion_sort<PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, PolyParam*, __gnu_cxx...
+    1.1%  Ta_Dma* TAParserTempl<0, 1, 2, 3>::ta_poly_data<0u, 1u>(Ta_Dma*, Ta_Dma*)
+    1.0%  <libstdc++.so.6.0.30>
+    0.7%  void std::__merge_adaptive<PolyParam*, long, PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, Pol...
+    0.4%  TAParserTempl<0, 1, 2, 3>::AppendPolyParam0(void*)
+    0.2%  parseRenderPass(RenderPass&, RenderPass const&, rend_context&, bool)
+    0.2%  parseLoop()
+    0.1%  Ta_Dma* TAParserTempl<0, 1, 2, 3>::ta_poly_data<1u, 1u>(Ta_Dma*, Ta_Dma*)
+    0.1%  ?core+131998
+    0.1%  getRegionSettings(int, RenderPass&)
+    0.1%  void std::__stable_sort_adaptive<PolyParam*, PolyParam*, long, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam...
+    0.1%  getRegionTileAddrAndSize(unsigned int&, unsigned int&)
+    0.1%  ?core+132290
+    0.1%  void std::__merge_sort_with_buffer<PolyParam*, PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, P...
+  other libraries, by caller:
+    3.0%  <libc.so.6> from <libc.so.6>
+    2.1%  <libc.so.6> from <libstdc++.so.6.0.30>
+    1.5%  <libc.so.6> from PolyParam* std::__move_merge<PolyParam*, PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, PolyPar...
+    0.8%  <libstdc++.so.6.0.30> from <libstdc++.so.6.0.30>
+    0.4%  <libc.so.6> from void std::__merge_adaptive<PolyParam*, long, PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, Pol...
+    0.2%  <libc.so.6> from void std::__insertion_sort<PolyParam*, __gnu_cxx::__ops::_Iter_less_iter>(PolyParam*, PolyParam*, __gnu_cxx...
+    0.1%  <libstdc++.so.6.0.30> from parseLoop()
+    0.1%  <libc.so.6> from parseLoop()
+    0.1%  <libstdc++.so.6.0.30> from sortPolyParams(std::vector<PolyParam, std::allocator<PolyParam>>&, int, int, rend_context&)
+
+== SH4 blocks by guest cycles (top 12 of 400 listed)
+   10.8%  block 01b3c3d0: runs 9816316, 28 cycles, 19 instructions
+            01b3c3d0  fmov.s @R4+,FR0 ; R4=4f1400 FR0=-0.146675
+            01b3c3d2  fmov.s @R4+,FR2 ; R4=4f1400 FR2=0.773512
+            01b3c3d4  fldi1 FR3 ; FR3=0.795309
+            01b3c3d6  nop ;
+            01b3c3d8  ftrv xmtrx,<FV_N> ;
+            01b3c3da  fmov.s @R5+,FR4 ; R5=b FR4=0.000000
+            01b3c3dc  fmov.s @R5+,FR6 ; R5=b FR6=0.000000
+            01b3c3de  fsub FR4,FR0 ; FR4=0.000000 FR0=-0.146675
+            01b3c3e0  fsub FR5,FR1 ; FR5=0.000000 FR1=-0.082638
+            01b3c3e2  fsub FR6,FR2 ; FR6=0.000000 FR2=0.773512
+            01b3c3e4  fldi0 FR3 ; FR3=0.795309
+            01b3c3e6  fmov FR0,FR4 ; FR0=-0.146675 FR4=0.000000
+            01b3c3e8  fmov FR2,FR6 ; FR2=0.773512 FR6=0.000000
+            01b3c3ea  add #32,R5 ; R5=b
+            01b3c3ec  fipr <FV_M>,<FV_N> ;
+            01b3c3ee  fmov.s @R5+,FR8 ; R5=b FR8=175.000000
+            01b3c3f0  fmov FR2,FR12 ; FR2=0.773512 FR12=0.000000
+            01b3c3f2  fcmp/gt FR3,FR8 ; FR3=0.795309 FR8=175.000000
+            01b3c3f4  bt 0x1B3C3FA ;
+    5.4%  block 01b3c3c2: runs 9792331, 14 cycles, 7 instructions
+            01b3c3c2  xor R1,R1 ; R1=61 R1=61
+            01b3c3c4  mov.l @(0x1C,R8),R0 ; R8=17f940 R0=61
+            01b3c3c6  mov.l R1,@(0x38,R8) ; R1=61 R8=17f940
+            01b3c3c8  tst R12,R0 ; R12=1ba1b38 R0=61
+            01b3c3ca  mov R9,R4 ; R9=1ba1c08 R4=4f1400
+            01b3c3cc  mov R8,R5 ; R8=17f940 R5=b
+            01b3c3ce  bf 0x1B3C458 ;
+    2.6%  block 01b9847c: runs 2172834, 30 cycles, 26 instructions
+            01b9847c  fmov.s @R4+,FR0 ; R4=4f1400 FR0=-0.146675
+            01b9847e  fldi1 FR3 ; FR3=0.795309
+            01b98480  fmov.s @R4+,FR1 ; R4=4f1400 FR1=-0.082638
+            01b98482  fmov.s @R4,FR2 ; R4=4f1400 FR2=0.773512
+            01b98484  add #24,R4 ; R4=4f1400
+            01b98486  ftrv xmtrx,<FV_N> ;
+            01b98488  mov #0x0,R1 ; R1=61
+            01b9848a  fcmp/gt FR1,FR4 ; FR1=-0.082638 FR4=0.000000
+            01b9848c  rotcl R1 ; R1=61
+            01b9848e  fcmp/gt FR0,FR4 ; FR0=-0.146675 FR4=0.000000
+            01b98490  rotcl R1 ; R1=61
+            01b98492  fcmp/gt FR3,FR1 ; FR3=0.795309 FR1=-0.082638
+            01b98494  rotcl R1 ; R1=61
+            01b98496  fcmp/gt FR3,FR0 ; FR3=0.795309 FR0=-0.146675
+            01b98498  rotcl R1 ; R1=61
+            01b9849a  fcmp/gt FR3,FR2 ; FR3=0.795309 FR2=0.773512
+            01b9849c  rotcl R1 ; R1=61
+            01b9849e  fcmp/gt FR2,FR4 ; FR2=0.773512 FR4=0.000000
+            01b984a0  rotcl R1 ; R1=61
+            01b984a2  fcmp/gt FR4,FR2 ; FR4=0.000000 FR2=0.773512
+            01b984a4  rotcl R1 ; R1=61
+            01b984a6  and R1,R3 ; R1=61 R3=21
+            01b984a8  or R1,R2 ; R1=61 R2=61
+            01b984aa  mov R2,R0 ; R2=61 R0=61
+    2.0%  block 00056dc0: runs 2122567, 24 cycles, 10 instructions
+            00056dc0  sts.l PR,@-R15 ; R15=c1bfa00
+            00056dc2  add #-20,R15 ; R15=c1bfa00
+            00056dc4  mov.l @(0x56EAC[PC]),R1 ; R1=61
+            00056dc6  mov #0x60,R0 ; R0=61
+            00056dc8  mov.l @R1,R4 ; R1=61 R4=4f1400
+            00056dca  mov #0x10,R5 ; R5=b
+            00056dcc  mov.l @R4,R2 ; R4=4f1400 R2=61
+            00056dce  mov.l @(R0,R2),R2 ; R2=61 R2=61
+            00056dd0  jsr @R2 ; R2=61
+            00056dd2  add R15,R5 ; R15=c1bfa00 R5=b
+    1.8%  block 01bf41c4: runs 2122567, 21 cycles, 10 instructions
+            01bf41c4  mov.l @(0x1BF4298[PC]),R3 ; R3=21
+            01bf41c6  mov.l @R4,R4 ; R4=4f1400 R4=4f1400
+            01bf41c8  mov.l @R3,R3 ; R3=21 R3=21
+            01bf41ca  sub R3,R4 ; R3=21 R4=4f1400
+            01bf41cc  mov.l @(0x1BF429C[PC]),R1 ; R1=61
+            01bf41ce  mov #0x3,R2 ; R2=61
+            01bf41d0  mov.l @R1,R5 ; R1=61 R5=b
+            01bf41d2  add #-1,R5 ; R5=b
+            01bf41d4  cmp/hi R2,R5 ; R2=61 R5=b
+            01bf41d6  bt 0x1BF4204 ;
+    1.7%  block 01b3c580: runs 1003344, 42 cycles, 43 instructions
+            01b3c580  mov.l R4,@R15 ; R4=4f1400 R15=c1bfa00
+            01b3c582  mov R4,R7 ; R4=4f1400 R7=1b9caa8
+            01b3c584  mov.l @(0x1B3C720[PC]),R1 ; R1=61
+            01b3c586  mov.l @R1,R1 ; R1=61 R1=61
+            01b3c588  mov R1,R4 ; R1=61 R4=4f1400
+            01b3c58a  mov.l @(0x1B3C710[PC]),R2 ; R2=61
+            01b3c58c  mov.l @R2,R2 ; R2=61 R2=61
+            01b3c58e  mov R2,R5 ; R2=61 R5=b
+            01b3c590  add #8,R7 ; R7=1b9caa8
+            01b3c592  fmov.s @R4+,FR8 ; R4=4f1400 FR8=175.000000
+            01b3c594  fmov.s @R4+,FR10 ; R4=4f1400 FR10=-0.958118
+            01b3c596  fmov.s @R7+,FR0 ; R7=1b9caa8 FR0=-0.146675
+            01b3c598  fmov.s @R7+,FR2 ; R7=1b9caa8 FR2=0.773512
+            01b3c59a  nop ;
+            01b3c59c  fipr <FV_M>,<FV_N> ;
+            01b3c59e  fldi1 FR0 ; FR0=-0.146675
+            01b3c5a0  fneg FR0  ; FR0=-0.146675
+            01b3c5a2  mov.l @R5,R7 ; R5=b R7=1b9caa8
+            01b3c5a4  fmac FR0,FR11,FR0 ; FR0=-0.146675 FR11=0.123562 FR0=-0.146675
+            01b3c5a6  fmov.s @R5+,FR6 ; R5=b FR6=0.000000
+            01b3c5a8  fmov.s @R5+,FR2 ; R5=b FR2=0.773512
+            01b3c5aa  fmov.s @R5,FR4 ; R5=b FR4=0.000000
+            01b3c5ac  fadd FR7,FR0 ; FR7=640.000000 FR0=-0.146675
+            01b3c5ae  add #4,R5 ; R5=b
+    1.4%  block 01c663de: runs 722176, 48 cycles, 35 instructions
+            01c663de  dt R8 ; R8=17f940
+            01c663e0  mov.l @R4+,R7 ; R4=4f1400 R7=1b9caa8
+            01c663e2  mov.l @R4+,R6 ; R4=4f1400 R6=16c534
+            01c663e4  mov.l R7,@R5 ; R7=1b9caa8 R5=b
+            01c663e6  mov.l R6,@(0x4,R5) ; R6=16c534 R5=b
+            01c663e8  mov.l @R4+,R7 ; R4=4f1400 R7=1b9caa8
+            01c663ea  mov.l @R4+,R6 ; R4=4f1400 R6=16c534
+            01c663ec  mov.l R7,@(0x8,R5) ; R7=1b9caa8 R5=b
+            01c663ee  mov.l R6,@(0xC,R5) ; R6=16c534 R5=b
+            01c663f0  mov.l @R4+,R7 ; R4=4f1400 R7=1b9caa8
+            01c663f2  mov.l @R4+,R6 ; R4=4f1400 R6=16c534
+            01c663f4  mov.l R7,@(0x10,R5) ; R7=1b9caa8 R5=b
+            01c663f6  mov.l R6,@(0x14,R5) ; R6=16c534 R5=b
+            01c663f8  mov.l @R4+,R7 ; R4=4f1400 R7=1b9caa8
+            01c663fa  mov.l @R4+,R6 ; R4=4f1400 R6=16c534
+            01c663fc  mov.l R7,@(0x18,R5) ; R7=1b9caa8 R5=b
+            01c663fe  mov.l R6,@(0x1C,R5) ; R6=16c534 R5=b
+            01c66400  mov.l @R4+,R7 ; R4=4f1400 R7=1b9caa8
+            01c66402  mov.l @R4+,R6 ; R4=4f1400 R6=16c534
+            01c66404  mov.l R7,@(0x20,R5) ; R7=1b9caa8 R5=b
+            01c66406  mov.l R6,@(0x24,R5) ; R6=16c534 R5=b
+            01c66408  mov.l @R4+,R7 ; R4=4f1400 R7=1b9caa8
+            01c6640a  mov.l @R4+,R6 ; R4=4f1400 R6=16c534
+            01c6640c  mov.l R7,@(0x28,R5) ; R7=1b9caa8 R5=b
+    1.4%  block 01e41848: runs 1728893, 20 cycles, 8 instructions
+            01e41848  mov.l R0,@(0x0,R4) ; R0=61 R4=4f1400
+            01e4184a  add #-16,R6 ; R6=16c534
+            01e4184c  mov.l R0,@(0x4,R4) ; R0=61 R4=4f1400
+            01e4184e  tst R6,R6 ; R6=16c534 R6=16c534
+            01e41850  mov.l R0,@(0x8,R4) ; R0=61 R4=4f1400
+            01e41852  mov.l R0,@(0xC,R4) ; R0=61 R4=4f1400
+            01e41854  bt.s 0x1E41868 ;
+            01e41856  add #16,R4 ; R4=4f1400
+    1.3%  block 01b93ace: runs 493615, 69 cycles, 74 instructions
+            01b93ace  mov #0xFFFFFFFF,R0 ; R0=61
+            01b93ad0  mov.l R0,@R14 ; R0=61 R14=c1bfb2c
+            01b93ad2  pref @R14 ; R14=c1bfb2c
+            01b93ad4  mov #0x5,R0 ; R0=61
+            01b93ad6  shld R0,R13 ; R0=61 R13=0
+            01b93ad8  add R10,R13 ; R10=1e2 R13=0
+            01b93ada  fmov.s @R13+,FR0 ; R13=0 FR0=-0.146675
+            01b93adc  add #64,R14 ; R14=c1bfb2c
+            01b93ade  fmov.s @R13+,FR2 ; R13=0 FR2=0.773512
+            01b93ae0  fldi1 FR3 ; FR3=0.795309
+            01b93ae2  ftrv xmtrx,<FV_N> ;
+            01b93ae4  fmov FR2,FR4 ; FR2=0.773512 FR4=0.000000
+            01b93ae6  fldi1 FR3 ; FR3=0.795309
+            01b93ae8  fdiv FR5,FR3 ; FR5=0.000000 FR3=0.795309
+            01b93aea  fmul FR3,FR2 ; FR3=0.795309 FR2=0.773512
+            01b93aec  fmul FR3,FR1 ; FR3=0.795309 FR1=-0.082638
+            01b93aee  fadd FR8,FR1 ; FR8=175.000000 FR1=-0.082638
+            01b93af0  fadd FR9,FR2 ; FR9=0.227501 FR2=0.773512
+            01b93af2  fmov.s @R13+,FR6 ; R13=0 FR6=0.000000
+            01b93af4  fmov.s @R13+,FR10 ; R13=0 FR10=-0.958118
+            01b93af6  fmov.s FR6,@-R14 ; FR6=0.000000 R14=c1bfb2c
+            01b93af8  fmov.s FR10,@-R14 ; FR10=-0.958118 R14=c1bfb2c
+            01b93afa  fmov.s FR2,@-R14 ; FR2=0.773512 R14=c1bfb2c
+            01b93afc  fmov.s FR0,@-R14 ; FR0=-0.146675 R14=c1bfb2c
+    1.3%  block 8c0176a8: runs 1171392, 29 cycles, 16 instructions
+            8c0176a8  mov.l R8,@-R15 ; R8=17f940 R15=c1bfa00
+            8c0176aa  mov.l R9,@-R15 ; R9=1ba1c08 R15=c1bfa00
+            8c0176ac  mov.l R10,@-R15 ; R10=1e2 R15=c1bfa00
+            8c0176ae  mov.l R11,@-R15 ; R11=4f0600 R15=c1bfa00
+            8c0176b0  mov.l R12,@-R15 ; R12=1ba1b38 R15=c1bfa00
+            8c0176b2  mov.l R13,@-R15 ; R13=0 R15=c1bfa00
+            8c0176b4  sts.l PR,@-R15 ; R15=c1bfa00
+            8c0176b6  add #-16,R15 ; R15=c1bfa00
+            8c0176b8  mov.l @(0x8C0177DC[PC]),R4 ; R4=4f1400
+            8c0176ba  mov.w @(0x8C0177D2[PC]),R1 ; R1=61
+            8c0176bc  add R1,R4 ; R1=61 R4=4f1400
+            8c0176be  mov.l @(0x8C0177E0[PC]),R1 ; R1=61
+            8c0176c0  mov.l @R4,R4 ; R4=4f1400 R4=4f1400
+            8c0176c2  mov.l @(0x4,R1),R1 ; R1=61 R1=61
+            8c0176c4  cmp/eq R1,R4 ; R1=61 R4=4f1400
+            8c0176c6  bf 0x8C0176DA ;
+    1.3%  block 01bf4212: runs 2122567, 16 cycles, 4 instructions
+            01bf4212  add #16,R15 ; R15=c1bfa00
+            01bf4214  lds.l @R15+,PR ; R15=c1bfa00
+            01bf4216  rts ;
+            01bf4218  mov.l @R15+,R8 ; R15=c1bfa00 R8=17f940
+    1.3%  block 00056ddc: runs 2122567, 16 cycles, 5 instructions
+            00056ddc  mov.l @(0x10,R15),R0 ; R15=c1bfa00 R0=61
+            00056dde  add #20,R15 ; R15=c1bfa00
+            00056de0  lds.l @R15+,PR ; R15=c1bfa00
+            00056de2  rts ;
+            00056de4  nop ;

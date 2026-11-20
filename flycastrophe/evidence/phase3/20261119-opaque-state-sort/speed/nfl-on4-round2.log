@@ -1,0 +1,165 @@
+[WARN] [GameMode] GameMode cannot be enabled on this system ("dlopen failed - libgamemode.so: cannot open shared object file: No such file or directory.") https://github.com/FeralInteractive/gamemode needs to be installed.
+[WARN] [Config] GameMode unsupported - disabling...
+[INFO] RetroArch 1.22.2 (Git 69a4f0ea1e)
+[INFO] === Build =======================================
+[INFO] Capabilities: ASIMD 
+[INFO] Version: 1.22.2
+[INFO] Git: 69a4f0ea1e
+[INFO] Built: Oct 18 2026
+[INFO] =================================================
+[INFO] [Input] Found input driver: "sdl2".
+[INFO] [Core] Loading dynamic libretro core from: "/userdata/dc-core-bench/cores/fcr-oson4_libretro.so".
+[INFO] [Override] Redirecting save file to "/userdata/dc-core-bench/saves/NFL 2K2 (USA).srm".
+[INFO] [Override] Redirecting save state to "/userdata/dc-core-bench/states/NFL 2K2 (USA).state".
+[INFO] [Environ] GET_VFS_INTERFACE. Core requested version >= V3, providing V3.
+[INFO] [Environ] GET_CORE_OPTIONS_VERSION.
+[INFO] [Environ] GET_LANGUAGE: "0".
+[INFO] [Environ] SET_CORE_OPTIONS_V2_INTL.
+[INFO] [Environ] SET_CONTROLLER_INFO.
+[INFO] [Environ] SET_SUPPORT_NO_GAME: yes.
+[INFO] [Environ] GET_LED_INTERFACE.
+[INFO] [Environ] GET_LOG_INTERFACE.
+[INFO] [Environ] GET_PERF_INTERFACE.
+[INFO] [Environ] SET_PIXEL_FORMAT: XRGB8888.
+[INFO] [Environ] SET_KEYBOARD_CALLBACK.
+[INFO] [Environ] GET_DISK_CONTROL_INTERFACE_VERSION.
+[INFO] [Environ] SET_DISK_CONTROL_EXT_INTERFACE.
+[libretro INFO] [VMEM] Info: nvmem is enabled
+[libretro INFO] [VMEM] Deadcast: the dynarec's window at 0x7e76b6d000
+[libretro INFO] [VMEM] BASE 0x7f7eb80000 RAM(16 MB) 0x7f8ab80000 VRAM64(8 MB) 0x7f82b80000 ARAM(2 MB) 0x7f9eb80000
+[INFO] [Content] Content loading skipped. Implementation will load it on its own.
+[libretro INFO] [BOOT] retro_load_game: /mnt/sdcard/Roms/DC/NFL 2K2 (USA).chd
+[INFO] [Environ] GET_RUMBLE_INTERFACE.
+[INFO] [Environ] GET_SYSTEM_DIRECTORY: "/userdata/dc-core-bench/system".
+[INFO] [Environ] GET_SAVE_DIRECTORY: "/userdata/dc-core-bench/saves".
+[ERROR] [Environ] GET_VARIABLE: reicast_texupscale - Invalid value.
+[ERROR] [Environ] GET_VARIABLE: reicast_texupscale_max_filtered_texture_size - Invalid value.
+[ERROR] [Environ] GET_VARIABLE: reicast_oit_layers - Invalid value.
+[INFO] [Environ] SET_SAVE_STATE_IN_BACKGROUND: no.
+[libretro INFO] File extension is: .chd
+[INFO] [Environ] GET_PREFERRED_HW_RENDER, video driver: "gl"...
+[INFO] [Environ] GET_PREFERRED_HW_RENDER: RETRO_HW_CONTEXT_OPENGL.
+[INFO] [Environ] SET_HW_RENDER, context type: gl.
+[INFO] [HW] Requesting OpenGLES2 context.
+[libretro INFO] [VMEM] Info: nvmem is enabled
+[libretro INFO] [VMEM] Deadcast: the dynarec's window at 0x7e76b6d000
+[libretro INFO] [VMEM] BASE 0x7f7eb80000 RAM(16 MB) 0x7f8ab80000 VRAM64(8 MB) 0x7f82b80000 ARAM(2 MB) 0x7f9eb80000
+[ERROR] [Environ] GET_VARIABLE: reicast_texupscale - Invalid value.
+[ERROR] [Environ] GET_VARIABLE: reicast_texupscale_max_filtered_texture_size - Invalid value.
+[ERROR] [Environ] GET_VARIABLE: reicast_oit_layers - Invalid value.
+[libretro INFO] [BOOT] Game ID is [MK-51168]
+[INFO] [Environ] GET_SYSTEM_DIRECTORY: "/userdata/dc-core-bench/system".
+[libretro INFO] [BOOT] Game ID is [MK-51168]
+[INFO] [Environ] SET_ROTATION: "0" (0 deg).
+[INFO] [SRAM] Skipping SRAM load.
+[INFO] [State] Found auto save state in "/userdata/dc-core-bench/states/NFL 2K2 (USA).state.auto".
+[INFO] [State] Auto-loading save state from "/userdata/dc-core-bench/states/NFL 2K2 (USA).state.auto" succeeded.
+[INFO] [Core] Version of libretro API: 1, Compiled against API: 1
+[INFO] [Core] Geometry: 640x480, Aspect: 1.333, FPS: 59.83, Sample rate: 44100.00 Hz.
+[INFO] [Video] Set video size to: fullscreen.
+[INFO] [Video] Using HW render, OpenGL driver forced.
+[INFO] [Video] Using configured "gl" driver for GL HW render.
+[INFO] [SDL GL] SDL 2.28.5 gfx context driver initialized.
+[INFO] [GL] Found GL context: "gl_sdl".
+[INFO] [GL] Detecting screen resolution: 960x720.
+xkbcommon: ERROR: couldn't find a Compose file for locale "en_US.UTF-8" (mapped to "en_US.UTF-8")
+[INFO] [GL] Vendor: ARM, Renderer: Mali-G52.
+[INFO] [GL] Version: OpenGL ES 3.2 v1.g13p0-01eac0.eea26e214e67ee07c71c05f5e3bb654f.
+[INFO] [GL] Using resolution 960x720.
+[INFO] [GL] Default shader backend found: glsl.
+[INFO] [GL] Using GLSL shader backend.
+[WARN] [GLSL] Stock GLSL shaders will be used.
+[INFO] [GLSL] Found GLSL vertex shader.
+[INFO] [GLSL] Found GLSL fragment shader.
+[INFO] [GLSL] Linking GLSL program.
+[INFO] [GLSL] Found GLSL vertex shader.
+[INFO] [GLSL] Found GLSL fragment shader.
+[INFO] [GLSL] Linking GLSL program.
+[INFO] [GLSL] Found GLSL vertex shader.
+[INFO] [GLSL] Found GLSL fragment shader.
+[INFO] [GLSL] Linking GLSL program.
+[INFO] [GL] Using 1 textures.
+[INFO] [GL] Loaded 1 program(s).
+[INFO] [GL] Initializing HW render (1024x1024).
+[INFO] [GL] Max texture size: 16383 px, renderbuffer size: 16383 px.
+[INFO] [GL] Supports FBO (render-to-texture).
+[INFO] [Video] Graphics driver did not initialize an input driver. Attempting to pick a suitable driver.
+[WARN] [SDL] Couldn't open haptic device of the joypad #0: Haptic: Joystick isn't a haptic device..
+[INFO] [SDL] Falling back to joystick rumble.
+[INFO] [Autoconf] Loong Gamepad (39171/39187) not configured, using fallback.
+[INFO] [Input] Found joypad driver: "sdl2".
+[INFO] [Video] Found display server: "null".
+[INFO] [Autoconf] Loong Gamepad (39171/39187) not configured, using fallback.
+[libretro INFO] [RENDERER] OpenGL ES version 3.2
+[libretro INFO] [RENDERER] Vendor 'ARM' Renderer 'Mali-G52' Version 'OpenGL ES 3.2 v1.g13p0-01eac0.eea26e214e67ee07c71c05f5e3bb654f'
+[libretro INFO] [RENDERER] glBlitFramebuffer test successful
+[INFO] [Audio] Set audio input rate to: 44227.80 Hz.
+[INFO] [PulseAudio] Requested 49152 bytes buffer, got 32256.
+[INFO] [Audio] Started synchronous audio driver.
+[INFO] [ALSA] Using ALSA version 1.2.11
+[INFO] [Microphone] Initialized microphone driver.
+[INFO] [Display] Found display driver: "gl".
+[INFO] [NetCMD] bringing_up_command_interface_at_port 55358.
+[INFO] [Network] Bringing up remote interface on port 55400.
+[INFO] [Environ] SET_INPUT_DESCRIPTORS.
+[ERROR] [Environ] GET_VARIABLE: reicast_texupscale - Invalid value.
+[ERROR] [Environ] GET_VARIABLE: reicast_texupscale_max_filtered_texture_size - Invalid value.
+[ERROR] [Environ] GET_VARIABLE: reicast_oit_layers - Invalid value.
+[INFO] [Playlist] Loading favorites file: "/userdata/dc-core-bench/home/.config/retroarch/playlists/builtin/content_favorites.lpl".
+[WARN] [SDL] Couldn't open haptic device of the joypad #0: Haptic: Joystick isn't a haptic device..
+[INFO] [SDL] Falling back to joystick rumble.
+[INFO] [Autoconf] Loong Gamepad (39171/39187) not configured, using fallback.
+[INFO] [Autoconf] Loong Gamepad (39171/39187) not configured, using fallback.
+[INFO] [State] Loading state "/userdata/dc-core-bench/states/NFL 2K2 (USA).state.auto", 37748760 bytes.
+[INFO] [State] Saving state "RAM", 37748760 bytes.
+[INFO] [Environ] GET_SYSTEM_DIRECTORY: "/userdata/dc-core-bench/system".
+[INFO] [Environ] SET_SYSTEM_AV_INFO: 640x480, Aspect: 1.333, FPS: 59.95, Sample rate: 44100.00 Hz.
+[INFO] [Audio] Set audio input rate to: 44140.24 Hz.
+[INFO] [PulseAudio] Requested 49152 bytes buffer, got 32256.
+[INFO] [Audio] Started synchronous audio driver.
+[INFO] [Display] Found display driver: "gl".
+[libretro INFO] [COMMON] Flycastrophe perf    1.0 s: vblank 14.87/s  24.8% lag 12.8 ms | rendered  9.91/s skipped  0.00/s | emu cpu  35% waits  45% | render cpu   0% | aica cpu   5% | renders 9 (to textures 0) 59.3 ms max 408.0 | textures updated 131 (1321 KB, seen before 0) | compiled 4282 in 234.1 ms resets 3 | wait turns skipped 0 asleep 0.0% | mmu flushes 2+0 misses 0 | emu frames late 11 max 261.7 ms | gl per render: draws 636 programs 110 textures 633 | code writes 0 stores 2570 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf    2.0 s: vblank 60.90/s 101.6% lag -16.7 ms | rendered 60.90/s skipped  0.00/s | emu cpu  74% waits  21% | render cpu  97% | aica cpu  17% | renders 61 (to textures 0) 13.6 ms max 21.0 | textures updated 65 (989 KB, seen before 0) | compiled 453 in 38.4 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 14 max 23.2 ms | gl per render: draws 579 programs 52 textures 546 | code writes 0 stores 13115 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf    3.0 s: vblank 58.13/s  97.0% lag -3.8 ms | rendered 58.13/s skipped  0.00/s | emu cpu  77% waits  20% | render cpu  90% | aica cpu  16% | renders 59 (to textures 0) 14.0 ms max 36.9 | textures updated 81 (1156 KB, seen before 0) | compiled 1315 in 83.5 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 14 max 53.6 ms | gl per render: draws 548 programs 39 textures 518 | code writes 0 stores 12685 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf    4.0 s: vblank 60.77/s 101.4% lag -18.5 ms | rendered 60.77/s skipped  0.00/s | emu cpu  70% waits  25% | render cpu  94% | aica cpu  17% | renders 61 (to textures 0) 13.8 ms max 22.5 | textures updated 60 (960 KB, seen before 0) | compiled 303 in 19.9 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 12 max 26.8 ms | gl per render: draws 641 programs 53 textures 592 | code writes 0 stores 13115 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf    5.0 s: vblank 61.13/s 102.0% lag -37.0 ms | rendered 61.13/s skipped  0.00/s | emu cpu  73% waits  23% | render cpu  95% | aica cpu  17% | renders 62 (to textures 0) 13.9 ms max 16.9 | textures updated 60 (960 KB, seen before 0) | compiled 222 in 17.9 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 12 max 20.6 ms | gl per render: draws 635 programs 50 textures 586 | code writes 0 stores 13330 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf    6.0 s: vblank 62.96/s 105.0% lag -47.2 ms | rendered 62.96/s skipped  0.00/s | emu cpu  72% waits  24% | render cpu  97% | aica cpu  18% | renders 63 (to textures 0) 13.6 ms max 19.3 | textures updated 62 (992 KB, seen before 0) | compiled 22 in 2.3 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 8 max 21.7 ms | gl per render: draws 630 programs 52 textures 577 | code writes 0 stores 13545 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf    7.0 s: vblank 63.97/s 106.7% lag -50.0 ms | rendered 63.97/s skipped  0.00/s | emu cpu  71% waits  24% | render cpu  97% | aica cpu  18% | renders 64 (to textures 0) 13.4 ms max 15.6 | textures updated 64 (1024 KB, seen before 0) | compiled 13 in 2.4 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 6 max 18.9 ms | gl per render: draws 623 programs 51 textures 570 | code writes 0 stores 13760 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf    8.0 s: vblank 63.72/s 106.3% lag -48.1 ms | rendered 63.72/s skipped  0.00/s | emu cpu  72% waits  23% | render cpu  98% | aica cpu  18% | renders 64 (to textures 0) 13.7 ms max 16.1 | textures updated 63 (1008 KB, seen before 0) | compiled 92 in 5.9 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 9 max 20.3 ms | gl per render: draws 631 programs 45 textures 583 | code writes 0 stores 13760 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf    9.0 s: vblank 63.95/s 106.7% lag -50.0 ms | rendered 63.95/s skipped  0.00/s | emu cpu  72% waits  22% | render cpu  96% | aica cpu  18% | renders 64 (to textures 0) 13.7 ms max 19.5 | textures updated 63 (1008 KB, seen before 0) | compiled 9 in 0.8 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 7 max 19.7 ms | gl per render: draws 633 programs 42 textures 586 | code writes 0 stores 13760 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   10.1 s: vblank 54.86/s  91.5% lag -50.0 ms | rendered 54.86/s skipped  0.00/s | emu cpu  81% waits  15% | render cpu  83% | aica cpu  15% | renders 55 (to textures 0) 14.0 ms max 31.0 | textures updated 86 (1310 KB, seen before 0) | compiled 2829 in 155.8 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 10 max 89.9 ms | gl per render: draws 588 programs 102 textures 561 | code writes 0 stores 11833 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   11.1 s: vblank 62.43/s 104.1% lag -44.3 ms | rendered 62.43/s skipped  0.00/s | emu cpu  73% waits  21% | render cpu  96% | aica cpu  16% | renders 63 (to textures 0) 14.2 ms max 19.1 | textures updated 104 (1664 KB, seen before 0) | compiled 363 in 27.4 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 12 max 31.5 ms | gl per render: draws 560 programs 155 textures 551 | code writes 0 stores 13545 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   12.1 s: vblank 60.52/s 101.0% lag -50.0 ms | rendered 60.52/s skipped  0.00/s | emu cpu  72% waits  25% | render cpu  96% | aica cpu  17% | renders 61 (to textures 0) 14.6 ms max 21.4 | textures updated 101 (1616 KB, seen before 0) | compiled 305 in 25.8 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 15 max 23.8 ms | gl per render: draws 601 programs 160 textures 585 | code writes 0 stores 13115 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   13.1 s: vblank 62.58/s 104.4% lag -48.5 ms | rendered 62.58/s skipped  0.00/s | emu cpu  74% waits  22% | render cpu  99% | aica cpu  17% | renders 63 (to textures 0) 14.2 ms max 17.0 | textures updated 101 (1616 KB, seen before 0) | compiled 124 in 11.2 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 8 max 22.9 ms | gl per render: draws 617 programs 162 textures 601 | code writes 0 stores 13545 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   14.1 s: vblank 56.92/s  95.0% lag  6.2 ms | rendered 56.92/s skipped  0.00/s | emu cpu  70% waits  27% | render cpu  97% | aica cpu  15% | renders 57 (to textures 0) 15.7 ms max 28.0 | textures updated 94 (1416 KB, seen before 0) | compiled 90 in 12.8 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 25 max 26.3 ms | gl per render: draws 671 programs 152 textures 651 | code writes 0 stores 12247 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   15.1 s: vblank 53.54/s  89.3% lag 48.8 ms | rendered 53.54/s skipped  0.00/s | emu cpu  68% waits  27% | render cpu  98% | aica cpu  16% | renders 54 (to textures 0) 16.8 ms max 20.0 | textures updated 91 (1417 KB, seen before 0) | compiled 305 in 21.2 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 38 max 25.1 ms | gl per render: draws 722 programs 185 textures 704 | code writes 0 stores 11610 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   16.1 s: vblank 54.34/s  90.6% lag 49.0 ms | rendered 54.34/s skipped  0.00/s | emu cpu  66% waits  29% | render cpu  99% | aica cpu  16% | renders 55 (to textures 0) 16.4 ms max 18.7 | textures updated 95 (1481 KB, seen before 0) | compiled 122 in 9.4 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 36 max 24.8 ms | gl per render: draws 695 programs 197 textures 679 | code writes 0 stores 11825 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   17.1 s: vblank 55.97/s  93.4% lag 49.0 ms | rendered 55.97/s skipped  0.00/s | emu cpu  68% waits  27% | render cpu  99% | aica cpu  16% | renders 57 (to textures 0) 15.8 ms max 19.3 | textures updated 75 (1200 KB, seen before 0) | compiled 121 in 8.5 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 31 max 22.0 ms | gl per render: draws 712 programs 182 textures 695 | code writes 0 stores 12255 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   18.1 s: vblank 53.35/s  89.0% lag 49.0 ms | rendered 53.35/s skipped  0.00/s | emu cpu  67% waits  30% | render cpu  96% | aica cpu  16% | renders 54 (to textures 0) 16.9 ms max 20.0 | textures updated 80 (1280 KB, seen before 0) | compiled 34 in 3.1 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 40 max 26.8 ms | gl per render: draws 716 programs 180 textures 699 | code writes 0 stores 11610 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   19.1 s: vblank 53.74/s  89.7% lag 49.0 ms | rendered 53.74/s skipped  0.00/s | emu cpu  66% waits  31% | render cpu  96% | aica cpu  15% | renders 54 (to textures 0) 16.7 ms max 20.4 | textures updated 81 (1296 KB, seen before 0) | compiled 2 in 0.6 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 38 max 22.3 ms | gl per render: draws 709 programs 168 textures 692 | code writes 0 stores 11610 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   20.1 s: vblank 54.81/s  91.4% lag 49.0 ms | rendered 54.81/s skipped  0.00/s | emu cpu  68% waits  30% | render cpu  97% | aica cpu  16% | renders 55 (to textures 0) 16.4 ms max 19.1 | textures updated 77 (1232 KB, seen before 0) | compiled 8 in 1.0 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 32 max 22.7 ms | gl per render: draws 705 programs 172 textures 686 | code writes 0 stores 11825 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   21.1 s: vblank 53.86/s  89.8% lag 47.9 ms | rendered 53.86/s skipped  0.00/s | emu cpu  66% waits  32% | render cpu  97% | aica cpu  15% | renders 54 (to textures 0) 16.7 ms max 20.1 | textures updated 89 (1424 KB, seen before 0) | compiled 5 in 0.7 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 37 max 22.8 ms | gl per render: draws 710 programs 177 textures 692 | code writes 0 stores 11610 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   22.1 s: vblank 49.77/s  83.0% lag 49.0 ms | rendered 49.77/s skipped  0.00/s | emu cpu  76% waits  23% | render cpu  90% | aica cpu  14% | renders 50 (to textures 0) 17.3 ms max 24.6 | textures updated 84 (1344 KB, seen before 0) | compiled 2006 in 128.8 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 37 max 40.2 ms | gl per render: draws 711 programs 185 textures 691 | code writes 0 stores 10750 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   23.2 s: vblank 53.36/s  89.0% lag 49.0 ms | rendered 53.36/s skipped  0.00/s | emu cpu  76% waits  21% | render cpu  94% | aica cpu  17% | renders 54 (to textures 0) 16.6 ms max 21.4 | textures updated 81 (1296 KB, seen before 0) | compiled 932 in 75.3 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 38 max 41.8 ms | gl per render: draws 679 programs 184 textures 664 | code writes 0 stores 11610 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   24.2 s: vblank 57.55/s  96.0% lag 31.3 ms | rendered 57.55/s skipped  0.00/s | emu cpu  75% waits  18% | render cpu  98% | aica cpu  18% | renders 58 (to textures 0) 15.2 ms max 19.2 | textures updated 81 (1296 KB, seen before 0) | compiled 379 in 38.2 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 29 max 22.5 ms | gl per render: draws 649 programs 170 textures 629 | code writes 0 stores 12470 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   25.2 s: vblank 53.47/s  89.2% lag 48.5 ms | rendered 53.47/s skipped  0.00/s | emu cpu  74% waits  23% | render cpu  92% | aica cpu  16% | renders 54 (to textures 0) 16.4 ms max 21.1 | textures updated 78 (1248 KB, seen before 0) | compiled 1047 in 70.6 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 33 max 37.4 ms | gl per render: draws 694 programs 171 textures 670 | code writes 0 stores 11610 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   26.2 s: vblank 52.81/s  88.1% lag 44.6 ms | rendered 52.81/s skipped  0.00/s | emu cpu  73% waits  22% | render cpu  88% | aica cpu  16% | renders 53 (to textures 0) 15.7 ms max 22.8 | textures updated 62 (992 KB, seen before 0) | compiled 1434 in 86.3 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 25 max 85.3 ms | gl per render: draws 695 programs 174 textures 670 | code writes 0 stores 11395 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   27.2 s: vblank 56.92/s  95.0% lag 42.9 ms | rendered 56.92/s skipped  0.00/s | emu cpu  75% waits  22% | render cpu  96% | aica cpu  16% | renders 57 (to textures 0) 15.4 ms max 21.6 | textures updated 82 (1312 KB, seen before 0) | compiled 484 in 31.6 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 30 max 21.5 ms | gl per render: draws 639 programs 165 textures 620 | code writes 0 stores 12255 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   28.2 s: vblank 62.62/s 104.5% lag -29.4 ms | rendered 62.62/s skipped  0.00/s | emu cpu  71% waits  25% | render cpu  96% | aica cpu  17% | renders 63 (to textures 0) 14.1 ms max 19.1 | textures updated 80 (1280 KB, seen before 0) | compiled 38 in 3.7 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 16 max 22.5 ms | gl per render: draws 611 programs 158 textures 587 | code writes 0 stores 13553 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   29.2 s: vblank 67.54/s 112.7% lag -50.0 ms | rendered 67.54/s skipped  0.00/s | emu cpu  72% waits  23% | render cpu  98% | aica cpu  18% | renders 68 (to textures 0) 13.0 ms max 16.5 | textures updated 67 (1072 KB, seen before 0) | compiled 17 in 1.7 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 4 max 18.6 ms | gl per render: draws 644 programs 141 textures 610 | code writes 0 stores 14620 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   30.2 s: vblank 70.64/s 117.8% lag -50.0 ms | rendered 70.64/s skipped  0.00/s | emu cpu  78% waits  17% | render cpu  94% | aica cpu  19% | renders 71 (to textures 0) 12.2 ms max 23.3 | textures updated 70 (1105 KB, seen before 0) | compiled 7 in 0.7 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 6 max 19.2 ms | gl per render: draws 496 programs 64 textures 456 | code writes 0 stores 15257 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   31.2 s: vblank 64.41/s 107.5% lag -45.8 ms | rendered 64.41/s skipped  0.00/s | emu cpu  73% waits  21% | render cpu  97% | aica cpu  18% | renders 65 (to textures 0) 13.4 ms max 16.5 | textures updated 65 (1040 KB, seen before 0) | compiled 25 in 2.9 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 7 max 19.6 ms | gl per render: draws 589 programs 68 textures 546 | code writes 0 stores 13975 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   32.2 s: vblank 55.96/s  93.3% lag  8.3 ms | rendered 55.96/s skipped  0.00/s | emu cpu  74% waits  23% | render cpu  91% | aica cpu  17% | renders 56 (to textures 0) 15.4 ms max 26.1 | textures updated 55 (837 KB, seen before 0) | compiled 849 in 62.7 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 13 max 40.6 ms | gl per render: draws 689 programs 89 textures 659 | code writes 0 stores 12040 dropped 0
+[libretro INFO] [COMMON] Flycastrophe perf   33.2 s: vblank 57.42/s  95.8% lag 27.1 ms | rendered 57.42/s skipped  0.00/s | emu cpu  67% waits  27% | render cpu  96% | aica cpu  18% | renders 58 (to textures 0) 15.1 ms max 23.1 | textures updated 81 (1284 KB, seen before 0) | compiled 75 in 9.3 ms resets 0 | wait turns skipped 0 asleep 0.0% | mmu flushes 0+0 misses 0 | emu frames late 26 max 23.6 ms | gl per render: draws 633 programs 41 textures 614 | code writes 0 stores 12470 dropped 0
+[INFO] [Runtime] Content ran for a total of: 00 hours, 00 minutes, 31 seconds.
+[INFO] [Core] Unloading game...
+[libretro INFO] [DYNAREC] Deadcast: 17941 blocks kept for the next state load (/userdata/dc-core-bench/saves/NFL 2K2 (USA).blocks)
+[ERROR] [Environ] GET_VARIABLE: reicast_texupscale - Invalid value.
+[ERROR] [Environ] GET_VARIABLE: reicast_texupscale_max_filtered_texture_size - Invalid value.
+[ERROR] [Environ] GET_VARIABLE: reicast_oit_layers - Invalid value.
+[INFO] [Core] Unloading core...
+[INFO] [Core] Unloading core symbols...
+[INFO] [Core] Saved core options file to "/userdata/dc-core-bench/retroarch-core-options.cfg".
+[INFO] [Autoconf] Loong Gamepad disconnected from port 1.
+[INFO] [Autoconf] Loong Gamepad disconnected from port 2.
+arm_release_ver: g13p0-01eac0, rk_so_ver: 10
