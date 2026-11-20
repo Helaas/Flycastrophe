@@ -495,29 +495,28 @@ void fix_texture_bleeding(const std::vector<PolyParam>& polys, int first, int en
 }
 
 //
-// Flycastrophe state sort (OpaqueStateSort, PunchThroughStateSort): before the index is made, the polygons of
+// Flycastrophe state sort (OpaqueStateSort): before the index is made, the opaque polygons of
 // a run that can change places are grouped by what they are drawn with, so the index builder below merges
 // each group into one draw. Movable: polygons depth tested greater or greater-or-equal that write depth and
-// don't blend (punch-through polygons always test greater-or-equal and write depth), not Naomi 2, and only
+// don't blend, not Naomi 2, and only
 // within an unbroken run of them in one render pass. Among those the nearest surface wins whatever the
 // order, except at a pixel where two of them have the same depth: not exact there. Polygons that draw
 // nothing (under three vertices, depth test never) don't break a run.
 // The key: what picks the shader first (a program change costs a draw the most), then the texture, tsp,
 // isp, tile clip. tcw stands for the texture: with the parse thread the textures aren't fetched yet.
 //
-static bool stateSortDrawsNothing(const PolyParam& pp, bool punchThrough)
+static bool stateSortDrawsNothing(const PolyParam& pp)
 {
-	return pp.count < 3 || (!punchThrough && pp.isp.DepthMode == 0);
+	return pp.count < 3 || pp.isp.DepthMode == 0;
 }
 
-static bool stateSortMovable(const PolyParam& pp, bool punchThrough)
+static bool stateSortMovable(const PolyParam& pp)
 {
-	if (pp.isNaomi2() || pp.tsp.SrcInstr != 1 || pp.tsp.DstInstr != 0)
-		return false;
-	return punchThrough || ((pp.isp.DepthMode == 4 || pp.isp.DepthMode == 6) && !pp.isp.ZWriteDis);
+	return !pp.isNaomi2() && pp.tsp.SrcInstr == 1 && pp.tsp.DstInstr == 0
+			&& (pp.isp.DepthMode == 4 || pp.isp.DepthMode == 6) && !pp.isp.ZWriteDis;
 }
 
-void sortByState(std::vector<PolyParam>& polys, int first, int end, bool punchThrough)
+void sortByState(std::vector<PolyParam>& polys, int first, int end)
 {
 	struct Key {
 		u32 prog, tcw, tsp, isp, clip, pcw;
@@ -528,7 +527,7 @@ void sortByState(std::vector<PolyParam>& polys, int first, int end, bool punchTh
 	int i = first;
 	while (i < end)
 	{
-		if (!stateSortMovable(polys[i], punchThrough) && !stateSortDrawsNothing(polys[i], punchThrough))
+		if (!stateSortMovable(polys[i]) && !stateSortDrawsNothing(polys[i]))
 		{
 			i++;
 			continue;
@@ -538,7 +537,7 @@ void sortByState(std::vector<PolyParam>& polys, int first, int end, bool punchTh
 		for (; i < end; i++)
 		{
 			const PolyParam& pp = polys[i];
-			if (!stateSortMovable(pp, punchThrough) && !stateSortDrawsNothing(pp, punchThrough))
+			if (!stateSortMovable(pp) && !stateSortDrawsNothing(pp))
 				break;
 			const u32 prog = (u32)pp.pcw.Texture | (u32)pp.pcw.Offset << 1 | (u32)pp.pcw.Gouraud << 2
 					| (u32)pp.tsp.UseAlpha << 3 | (u32)pp.tsp.IgnoreTexA << 4 | (u32)pp.tsp.ShadInstr << 5

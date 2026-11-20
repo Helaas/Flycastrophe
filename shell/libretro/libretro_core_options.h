@@ -205,20 +205,6 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       "disabled",
    },
    {
-      CORE_OPTION_NAME "_fcr_pt_state_sort",
-      "Group Cut-Out Polygons",
-      NULL,
-      "The same for polygons with see-through holes (punch-through: foliage, fences, text). Not exact in the same way.",
-      NULL,
-      "video",
-      {
-         { "disabled", NULL },
-         { "enabled",  NULL },
-         { NULL, NULL },
-      },
-      "disabled",
-   },
-   {
       CORE_OPTION_NAME "_fcr_fast_fipr",
       "Fast Vector Math",
       NULL,

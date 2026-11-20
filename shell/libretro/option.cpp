@@ -105,11 +105,9 @@ Option<bool> ThreadedRendering(CORE_OPTION_NAME "_threaded_rendering", true);
 Option<bool> ParseThread(CORE_OPTION_NAME "_fcr_parse_thread", true);
 // Flycastrophe's state sort (ta_util.cpp), off by default: not exact where two surfaces share a depth
 Option<bool> OpaqueStateSort(CORE_OPTION_NAME "_fcr_opaque_state_sort", false);
-Option<bool> PunchThroughStateSort(CORE_OPTION_NAME "_fcr_pt_state_sort", false);
 #else
 Option<bool> ParseThread("", false);
 Option<bool> OpaqueStateSort("", false);
-Option<bool> PunchThroughStateSort("", false);
 #endif
 Option<bool> VblankPacing(CORE_OPTION_NAME "_vblank_pacing");
 // Flycastrophe: by value ("4" is 4x), not by its position in the list (which made "4" 2x and "2" off)

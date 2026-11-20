@@ -448,7 +448,7 @@ void sortPolyParams(std::vector<PolyParam>& polys, int first, int end, rend_cont
 void fix_texture_bleeding(const std::vector<PolyParam>& polys, int first, int end, rend_context& ctx);
 void makeIndex(std::vector<PolyParam>& polys, int first, int end, bool merge, rend_context& ctx);
 void makePrimRestartIndex(std::vector<PolyParam>& polys, int first, int end, bool merge, rend_context& ctx);
-void sortByState(std::vector<PolyParam>& polys, int first, int end, bool punchThrough);
+void sortByState(std::vector<PolyParam>& polys, int first, int end);
 
 class TAParserException : public FlycastException
 {
