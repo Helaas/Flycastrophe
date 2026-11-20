@@ -15,7 +15,7 @@
 
 #if FEAT_SHREC != DYNAREC_NONE
 
-constexpr u32 CODE_SIZE = 10_MB;
+constexpr u32 CODE_SIZE = 32_MB;	// Flycastrophe: 10 MB filled in five minutes of SA2 (dead and live code), and emptying it stalled the game for 0.8 s
 constexpr u32 TEMP_CODE_SIZE = 1_MB;
 constexpr u32 FULL_SIZE = CODE_SIZE + TEMP_CODE_SIZE;
 DECLARE_CODE_CACHE(SH4_TCB, FULL_SIZE)
@@ -83,11 +83,22 @@ void Sh4Recompiler::clear_temp_cache(bool full)
 }
 
 extern u32 bmStatCacheResets;
+extern u32 bmStatCompiledTotal;
+
+// Flycastrophe diagnostics: why the code cache was emptied (logged at NOTICE)
+const char *resetReason = "other";
 
 void Sh4Recompiler::ResetCache()
 {
 	bmStatCacheResets++;
-	INFO_LOG(DYNAREC, "recSh4:Dynarec Cache clear at %08X free space %d", getContext()->pc, codeBuffer.getFreeSpace());
+	{
+		u32 live = 0, liveBytes = 0;
+		bm_ForEachBlock([&](const RuntimeBlockInfo& b) { live++; liveBytes += b.host_code_size; });
+		NOTICE_LOG(DYNAREC, "Flycastrophe cache reset: %s at pc %08X, used %u of %u KB, live blocks %u in %u KB, dead %u KB, compiled since start %u",
+				resetReason, getContext()->pc, (CODE_SIZE - codeBuffer.getFreeSpace()) / 1024, CODE_SIZE / 1024,
+				live, liveBytes / 1024, (CODE_SIZE - codeBuffer.getFreeSpace() - liveBytes) / 1024, bmStatCompiledTotal);
+	}
+	resetReason = "other";
 	codeBuffer.reset(false);
 	bm_ResetCache();
 	smc_hotspots.clear();
@@ -189,7 +200,10 @@ static DynarecCodeEntryPtr compilePCTimed(u32 blockcheck_failures)
 	const u32 pc = Sh4cntx.pc;
 
 	if (codeBuffer.getFreeSpace() < 32_KB || pc == 0x8c0000e0 || pc == 0xac010000 || pc == 0xac008300)
+	{
+		resetReason = codeBuffer.getFreeSpace() < 32_KB ? "code cache full" : "boot address";
 		Sh4Recompiler::Instance->ResetCache();
+	}
 
 	// Deadcast: rewritten code: its version compiled before, if parked (bm_UnparkBlock)
 	if (mmu_enabled() && !smc_hotspots.empty())
@@ -308,6 +322,7 @@ DynarecCodeEntryPtr DYNACALL rdv_BlockCheckFail(u32 addr)
 	else
 	{
 		Sh4cntx.pc = addr;
+		resetReason = "block check failed";
 		Sh4Recompiler::Instance->ResetCache();
 	}
 	return (DynarecCodeEntryPtr)CC_RW2RX(compilePC(blockcheck_failures));
@@ -436,6 +451,7 @@ void Sh4Recompiler::Reset(bool hard)
 	if (hard)
 		// in case ram base has changed
 		sh4Dynarec->init(*getContext(), codeBuffer);
+	resetReason = "sh4 reset";
 	ResetCache();
 	if (hard)
 		bm_Reset();

@@ -58,6 +58,10 @@ static void CCN_MMUCR_write(u32 addr, u32 value)
 	{
 		//printf("<*******>MMU Enabled , ONLY SQ remaps work<*******>\n");
 		mmu_set_state();
+#if FEAT_SHREC != DYNAREC_NONE
+		extern const char *resetReason;
+		resetReason = "mmu switched";
+#endif
 		emu.getSh4Executor()->ResetCache();
 	}
 }
