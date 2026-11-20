@@ -1,0 +1,20 @@
+mvc2: frames 4218 and 4234, 427 different frames in both: 427 identical, 0 differ
+rez: frames 3515 and 3536, 416 different frames in both: 416 identical, 0 differ
+shenmue: frames 3290 and 3294, 416 different frames in both: 416 identical, 0 differ
+skies: frames 2369 and 2411, 1866 different frames in both: 1866 identical, 0 differ
+soulcalibur: frames 4207 and 4180, 4052 different frames in both: 4052 identical, 0 differ
+jetsetradio: frames 2010 and 2034, 564 different frames in both: 564 identical, 0 differ
+virtuatennis2: frames 2896 and 2905, 1892 different frames in both: 1891 identical, 1 differ
+thps2: frames 2001 and 1994, 1057 different frames in both: 1057 identical, 0 differ
+vf3tb: frames 2411 and 2419, 681 different frames in both: 681 identical, 0 differ
+ikaruga: frames 3707 and 3712, 417 different frames in both: 417 identical, 0 differ
+
+Virtua Tennis 2, the one pair, with a second run of each build (control2 = base, new2 = new):
+base vs new: frames 2896 and 2905, 1892 different frames in both: 1891 identical, 1 differ
+base vs new2: frames 2896 and 2852, 1848 different frames in both: 1848 identical, 0 differ
+control2 vs new: frames 2889 and 2905, 1885 different frames in both: 1884 identical, 1 differ
+control2 vs new2: frames 2889 and 2852, 1848 different frames in both: 1848 identical, 0 differ
+base vs control2: frames 2896 and 2889, 1915 different frames in both: 1915 identical, 0 differ
+new vs new2: frames 2905 and 2852, 1878 different frames in both: 1877 identical, 1 differ
+Input hash d5e129b267ad327c: out be7e80012448e55a in base, control2, new2 and the first time in new;
+out bcbe68f574c7f660 the second time in new.

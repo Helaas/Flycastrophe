@@ -454,6 +454,7 @@ static void gl_delete_shaders()
 			glcache.DeleteProgram(it.second.program);
 	}
 	gl.shaders.clear();
+	gl.lastShader = nullptr;
 	glcache.DeleteProgram(gl.modvol_shader.program);
 	gl.modvol_shader.program = 0;
 	glcache.DeleteProgram(gl.n2ModVolShader.program);
@@ -741,7 +742,12 @@ PipelineShader *GetProgram(bool cp_AlphaTest, bool pp_InsideClipping,
 	rv <<= 1, rv |= !settings.platform.isNaomi2() && config::NativeDepthInterpolation;
 	rv <<= 1; rv |= dithering;
 
+	// Flycastrophe: most polygons use the program of the one before them
+	if (rv == gl.lastShaderKey && gl.lastShader != nullptr && gl.lastShader->program != 0 && !gl.lastShader->commonUniformsStale())
+		return gl.lastShader;
 	PipelineShader *shader = &gl.shaders[rv];
+	gl.lastShaderKey = rv;
+	gl.lastShader = shader;
 	if (shader->program == 0)
 	{
 		shader->cp_AlphaTest = cp_AlphaTest;
